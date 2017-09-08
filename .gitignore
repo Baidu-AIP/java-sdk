@@ -1,0 +1,11 @@
+*.iml
+*/META-INF/
+*/target/
+out/
+.idea/
+*.gif
+*.GIF
+*.jpg
+*.JPG
+*.log
+*.md5
