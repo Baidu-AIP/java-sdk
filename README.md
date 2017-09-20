@@ -40,7 +40,15 @@
 
 **使用maven依赖：**
 
-尚在计划中，暂不支持
+添加以下依赖：
+
+```
+<dependency>
+    <groupId>com.baidu.aip</groupId>
+    <artifactId>java-sdk</artifactId>
+    <version>3.1.0</version>
+</dependency>
+```
 
 
 
