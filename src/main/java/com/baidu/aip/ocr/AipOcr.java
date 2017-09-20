@@ -36,6 +36,7 @@ public class AipOcr extends BaseClient {
      *
      * @param imgPath 本地文件路径
      * @param isFront 图像是否为身份证正面
+     * @param options 可选参数
      * @return 服务器检测结果
      */
     public JSONObject idcard(String imgPath, Boolean isFront, HashMap<String, String> options) {
@@ -51,9 +52,10 @@ public class AipOcr extends BaseClient {
 
     /**
      *
-     * @param imgData
-     * @param isFront
-     * @return
+     * @param imgData 本地图像二进制数据
+     * @param isFront 是否为正面
+     * @param options 可选参数
+     * @return json result
      */
     public JSONObject idcard(byte[] imgData, Boolean isFront, HashMap<String, String> options) {
         AipRequest request = new AipRequest();
@@ -880,7 +882,7 @@ public class AipOcr extends BaseClient {
      * 表格识别接口，返回生成excel的url地址
      * @param imgPath 识别图片路径
      * @param timeoutMiliseconds 等待超时(ms)
-     * @return
+     * @return json result
      */
     public JSONObject tableRecognizeToExcelUrl(String imgPath, long timeoutMiliseconds) {
         try {
@@ -896,7 +898,7 @@ public class AipOcr extends BaseClient {
      * 表格识别接口，返回生成excel的url地址
      * @param imgData 识别图片二进制数据
      * @param timeoutMiliseconds 等待超时(ms)
-     * @return
+     * @return json result
      */
     public JSONObject tableRecognizeToExcelUrl(byte[] imgData, long timeoutMiliseconds) {
         return tableRecSyncHelper(imgData, timeoutMiliseconds, "excel");

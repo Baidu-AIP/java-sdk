@@ -74,7 +74,7 @@ public class AipKnowledgeGraphic extends BaseClient {
      * @param urlPattern url pattern
      * @param options 可选参数
      * <p>可填入key:
-     *      limit_count: 限制解析数量limit_count为0时进行全量任务，limit_count>0时只解析limit_count数量的页面
+     *      limit_count: 限制解析数量limit_count为0时进行全量任务，limit_count -gt 0时只解析limit_count数量的页面
      * </p>
      * @return json对象，返回任务id
      */

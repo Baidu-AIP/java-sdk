@@ -35,7 +35,7 @@ public class AipFace extends BaseClient {
      *
      * @param imgPath 图片文件路径
      * @param options 识别接口可选参数
-     * @return
+     * @return Json result
      */
     public JSONObject detect(String imgPath, HashMap<String, String> options) {
         try {
@@ -51,7 +51,7 @@ public class AipFace extends BaseClient {
      *
      * @param imgData 图片文件内容
      * @param options 识别接口可选参数
-     * @return
+     * @return Json result
      */
     public JSONObject detect(byte[] imgData, HashMap<String, String> options) {
         AipRequest request = new AipRequest();
@@ -133,6 +133,7 @@ public class AipFace extends BaseClient {
      * @param userInfo 用户个人信息，长度不超过256B
      * @param groupId 用户所在组id, 组成为字母/数字/下划线，长度不超过128B
      * @param imgPath 用户图像本地路径
+     * @param options 可选参数
      * @return json对象，包含本次请求的logid
      */
     public JSONObject addUser(String uid, String userInfo, List<String> groupId,
@@ -152,6 +153,7 @@ public class AipFace extends BaseClient {
      * @param userInfo 用户个人信息，长度不超过256B
      * @param groupId 用户所在组id, 组成为字母/数字/下划线，长度不超过128B
      * @param imgData 用户图像二进制数据
+     * @param options 可选参数
      * @return json对象，包含本次请求的logid
      */
     public JSONObject addUser(String uid, String userInfo, List<String> groupId,
@@ -188,6 +190,7 @@ public class AipFace extends BaseClient {
     /**
      * 从人脸库更新用户图像
      * @param uid uid
+     * @param userInfo 用户信息
      * @param groupId group_id
      * @param imgPath 图片路径
      * @param options 可选参数，包括:
@@ -210,6 +213,7 @@ public class AipFace extends BaseClient {
     /**
      * 从人脸库更新用户图像
      * @param uid uid
+     * @param userInfo 用户信息
      * @param groupId group_id
      * @param imgData 图片二进制数据
      * @param options 可选参数，包括:

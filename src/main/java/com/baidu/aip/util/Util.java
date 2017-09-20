@@ -67,19 +67,16 @@ public class Util {
 
     /**
      * Normalize a string for use in BCE web service APIs. The normalization algorithm is:
-     * <p>
      * <ol>
      *   <li>Convert the string into a UTF-8 byte array.</li>
      *   <li>Encode all octets into percent-encoding, except all URI unreserved characters per the RFC 3986.</li>
      * </ol>
      *
-     * <p>
      * All letters used in the percent-encoding are in uppercase.
      *
      * @param value the string to normalize.
      * @param encodeSlash if encode '/'
      * @return the normalized string.
-     * @throws UnsupportedEncodingException
      */
     public static String uriEncode(String value, boolean encodeSlash) {
         try {
@@ -114,7 +111,7 @@ public class Util {
      *
      * @param filePath 文件路径
      * @return file bytes
-     * @throws IOException
+     * @throws IOException 读取文件错误
      */
 
     public static byte[] readFileByBytes(String filePath) throws IOException {
