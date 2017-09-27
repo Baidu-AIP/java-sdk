@@ -25,6 +25,10 @@ public class ImageClassifyConsts {
 
     static final String LOGO_DELETE = "https://aip.baidubce.com/rest/2.0/realtime_search/v1/logo/delete";
 
+    static final String ANIMAL_DETECT = "https://aip.baidubce.com/rest/2.0/image-classify/v1/animal";
+
+    static final String PLANT_DETECT = "https://aip.baidubce.com/rest/2.0/image-classify/v1/plant";
+
     static final String OBJECT_DETECT = "https://aip.baidubce.com/rest/2.0/image-classify/v1/object_detect";
 
 }

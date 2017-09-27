@@ -283,6 +283,96 @@ public class AipImageClassify extends BaseClient {
     }
 
     /**
+     * 动物识别接口
+     * 该请求用于识别一张图片。即对于输入的一张图片（可正常解码，且长宽比适宜），输出动物识别结果
+     *
+     * @param image - 二进制图像数据
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   top_num 返回预测得分top结果数，默认为6
+     * @return JSONObject
+     */
+    public JSONObject animalDetect(byte[] image, HashMap<String, String> options) {
+        AipRequest request = new AipRequest();
+        preOperation(request);
+        
+        String base64Content = Base64Util.encode(image);
+
+        request.addBody("image", base64Content);
+        
+        if (options != null) {
+            request.addBody(options);
+        }
+        request.setUri(ImageClassifyConsts.ANIMAL_DETECT);
+        postOperation(request);
+        return requestServer(request);
+    }
+
+    /**
+     * 动物识别接口
+     * 该请求用于识别一张图片。即对于输入的一张图片（可正常解码，且长宽比适宜），输出动物识别结果
+     *
+     * @param image - 本地图片路径
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   top_num 返回预测得分top结果数，默认为6
+     * @return JSONObject
+     */
+    public JSONObject animalDetect(String image, HashMap<String, String> options) {
+        try {
+            byte[] imgData = Util.readFileByBytes(image);
+            return animalDetect(imgData, options);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return AipError.IMAGE_READ_ERROR.toJsonResult();
+        }
+    }
+
+    /**
+     * 植物识别接口
+     * 该请求用于识别一张图片。即对于输入的一张图片（可正常解码，且长宽比适宜），输出植物识别结果。
+     *
+     * @param image - 二进制图像数据
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     * @return JSONObject
+     */
+    public JSONObject plantDetect(byte[] image, HashMap<String, String> options) {
+        AipRequest request = new AipRequest();
+        preOperation(request);
+        
+        String base64Content = Base64Util.encode(image);
+
+        request.addBody("image", base64Content);
+        
+        if (options != null) {
+            request.addBody(options);
+        }
+        request.setUri(ImageClassifyConsts.PLANT_DETECT);
+        postOperation(request);
+        return requestServer(request);
+    }
+
+    /**
+     * 植物识别接口
+     * 该请求用于识别一张图片。即对于输入的一张图片（可正常解码，且长宽比适宜），输出植物识别结果。
+     *
+     * @param image - 本地图片路径
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     * @return JSONObject
+     */
+    public JSONObject plantDetect(String image, HashMap<String, String> options) {
+        try {
+            byte[] imgData = Util.readFileByBytes(image);
+            return plantDetect(imgData, options);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return AipError.IMAGE_READ_ERROR.toJsonResult();
+        }
+    }
+
+    /**
      * 图像主体检测接口
      * 用户向服务请求检测图像中的主体位置。
      *
