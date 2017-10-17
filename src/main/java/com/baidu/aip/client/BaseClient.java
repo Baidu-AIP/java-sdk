@@ -165,12 +165,13 @@ public abstract class BaseClient {
 
     /**
      * get OAuth access token, synchronized function
+     * @param config 网络连接设置
      */
-    protected synchronized void getAccessToken() {
+    protected synchronized void getAccessToken(AipClientConfiguration config) {
         if (!needAuth()) {
             return;
         }
-        JSONObject res = DevAuth.oauth(aipKey, aipToken);
+        JSONObject res = DevAuth.oauth(aipKey, aipToken, config);
         if (res == null) {
             return;
         }
@@ -219,7 +220,7 @@ public abstract class BaseClient {
      */
     protected void preOperation(AipRequest request) {
         if (needAuth()) {
-            getAccessToken();
+            getAccessToken(config);
         }
 
         request.setHttpMethod(HttpMethodName.POST);
