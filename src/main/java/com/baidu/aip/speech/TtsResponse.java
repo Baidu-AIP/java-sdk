@@ -12,28 +12,20 @@
  */
 package com.baidu.aip.speech;
 
+import org.json.JSONObject;
+
 public class TtsResponse {
-    private int errorCode;
-    private String errorMsg;
+    private JSONObject result;
     private byte[] data;
-    private String sn;
-    private Integer idx;
 
-    public int getErrorCode() {
-        return errorCode;
+    public JSONObject getResult() {
+        return result;
     }
 
-    public void setErrorCode(int errorCode) {
-        this.errorCode = errorCode;
+    public void setResult(JSONObject result) {
+        this.result = result;
     }
 
-    public String getErrorMsg() {
-        return errorMsg;
-    }
-
-    public void setErrorMsg(String errorMsg) {
-        this.errorMsg = errorMsg;
-    }
 
     public byte[] getData() {
         return data;
@@ -43,19 +35,4 @@ public class TtsResponse {
         this.data = data;
     }
 
-    public String getSn() {
-        return sn;
-    }
-
-    public void setSn(String sn) {
-        this.sn = sn;
-    }
-
-    public Integer getIdx() {
-        return idx;
-    }
-
-    public void setIdx(Integer idx) {
-        this.idx = idx;
-    }
 }

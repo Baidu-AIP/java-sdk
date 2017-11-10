@@ -106,8 +106,9 @@ public class AipSpeech extends BaseClient {
         if (this.isBceKey.get()) {
             // get access token failed!
             TtsResponse response = new TtsResponse();
-            response.setErrorCode(AipClientConst.OPENAPI_NO_ACCESS_ERROR_CODE);
-            response.setErrorMsg(AipClientConst.OPENAPI_NO_ACCESS_ERROR_MSG);
+            JSONObject msg = Util.getGeneralError(AipClientConst.OPENAPI_NO_ACCESS_ERROR_CODE,
+                    AipClientConst.OPENAPI_NO_ACCESS_ERROR_MSG);
+            response.setResult(msg);
             return response;
         }
         request.addBody("tex", text);
@@ -122,22 +123,17 @@ public class AipSpeech extends BaseClient {
         request.setUri(SpeechConsts.SPEECH_TTS_URL);
 
         TtsResponse response = new TtsResponse();
-        response.setErrorCode(0);
-        response.setErrorMsg("success");
         AipResponse res = AipHttpClient.post(request);
         if (res == null) {
-            response.setErrorCode(-1);
-            response.setErrorMsg("null response from server");
+            response.setResult(Util.getGeneralError(-1,
+                    "null response from server"));
             return response;
         }
         String contentType = res.getHeader().get("Content-type").get(0);
         if (contentType.contains("json")) {
             String data = res.getBodyStr();
             JSONObject json = new JSONObject(data);
-            response.setErrorCode(json.getInt("err_no"));
-            response.setErrorMsg(json.getString("err_msg"));
-            response.setSn(json.getString("sn"));
-            response.setIdx(json.getInt("idx"));
+            response.setResult(json);
             return response;
         }
         byte[] binData = res.getBody();
