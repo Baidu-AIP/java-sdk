@@ -46,7 +46,7 @@
 <dependency>
     <groupId>com.baidu.aip</groupId>
     <artifactId>java-sdk</artifactId>
-    <version>3.2.0</version>
+    <version>3.3.1</version>
 </dependency>
 ```
 
