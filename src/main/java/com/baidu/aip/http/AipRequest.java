@@ -80,7 +80,9 @@ public class AipRequest {
     }
 
     public void addBody(HashMap other) {
-        body.putAll(other);
+        if (other != null) {
+            body.putAll(other);
+        }
     }
 
     public HashMap<String, String> getParams() {

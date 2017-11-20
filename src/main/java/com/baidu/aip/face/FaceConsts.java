@@ -14,37 +14,37 @@ package com.baidu.aip.face;
 
 public class FaceConsts {
 
-    public static final String FACE_DETECT_URL = "https://aip.baidubce.com/rest/2.0/face/v1/detect";
-    public static final String FACE_MATCH_URL = "https://aip.baidubce.com/rest/2.0/face/v2/match";
-    public static final String FACE_SEARCH_FACESET_USER_ADD_URL =
+    static final String FACE_DETECT_URL = "https://aip.baidubce.com/rest/2.0/face/v2/detect";
+    static final String FACE_MATCH_URL = "https://aip.baidubce.com/rest/2.0/face/v2/match";
+    static final String FACE_SEARCH_FACESET_USER_ADD_URL =
             "https://aip.baidubce.com/rest/2.0/face/v2/faceset/user/add";
-    public static final String FACE_SEARCH_FACESET_USER_UPDATE_URL =
+    static final String FACE_SEARCH_FACESET_USER_UPDATE_URL =
             "https://aip.baidubce.com/rest/2.0/face/v2/faceset/user/update";
-    public static final String FACE_SEARCH_FACESET_USER_DELETE_URL =
+    static final String FACE_SEARCH_FACESET_USER_DELETE_URL =
             "https://aip.baidubce.com/rest/2.0/face/v2/faceset/user/delete";
-    public static final String FACE_SEARCH_VERIFY_URL =
+    static final String FACE_SEARCH_VERIFY_URL =
             "https://aip.baidubce.com/rest/2.0/face/v2/verify";
-    public static final String FACE_SEARCH_IDENTIFY_URL =
+    static final String FACE_SEARCH_IDENTIFY_URL =
             "https://aip.baidubce.com/rest/2.0/face/v2/identify";
-    public static final String FACE_SEARCH_FACESET_USER_GET_URL =
+    static final String FACE_SEARCH_FACESET_USER_GET_URL =
             "https://aip.baidubce.com/rest/2.0/face/v2/faceset/user/get";
-    public static final String FACE_SEARCH_FACESET_GROUP_GET_LIST_URL =
+    static final String FACE_SEARCH_FACESET_GROUP_GET_LIST_URL =
             "https://aip.baidubce.com/rest/2.0/face/v2/faceset/group/getlist";
-    public static final String FACE_SEARCH_FACESET_GROUP_GET_USERS_URL =
+    static final String FACE_SEARCH_FACESET_GROUP_GET_USERS_URL =
             "https://aip.baidubce.com/rest/2.0/face/v2/faceset/group/getusers";
-    public static final String FACE_SEARCH_FACESET_GROUP_ADD_USER_URL =
+    static final String FACE_SEARCH_FACESET_GROUP_ADD_USER_URL =
             "https://aip.baidubce.com/rest/2.0/face/v2/faceset/group/adduser";
-    public static final String FACE_SEARCH_FACESET_GROUP_DELETE_USER_URL =
+    static final String FACE_SEARCH_FACESET_GROUP_DELETE_USER_URL =
             "https://aip.baidubce.com/rest/2.0/face/v2/faceset/group/deleteuser";
 
-    public static final String FACE_LIVENESS_VERIFY_URL =
+    static final String FACE_LIVENESS_VERIFY_URL =
             "https://aip.baidubce.com/rest/2.0/face/v2/faceverify";
 
-    public static final Long FACE_DETECT_MAX_IMAGE_SIZE = 2097152L; // 2 * 1024 * 1024
-    public static final Long FACE_MATCH_MAX_IMAGE_SIZE = 20971520L; // 20 * 1024 * 1024
-    public static final Long FACE_SEARCH_MAX_IMAGE_SIZE = 20971520L; // 20 * 1024 * 1024
+    static final Long FACE_DETECT_MAX_IMAGE_SIZE = 2097152L; // 2 * 1024 * 1024
+    static final Long FACE_MATCH_MAX_IMAGE_SIZE = 20971520L; // 20 * 1024 * 1024
+    static final Long FACE_SEARCH_MAX_IMAGE_SIZE = 20971520L; // 20 * 1024 * 1024
 
-    public static final Integer FACE_SEARCH_MAX_UID_SIZE = 128;
-    public static final Integer FACE_SEARCH_MAX_USER_INFO_SIZE = 256;
-    public static final Integer FACE_SEARCH_MAX_GROUP_ID_SIZE = 48;
+    static final Integer FACE_SEARCH_MAX_UID_SIZE = 128;
+    static final Integer FACE_SEARCH_MAX_USER_INFO_SIZE = 256;
+    static final Integer FACE_SEARCH_MAX_GROUP_ID_SIZE = 48;
 }
