@@ -33,4 +33,13 @@ public class ImageSearchConsts {
     static final String SIMILAR_DELETE =
             "https://aip.baidubce.com/rest/2.0/image-classify/v1/realtime_search/similar/delete";
 
+    static final String PRODUCT_ADD =
+            "https://aip.baidubce.com/rest/2.0/image-classify/v1/realtime_search/product/add";
+
+    static final String PRODUCT_SEARCH =
+            "https://aip.baidubce.com/rest/2.0/image-classify/v1/realtime_search/product/search";
+
+    static final String PRODUCT_DELETE =
+            "https://aip.baidubce.com/rest/2.0/image-classify/v1/realtime_search/product/delete";
+
 }
