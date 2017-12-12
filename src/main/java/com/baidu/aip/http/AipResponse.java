@@ -15,6 +15,7 @@ package com.baidu.aip.http;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class AipResponse {
 
@@ -53,7 +54,12 @@ public class AipResponse {
     }
 
     public void setHeader(Map<String, List<String>> header) {
-        this.header = header;
+        this.header = new TreeMap<String, List<String>>(String.CASE_INSENSITIVE_ORDER);
+        for (Map.Entry<String, List<String>> entry: header.entrySet()) {
+            if (entry.getKey() != null) {
+                this.header.put(entry.getKey(), entry.getValue());
+            }
+        }
     }
 
     public byte[] getBody() {
