@@ -36,7 +36,7 @@ public class AipKnowledgeGraphic extends BaseClient {
      * @param urlPattern - url pattern
      * @param options - 可选参数对象，key: value都为string类型
      * options - options列表:
-     *   limit_count 限制解析数量limit_count为0时进行全量任务，limit_count>0时只解析limit_count数量的页面
+     *   limit_count 限制解析数量limit_count为0时进行全量任务，limit_count&gt;0时只解析limit_count数量的页面
      * @return JSONObject
      */
     public JSONObject createTask(String name, String templateContent, String inputMappingFile, String outputFile, String urlPattern, HashMap<String, String> options) {

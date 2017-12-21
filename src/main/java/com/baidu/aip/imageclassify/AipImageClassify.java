@@ -191,7 +191,8 @@ public class AipImageClassify extends BaseClient {
      * logo商标识别—添加接口
      * 该接口尚在邀测阶段，使用该接口之前需要线下联系工作人员完成建库方可使用，请加入QQ群：649285136 联系相关人员。
      *
-     * @param image - 本地图片路径* @param brief - brief，检索时带回。此处要传对应的name与code字段，name长度小于100B，code长度小于150B
+     * @param image - 本地图片路径
+     * @param brief - brief，检索时带回。此处要传对应的name与code字段，name长度小于100B，code长度小于150B
      * @param options - 可选参数对象，key: value都为string类型
      * options - options列表:
      * @return JSONObject

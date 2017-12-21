@@ -225,6 +225,7 @@ public class AipNlp extends BaseClient {
      * 评论观点抽取接口用来提取一条评论句子的关注点和评论观点，并输出评论观点标签及评论观点极性。
      *
      * @param text - 评论内容（GBK编码），最大10240字节
+     * @param type - ESimnetType枚举类型，选择识别的垂类
      * @param options - 可选参数对象，key: value都为string类型
      * options - options列表:
      *   type 评论行业类型，默认为4（餐饮美食）

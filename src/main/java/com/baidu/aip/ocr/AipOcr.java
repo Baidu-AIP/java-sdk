@@ -37,8 +37,8 @@ public class AipOcr extends BaseClient {
      * @param image - 二进制图像数据
      * @param options - 可选参数对象，key: value都为string类型
      * options - options列表:
-     *   language_type 识别语言类型，默认为CHN_ENG。可选值包括：<br/>- CHN_ENG：中英文混合；<br/>- ENG：英文；<br/>- POR：葡萄牙语；<br/>- FRE：法语；<br/>- GER：德语；<br/>- ITA：意大利语；<br/>- SPA：西班牙语；<br/>- RUS：俄语；<br/>- JAP：日语；<br/>- KOR：韩语；
-     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br/>- true：检测朝向；<br/>- false：不检测朝向。
+     *   language_type 识别语言类型，默认为CHN_ENG。可选值包括：<br>- CHN_ENG：中英文混合；<br>- ENG：英文；<br>- POR：葡萄牙语；<br>- FRE：法语；<br>- GER：德语；<br>- ITA：意大利语；<br>- SPA：西班牙语；<br>- RUS：俄语；<br>- JAP：日语；<br>- KOR：韩语；
+     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br>- true：检测朝向；<br>- false：不检测朝向。
      *   detect_language 是否检测语言，默认不检测。当前支持（中文、英语、日语、韩语）
      *   probability 是否返回识别结果中每一行的置信度
      * @return JSONObject
@@ -64,8 +64,8 @@ public class AipOcr extends BaseClient {
      * @param image - 本地图片路径
      * @param options - 可选参数对象，key: value都为string类型
      * options - options列表:
-     *   language_type 识别语言类型，默认为CHN_ENG。可选值包括：<br/>- CHN_ENG：中英文混合；<br/>- ENG：英文；<br/>- POR：葡萄牙语；<br/>- FRE：法语；<br/>- GER：德语；<br/>- ITA：意大利语；<br/>- SPA：西班牙语；<br/>- RUS：俄语；<br/>- JAP：日语；<br/>- KOR：韩语；
-     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br/>- true：检测朝向；<br/>- false：不检测朝向。
+     *   language_type 识别语言类型，默认为CHN_ENG。可选值包括：<br>- CHN_ENG：中英文混合；<br>- ENG：英文；<br>- POR：葡萄牙语；<br>- FRE：法语；<br>- GER：德语；<br>- ITA：意大利语；<br>- SPA：西班牙语；<br>- RUS：俄语；<br>- JAP：日语；<br>- KOR：韩语；
+     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br>- true：检测朝向；<br>- false：不检测朝向。
      *   detect_language 是否检测语言，默认不检测。当前支持（中文、英语、日语、韩语）
      *   probability 是否返回识别结果中每一行的置信度
      * @return JSONObject
@@ -87,8 +87,8 @@ public class AipOcr extends BaseClient {
      * @param url - 图片完整URL，URL长度不超过1024字节，URL对应的图片base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式，当image字段存在时url字段失效
      * @param options - 可选参数对象，key: value都为string类型
      * options - options列表:
-     *   language_type 识别语言类型，默认为CHN_ENG。可选值包括：<br/>- CHN_ENG：中英文混合；<br/>- ENG：英文；<br/>- POR：葡萄牙语；<br/>- FRE：法语；<br/>- GER：德语；<br/>- ITA：意大利语；<br/>- SPA：西班牙语；<br/>- RUS：俄语；<br/>- JAP：日语；<br/>- KOR：韩语；
-     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br/>- true：检测朝向；<br/>- false：不检测朝向。
+     *   language_type 识别语言类型，默认为CHN_ENG。可选值包括：<br>- CHN_ENG：中英文混合；<br>- ENG：英文；<br>- POR：葡萄牙语；<br>- FRE：法语；<br>- GER：德语；<br>- ITA：意大利语；<br>- SPA：西班牙语；<br>- RUS：俄语；<br>- JAP：日语；<br>- KOR：韩语；
+     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br>- true：检测朝向；<br>- false：不检测朝向。
      *   detect_language 是否检测语言，默认不检测。当前支持（中文、英语、日语、韩语）
      *   probability 是否返回识别结果中每一行的置信度
      * @return JSONObject
@@ -108,12 +108,12 @@ public class AipOcr extends BaseClient {
 
     /**
      * 通用文字识别（高精度版）接口   
-     * 用户向服务请求识别某张图中的所有文字，相对于通用文字识别该产品精度更高，但是没有免费额度，如果您需要使用该产品，您可以在产品页面点击合作咨询或加入文字识别的官网QQ群：631977213向管理员申请试用。
+     * 用户向服务请求识别某张图中的所有文字，相对于通用文字识别该产品精度更高，但是识别耗时会稍长。
      *
      * @param image - 二进制图像数据
      * @param options - 可选参数对象，key: value都为string类型
      * options - options列表:
-     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br/>- true：检测朝向；<br/>- false：不检测朝向。
+     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br>- true：检测朝向；<br>- false：不检测朝向。
      *   probability 是否返回识别结果中每一行的置信度
      * @return JSONObject
      */
@@ -133,12 +133,12 @@ public class AipOcr extends BaseClient {
 
     /**
      * 通用文字识别（高精度版）接口
-     * 用户向服务请求识别某张图中的所有文字，相对于通用文字识别该产品精度更高，但是没有免费额度，如果您需要使用该产品，您可以在产品页面点击合作咨询或加入文字识别的官网QQ群：631977213向管理员申请试用。
+     * 用户向服务请求识别某张图中的所有文字，相对于通用文字识别该产品精度更高，但是识别耗时会稍长。
      *
      * @param image - 本地图片路径
      * @param options - 可选参数对象，key: value都为string类型
      * options - options列表:
-     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br/>- true：检测朝向；<br/>- false：不检测朝向。
+     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br>- true：检测朝向；<br>- false：不检测朝向。
      *   probability 是否返回识别结果中每一行的置信度
      * @return JSONObject
      */
@@ -160,8 +160,8 @@ public class AipOcr extends BaseClient {
      * @param options - 可选参数对象，key: value都为string类型
      * options - options列表:
      *   recognize_granularity 是否定位单字符位置，big：不定位单字符位置，默认值；small：定位单字符位置
-     *   language_type 识别语言类型，默认为CHN_ENG。可选值包括：<br/>- CHN_ENG：中英文混合；<br/>- ENG：英文；<br/>- POR：葡萄牙语；<br/>- FRE：法语；<br/>- GER：德语；<br/>- ITA：意大利语；<br/>- SPA：西班牙语；<br/>- RUS：俄语；<br/>- JAP：日语；<br/>- KOR：韩语；
-     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br/>- true：检测朝向；<br/>- false：不检测朝向。
+     *   language_type 识别语言类型，默认为CHN_ENG。可选值包括：<br>- CHN_ENG：中英文混合；<br>- ENG：英文；<br>- POR：葡萄牙语；<br>- FRE：法语；<br>- GER：德语；<br>- ITA：意大利语；<br>- SPA：西班牙语；<br>- RUS：俄语；<br>- JAP：日语；<br>- KOR：韩语；
+     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br>- true：检测朝向；<br>- false：不检测朝向。
      *   detect_language 是否检测语言，默认不检测。当前支持（中文、英语、日语、韩语）
      *   vertexes_location 是否返回文字外接多边形顶点位置，不支持单字位置。默认为false
      *   probability 是否返回识别结果中每一行的置信度
@@ -189,8 +189,8 @@ public class AipOcr extends BaseClient {
      * @param options - 可选参数对象，key: value都为string类型
      * options - options列表:
      *   recognize_granularity 是否定位单字符位置，big：不定位单字符位置，默认值；small：定位单字符位置
-     *   language_type 识别语言类型，默认为CHN_ENG。可选值包括：<br/>- CHN_ENG：中英文混合；<br/>- ENG：英文；<br/>- POR：葡萄牙语；<br/>- FRE：法语；<br/>- GER：德语；<br/>- ITA：意大利语；<br/>- SPA：西班牙语；<br/>- RUS：俄语；<br/>- JAP：日语；<br/>- KOR：韩语；
-     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br/>- true：检测朝向；<br/>- false：不检测朝向。
+     *   language_type 识别语言类型，默认为CHN_ENG。可选值包括：<br>- CHN_ENG：中英文混合；<br>- ENG：英文；<br>- POR：葡萄牙语；<br>- FRE：法语；<br>- GER：德语；<br>- ITA：意大利语；<br>- SPA：西班牙语；<br>- RUS：俄语；<br>- JAP：日语；<br>- KOR：韩语；
+     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br>- true：检测朝向；<br>- false：不检测朝向。
      *   detect_language 是否检测语言，默认不检测。当前支持（中文、英语、日语、韩语）
      *   vertexes_location 是否返回文字外接多边形顶点位置，不支持单字位置。默认为false
      *   probability 是否返回识别结果中每一行的置信度
@@ -214,8 +214,8 @@ public class AipOcr extends BaseClient {
      * @param options - 可选参数对象，key: value都为string类型
      * options - options列表:
      *   recognize_granularity 是否定位单字符位置，big：不定位单字符位置，默认值；small：定位单字符位置
-     *   language_type 识别语言类型，默认为CHN_ENG。可选值包括：<br/>- CHN_ENG：中英文混合；<br/>- ENG：英文；<br/>- POR：葡萄牙语；<br/>- FRE：法语；<br/>- GER：德语；<br/>- ITA：意大利语；<br/>- SPA：西班牙语；<br/>- RUS：俄语；<br/>- JAP：日语；<br/>- KOR：韩语；
-     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br/>- true：检测朝向；<br/>- false：不检测朝向。
+     *   language_type 识别语言类型，默认为CHN_ENG。可选值包括：<br>- CHN_ENG：中英文混合；<br>- ENG：英文；<br>- POR：葡萄牙语；<br>- FRE：法语；<br>- GER：德语；<br>- ITA：意大利语；<br>- SPA：西班牙语；<br>- RUS：俄语；<br>- JAP：日语；<br>- KOR：韩语；
+     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br>- true：检测朝向；<br>- false：不检测朝向。
      *   detect_language 是否检测语言，默认不检测。当前支持（中文、英语、日语、韩语）
      *   vertexes_location 是否返回文字外接多边形顶点位置，不支持单字位置。默认为false
      *   probability 是否返回识别结果中每一行的置信度
@@ -236,13 +236,13 @@ public class AipOcr extends BaseClient {
 
     /**
      * 通用文字识别（含位置高精度版）接口   
-     * 用户向服务请求识别某张图中的所有文字，相对于通用文字识别（含位置信息版）该产品精度更高，但是没有免费额度，如果您需要使用该产品，您可以在产品页面点击合作咨询或加入文字识别的官网QQ群：631977213向管理员申请试用。
+     * 用户向服务请求识别某张图中的所有文字，并返回文字在图片中的坐标信息，相对于通用文字识别（含位置信息版）该产品精度更高，但是识别耗时会稍长。
      *
      * @param image - 二进制图像数据
      * @param options - 可选参数对象，key: value都为string类型
      * options - options列表:
      *   recognize_granularity 是否定位单字符位置，big：不定位单字符位置，默认值；small：定位单字符位置
-     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br/>- true：检测朝向；<br/>- false：不检测朝向。
+     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br>- true：检测朝向；<br>- false：不检测朝向。
      *   vertexes_location 是否返回文字外接多边形顶点位置，不支持单字位置。默认为false
      *   probability 是否返回识别结果中每一行的置信度
      * @return JSONObject
@@ -263,13 +263,13 @@ public class AipOcr extends BaseClient {
 
     /**
      * 通用文字识别（含位置高精度版）接口
-     * 用户向服务请求识别某张图中的所有文字，相对于通用文字识别（含位置信息版）该产品精度更高，但是没有免费额度，如果您需要使用该产品，您可以在产品页面点击合作咨询或加入文字识别的官网QQ群：631977213向管理员申请试用。
+     * 用户向服务请求识别某张图中的所有文字，并返回文字在图片中的坐标信息，相对于通用文字识别（含位置信息版）该产品精度更高，但是识别耗时会稍长。
      *
      * @param image - 本地图片路径
      * @param options - 可选参数对象，key: value都为string类型
      * options - options列表:
      *   recognize_granularity 是否定位单字符位置，big：不定位单字符位置，默认值；small：定位单字符位置
-     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br/>- true：检测朝向；<br/>- false：不检测朝向。
+     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br>- true：检测朝向；<br>- false：不检测朝向。
      *   vertexes_location 是否返回文字外接多边形顶点位置，不支持单字位置。默认为false
      *   probability 是否返回识别结果中每一行的置信度
      * @return JSONObject
@@ -291,8 +291,8 @@ public class AipOcr extends BaseClient {
      * @param image - 二进制图像数据
      * @param options - 可选参数对象，key: value都为string类型
      * options - options列表:
-     *   language_type 识别语言类型，默认为CHN_ENG。可选值包括：<br/>- CHN_ENG：中英文混合；<br/>- ENG：英文；<br/>- POR：葡萄牙语；<br/>- FRE：法语；<br/>- GER：德语；<br/>- ITA：意大利语；<br/>- SPA：西班牙语；<br/>- RUS：俄语；<br/>- JAP：日语；<br/>- KOR：韩语；
-     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br/>- true：检测朝向；<br/>- false：不检测朝向。
+     *   language_type 识别语言类型，默认为CHN_ENG。可选值包括：<br>- CHN_ENG：中英文混合；<br>- ENG：英文；<br>- POR：葡萄牙语；<br>- FRE：法语；<br>- GER：德语；<br>- ITA：意大利语；<br>- SPA：西班牙语；<br>- RUS：俄语；<br>- JAP：日语；<br>- KOR：韩语；
+     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br>- true：检测朝向；<br>- false：不检测朝向。
      *   detect_language 是否检测语言，默认不检测。当前支持（中文、英语、日语、韩语）
      *   probability 是否返回识别结果中每一行的置信度
      * @return JSONObject
@@ -318,8 +318,8 @@ public class AipOcr extends BaseClient {
      * @param image - 本地图片路径
      * @param options - 可选参数对象，key: value都为string类型
      * options - options列表:
-     *   language_type 识别语言类型，默认为CHN_ENG。可选值包括：<br/>- CHN_ENG：中英文混合；<br/>- ENG：英文；<br/>- POR：葡萄牙语；<br/>- FRE：法语；<br/>- GER：德语；<br/>- ITA：意大利语；<br/>- SPA：西班牙语；<br/>- RUS：俄语；<br/>- JAP：日语；<br/>- KOR：韩语；
-     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br/>- true：检测朝向；<br/>- false：不检测朝向。
+     *   language_type 识别语言类型，默认为CHN_ENG。可选值包括：<br>- CHN_ENG：中英文混合；<br>- ENG：英文；<br>- POR：葡萄牙语；<br>- FRE：法语；<br>- GER：德语；<br>- ITA：意大利语；<br>- SPA：西班牙语；<br>- RUS：俄语；<br>- JAP：日语；<br>- KOR：韩语；
+     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br>- true：检测朝向；<br>- false：不检测朝向。
      *   detect_language 是否检测语言，默认不检测。当前支持（中文、英语、日语、韩语）
      *   probability 是否返回识别结果中每一行的置信度
      * @return JSONObject
@@ -341,8 +341,8 @@ public class AipOcr extends BaseClient {
      * @param url - 图片完整URL，URL长度不超过1024字节，URL对应的图片base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式，当image字段存在时url字段失效
      * @param options - 可选参数对象，key: value都为string类型
      * options - options列表:
-     *   language_type 识别语言类型，默认为CHN_ENG。可选值包括：<br/>- CHN_ENG：中英文混合；<br/>- ENG：英文；<br/>- POR：葡萄牙语；<br/>- FRE：法语；<br/>- GER：德语；<br/>- ITA：意大利语；<br/>- SPA：西班牙语；<br/>- RUS：俄语；<br/>- JAP：日语；<br/>- KOR：韩语；
-     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br/>- true：检测朝向；<br/>- false：不检测朝向。
+     *   language_type 识别语言类型，默认为CHN_ENG。可选值包括：<br>- CHN_ENG：中英文混合；<br>- ENG：英文；<br>- POR：葡萄牙语；<br>- FRE：法语；<br>- GER：德语；<br>- ITA：意大利语；<br>- SPA：西班牙语；<br>- RUS：俄语；<br>- JAP：日语；<br>- KOR：韩语；
+     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br>- true：检测朝向；<br>- false：不检测朝向。
      *   detect_language 是否检测语言，默认不检测。当前支持（中文、英语、日语、韩语）
      *   probability 是否返回识别结果中每一行的置信度
      * @return JSONObject
@@ -367,7 +367,7 @@ public class AipOcr extends BaseClient {
      * @param image - 二进制图像数据
      * @param options - 可选参数对象，key: value都为string类型
      * options - options列表:
-     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br/>- true：检测朝向；<br/>- false：不检测朝向。
+     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br>- true：检测朝向；<br>- false：不检测朝向。
      *   detect_language 是否检测语言，默认不检测。当前支持（中文、英语、日语、韩语）
      * @return JSONObject
      */
@@ -392,7 +392,7 @@ public class AipOcr extends BaseClient {
      * @param image - 本地图片路径
      * @param options - 可选参数对象，key: value都为string类型
      * options - options列表:
-     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br/>- true：检测朝向；<br/>- false：不检测朝向。
+     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br>- true：检测朝向；<br>- false：不检测朝向。
      *   detect_language 是否检测语言，默认不检测。当前支持（中文、英语、日语、韩语）
      * @return JSONObject
      */
@@ -413,7 +413,7 @@ public class AipOcr extends BaseClient {
      * @param url - 图片完整URL，URL长度不超过1024字节，URL对应的图片base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式，当image字段存在时url字段失效
      * @param options - 可选参数对象，key: value都为string类型
      * options - options列表:
-     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br/>- true：检测朝向；<br/>- false：不检测朝向。
+     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br>- true：检测朝向；<br>- false：不检测朝向。
      *   detect_language 是否检测语言，默认不检测。当前支持（中文、英语、日语、韩语）
      * @return JSONObject
      */
@@ -438,7 +438,7 @@ public class AipOcr extends BaseClient {
      * @param idCardSide - front：身份证正面；back：身份证背面
      * @param options - 可选参数对象，key: value都为string类型
      * options - options列表:
-     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br/>- true：检测朝向；<br/>- false：不检测朝向。
+     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br>- true：检测朝向；<br>- false：不检测朝向。
      *   detect_risk 是否开启身份证风险类型(身份证复印件、临时身份证、身份证翻拍、修改过的身份证)功能，默认不开启，即：false。可选值:true-开启；false-不开启
      * @return JSONObject
      */
@@ -462,10 +462,11 @@ public class AipOcr extends BaseClient {
      * 身份证识别接口
      * 用户向服务请求识别身份证，身份证识别包括正面和背面。
      *
-     * @param image - 本地图片路径* @param idCardSide - front：身份证正面；back：身份证背面
+     * @param image - 本地图片路径
+     * @param idCardSide - front：身份证正面；back：身份证背面
      * @param options - 可选参数对象，key: value都为string类型
      * options - options列表:
-     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br/>- true：检测朝向；<br/>- false：不检测朝向。
+     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br>- true：检测朝向；<br>- false：不检测朝向。
      *   detect_risk 是否开启身份证风险类型(身份证复印件、临时身份证、身份证翻拍、修改过的身份证)功能，默认不开启，即：false。可选值:true-开启；false-不开启
      * @return JSONObject
      */
@@ -528,7 +529,7 @@ public class AipOcr extends BaseClient {
      * @param image - 二进制图像数据
      * @param options - 可选参数对象，key: value都为string类型
      * options - options列表:
-     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br/>- true：检测朝向；<br/>- false：不检测朝向。
+     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br>- true：检测朝向；<br>- false：不检测朝向。
      * @return JSONObject
      */
     public JSONObject drivingLicense(byte[] image, HashMap<String, String> options) {
@@ -552,7 +553,7 @@ public class AipOcr extends BaseClient {
      * @param image - 本地图片路径
      * @param options - 可选参数对象，key: value都为string类型
      * options - options列表:
-     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br/>- true：检测朝向；<br/>- false：不检测朝向。
+     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br>- true：检测朝向；<br>- false：不检测朝向。
      * @return JSONObject
      */
     public JSONObject drivingLicense(String image, HashMap<String, String> options) {
@@ -572,7 +573,7 @@ public class AipOcr extends BaseClient {
      * @param image - 二进制图像数据
      * @param options - 可选参数对象，key: value都为string类型
      * options - options列表:
-     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br/>- true：检测朝向；<br/>- false：不检测朝向。
+     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br>- true：检测朝向；<br>- false：不检测朝向。
      *   accuracy normal 使用快速服务，1200ms左右时延；缺省或其它值使用高精度服务，1600ms左右时延
      * @return JSONObject
      */
@@ -597,7 +598,7 @@ public class AipOcr extends BaseClient {
      * @param image - 本地图片路径
      * @param options - 可选参数对象，key: value都为string类型
      * options - options列表:
-     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br/>- true：检测朝向；<br/>- false：不检测朝向。
+     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br>- true：检测朝向；<br>- false：不检测朝向。
      *   accuracy normal 使用快速服务，1200ms左右时延；缺省或其它值使用高精度服务，1600ms左右时延
      * @return JSONObject
      */
@@ -707,7 +708,7 @@ public class AipOcr extends BaseClient {
      *   recognize_granularity 是否定位单字符位置，big：不定位单字符位置，默认值；small：定位单字符位置
      *   probability 是否返回识别结果中每一行的置信度
      *   accuracy normal 使用快速服务，1200ms左右时延；缺省或其它值使用高精度服务，1600ms左右时延
-     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br/>- true：检测朝向；<br/>- false：不检测朝向。
+     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br>- true：检测朝向；<br>- false：不检测朝向。
      * @return JSONObject
      */
     public JSONObject receipt(byte[] image, HashMap<String, String> options) {
@@ -734,7 +735,7 @@ public class AipOcr extends BaseClient {
      *   recognize_granularity 是否定位单字符位置，big：不定位单字符位置，默认值；small：定位单字符位置
      *   probability 是否返回识别结果中每一行的置信度
      *   accuracy normal 使用快速服务，1200ms左右时延；缺省或其它值使用高精度服务，1600ms左右时延
-     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br/>- true：检测朝向；<br/>- false：不检测朝向。
+     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br>- true：检测朝向；<br>- false：不检测朝向。
      * @return JSONObject
      */
     public JSONObject receipt(String image, HashMap<String, String> options) {

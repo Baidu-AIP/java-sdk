@@ -169,7 +169,8 @@ public class AipFace extends BaseClient {
      * 人脸识别接口
      *
      *
-     * @param groupId - 用户组id，标识一组用户（由数字、字母、下划线组成），长度限制128B。如果需要将一个uid注册到多个group下，group\_id需要用多个逗号分隔，每个group_id长度限制为48个英文字符。**注：group无需单独创建，注册用户时则会自动创建group。**<br>**产品建议**：根据您的业务需求，可以将需要注册的用户，按照业务划分，分配到不同的group下，例如按照会员手机尾号作为groupid，用于刷脸支付、会员计费消费等，这样可以尽可能控制每个group下的用户数与人脸数，提升检索的准确率* @param image - 本地图片路径
+     * @param groupId - 用户组id，标识一组用户（由数字、字母、下划线组成），长度限制128B。如果需要将一个uid注册到多个group下，group\_id需要用多个逗号分隔，每个group_id长度限制为48个英文字符。**注：group无需单独创建，注册用户时则会自动创建group。**<br>**产品建议**：根据您的业务需求，可以将需要注册的用户，按照业务划分，分配到不同的group下，例如按照会员手机尾号作为groupid，用于刷脸支付、会员计费消费等，这样可以尽可能控制每个group下的用户数与人脸数，提升检索的准确率
+     * @param image - 本地图片路径
      * @param options - 可选参数对象，key: value都为string类型
      * options - options列表:
      *   ext_fields 特殊返回信息，多个用逗号分隔，取值固定: 目前支持faceliveness(活体检测)。**注：需要用于判断活体的图片，图片中的人脸像素面积需要不小于100px\*100px，人脸长宽与图片长宽比例，不小于1/3**
@@ -221,7 +222,9 @@ public class AipFace extends BaseClient {
      * 人脸认证接口
      *
      *
-     * @param uid - 用户id（由数字、字母、下划线组成），长度限制128B* @param groupId - 用户组id，标识一组用户（由数字、字母、下划线组成），长度限制128B。如果需要将一个uid注册到多个group下，group\_id需要用多个逗号分隔，每个group_id长度限制为48个英文字符。**注：group无需单独创建，注册用户时则会自动创建group。**<br>**产品建议**：根据您的业务需求，可以将需要注册的用户，按照业务划分，分配到不同的group下，例如按照会员手机尾号作为groupid，用于刷脸支付、会员计费消费等，这样可以尽可能控制每个group下的用户数与人脸数，提升检索的准确率* @param image - 本地图片路径
+     * @param uid - 用户id（由数字、字母、下划线组成），长度限制128B
+     * @param groupId - 用户组id，标识一组用户（由数字、字母、下划线组成），长度限制128B。如果需要将一个uid注册到多个group下，group\_id需要用多个逗号分隔，每个group_id长度限制为48个英文字符。**注：group无需单独创建，注册用户时则会自动创建group。**<br>**产品建议**：根据您的业务需求，可以将需要注册的用户，按照业务划分，分配到不同的group下，例如按照会员手机尾号作为groupid，用于刷脸支付、会员计费消费等，这样可以尽可能控制每个group下的用户数与人脸数，提升检索的准确率
+     * @param image - 本地图片路径
      * @param options - 可选参数对象，key: value都为string类型
      * options - options列表:
      *   top_num 返回用户top数，默认为1
@@ -244,7 +247,7 @@ public class AipFace extends BaseClient {
      *
      * @param uid - 用户id（由数字、字母、下划线组成），长度限制128B
      * @param userInfo - 用户资料，长度限制256B
-     * @param groupId - 用户组id，标识一组用户（由数字、字母、下划线组成），长度限制128B。如果需要将一个uid注册到多个group下，group\_id需要用多个逗号分隔，每个group_id长度限制为48个英文字符。**注：group无需单独创建，注册用户时则会自动创建group。**<br/>**产品建议**：根据您的业务需求，可以将需要注册的用户，按照业务划分，分配到不同的group下，例如按照会员手机尾号作为groupid，用于刷脸支付、会员计费消费等，这样可以尽可能控制每个group下的用户数与人脸数，提升检索的准确率
+     * @param groupId - 用户组id，标识一组用户（由数字、字母、下划线组成），长度限制128B。如果需要将一个uid注册到多个group下，group\_id需要用多个逗号分隔，每个group_id长度限制为48个英文字符。**注：group无需单独创建，注册用户时则会自动创建group。**<br>**产品建议**：根据您的业务需求，可以将需要注册的用户，按照业务划分，分配到不同的group下，例如按照会员手机尾号作为groupid，用于刷脸支付、会员计费消费等，这样可以尽可能控制每个group下的用户数与人脸数，提升检索的准确率
      * @param image - 二进制图像数据
      * @param options - 可选参数对象，key: value都为string类型
      * options - options列表:
@@ -275,7 +278,10 @@ public class AipFace extends BaseClient {
      * 人脸注册接口
      *
      *
-     * @param uid - 用户id（由数字、字母、下划线组成），长度限制128B* @param userInfo - 用户资料，长度限制256B* @param groupId - 用户组id，标识一组用户（由数字、字母、下划线组成），长度限制128B。如果需要将一个uid注册到多个group下，group\_id需要用多个逗号分隔，每个group_id长度限制为48个英文字符。**注：group无需单独创建，注册用户时则会自动创建group。**<br/>**产品建议**：根据您的业务需求，可以将需要注册的用户，按照业务划分，分配到不同的group下，例如按照会员手机尾号作为groupid，用于刷脸支付、会员计费消费等，这样可以尽可能控制每个group下的用户数与人脸数，提升检索的准确率* @param image - 本地图片路径
+     * @param uid - 用户id（由数字、字母、下划线组成），长度限制128B
+     * @param userInfo - 用户资料，长度限制256B
+     * @param groupId - 用户组id，标识一组用户（由数字、字母、下划线组成），长度限制128B。如果需要将一个uid注册到多个group下，group\_id需要用多个逗号分隔，每个group_id长度限制为48个英文字符。**注：group无需单独创建，注册用户时则会自动创建group。**<br>**产品建议**：根据您的业务需求，可以将需要注册的用户，按照业务划分，分配到不同的group下，例如按照会员手机尾号作为groupid，用于刷脸支付、会员计费消费等，这样可以尽可能控制每个group下的用户数与人脸数，提升检索的准确率
+     * @param image - 本地图片路径
      * @param options - 可选参数对象，key: value都为string类型
      * options - options列表:
      *   action_type 参数包含append、replace。**如果为“replace”，则每次注册时进行替换replace（新增或更新）操作，默认为append操作**。例如：uid在库中已经存在时，对此uid重复注册时，新注册的图片默认会**追加**到该uid下，如果手动选择`action_type:replace`，则会用新图替换库中该uid下所有图片。
@@ -328,7 +334,10 @@ public class AipFace extends BaseClient {
      * 人脸更新接口
      *
      *
-     * @param uid - 用户id（由数字、字母、下划线组成），长度限制128B* @param userInfo - 用户资料，长度限制256B* @param groupId - 更新指定groupid下uid对应的信息* @param image - 本地图片路径
+     * @param uid - 用户id（由数字、字母、下划线组成），长度限制128B
+     * @param userInfo - 用户资料，长度限制256B
+     * @param groupId - 更新指定groupid下uid对应的信息
+     * @param image - 本地图片路径
      * @param options - 可选参数对象，key: value都为string类型
      * options - options列表:
      *   action_type 目前仅支持replace，uid不存在时，不报错，会自动变为注册操作；未选择该参数时，如果uid不存在会提示错误
