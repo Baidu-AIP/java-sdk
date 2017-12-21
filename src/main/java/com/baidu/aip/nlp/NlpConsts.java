@@ -10,19 +10,27 @@
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
+
 package com.baidu.aip.nlp;
 
-class NlpConsts {
+public class NlpConsts {
 
-    static final String NLP_WORDSEG_URL = "https://aip.baidubce.com/rpc/2.0/nlp/v1/wordseg";
-    static final String NLP_WORDPOS_URL = "https://aip.baidubce.com/rpc/2.0/nlp/v1/wordpos";
-    static final String NLP_WORDEMBEDDING_URL = "https://aip.baidubce.com/rpc/2.0/nlp/v2/word_emb_vec";
-    static final String NLP_WORD_SIM_EMBEDDING_URL = "https://aip.baidubce.com/rpc/2.0/nlp/v2/word_emb_sim";
-    static final String NLP_DNNLM_URL = "https://aip.baidubce.com/rpc/2.0/nlp/v2/dnnlm_cn";
-    static final String NLP_SIMNET_URL = "https://aip.baidubce.com/rpc/2.0/nlp/v2/simnet";
-    static final String NLP_COMMENT_TAG_URL = "https://aip.baidubce.com/rpc/2.0/nlp/v2/comment_tag";
-    static final String NLP_LEXER_URL = "https://aip.baidubce.com/rpc/2.0/nlp/v1/lexer";
-    static final String NLP_SENTIMENT_URL = "https://aip.baidubce.com/rpc/2.0/nlp/v1/sentiment_classify";
-    static final String NLP_DEPPARSER_URL = "https://aip.baidubce.com/rpc/2.0/nlp/v1/depparser";
+    static final String LEXER = "https://aip.baidubce.com/rpc/2.0/nlp/v1/lexer";
+
+    static final String LEXER_CUSTOM = "https://aip.baidubce.com/rpc/2.0/nlp/v1/lexer_custom";
+
+    static final String DEP_PARSER = "https://aip.baidubce.com/rpc/2.0/nlp/v1/depparser";
+
+    static final String WORD_EMBEDDING = "https://aip.baidubce.com/rpc/2.0/nlp/v2/word_emb_vec";
+
+    static final String DNNLM_CN = "https://aip.baidubce.com/rpc/2.0/nlp/v2/dnnlm_cn";
+
+    static final String WORD_SIM_EMBEDDING = "https://aip.baidubce.com/rpc/2.0/nlp/v2/word_emb_sim";
+
+    static final String SIMNET = "https://aip.baidubce.com/rpc/2.0/nlp/v2/simnet";
+
+    static final String COMMENT_TAG = "https://aip.baidubce.com/rpc/2.0/nlp/v2/comment_tag";
+
+    static final String SENTIMENT_CLASSIFY = "https://aip.baidubce.com/rpc/2.0/nlp/v1/sentiment_classify";
 
 }

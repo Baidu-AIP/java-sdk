@@ -10,6 +10,7 @@
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
+
 package com.baidu.aip.face;
 
 import com.baidu.aip.client.BaseClient;
@@ -20,26 +21,55 @@ import com.baidu.aip.util.Util;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.ArrayList;
 
 public class AipFace extends BaseClient {
 
-    public AipFace(String appId, String aipKey, String aipToken) {
-        super(appId, aipKey, aipToken);
+    public AipFace(String appId, String apiKey, String secretKey) {
+        super(appId, apiKey, secretKey);
     }
 
     /**
+     * 人脸检测接口   
      *
-     * @param imgPath 图片文件路径
-     * @param options 识别接口可选参数
-     * @return Json result
+     *
+     * @param image - 二进制图像数据
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   max_face_num 最多处理人脸数目，默认值1
+     *   face_fields 包括age,beauty,expression,faceshape,gender,glasses,landmark,race,qualities信息，逗号分隔，默认只返回人脸框、概率和旋转角度
+     * @return JSONObject
      */
-    public JSONObject detect(String imgPath, HashMap<String, String> options) {
+    public JSONObject detect(byte[] image, HashMap<String, String> options) {
+        AipRequest request = new AipRequest();
+        preOperation(request);
+        
+        String base64Content = Base64Util.encode(image);
+        request.addBody("image", base64Content);
+        if (options != null) {
+            request.addBody(options);
+        }
+        request.setUri(FaceConsts.DETECT);
+        postOperation(request);
+        return requestServer(request);
+    }
+
+    /**
+     * 人脸检测接口
+     *
+     *
+     * @param image - 本地图片路径
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   max_face_num 最多处理人脸数目，默认值1
+     *   face_fields 包括age,beauty,expression,faceshape,gender,glasses,landmark,race,qualities信息，逗号分隔，默认只返回人脸框、概率和旋转角度
+     * @return JSONObject
+     */
+    public JSONObject detect(String image, HashMap<String, String> options) {
         try {
-            byte[] imgData = Util.readFileByBytes(imgPath);
+            byte[] imgData = Util.readFileByBytes(image);
             return detect(imgData, options);
         } catch (IOException e) {
             e.printStackTrace();
@@ -48,45 +78,58 @@ public class AipFace extends BaseClient {
     }
 
     /**
+     * 人脸比对接口   
      *
-     * @param imgData 图片文件内容
-     * @param options 识别接口可选参数
-     * @return Json result
+     *
+     * @param images - 二进制图像数据
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   ext_fields 返回质量信息，取值固定:目前支持qualities(质量检测)。(对所有图片都会做改处理)
+     *   image_liveness 返回的活体信息，“faceliveness,faceliveness” 表示对比对的两张图片都做活体检测；“,faceliveness” 表示对第一张图片不做活体检测、第二张图做活体检测；“faceliveness,” 表示对第一张图片做活体检测、第二张图不做活体检测；<br>**注：需要用于判断活体的图片，图片中的人脸像素面积需要不小于100px\*100px，人脸长宽与图片长宽比例，不小于1/3**
+     *   types 请求对比的两张图片的类型，示例：“7,13”<br>**12**表示带水印证件照：一般为带水印的小图，如公安网小图<br>**7**表示生活照：通常为手机、相机拍摄的人像图片、或从网络获取的人像图片等<br>**13**表示证件照片：如拍摄的身份证、工卡、护照、学生证等证件图片，**注**：需要确保人脸部分不可太小，通常为100px\*100px
+     * @return JSONObject
      */
-    public JSONObject detect(byte[] imgData, HashMap<String, String> options) {
+    public JSONObject match(byte[][] images, HashMap<String, String> options) {
         AipRequest request = new AipRequest();
         preOperation(request);
-        // add API params
-        String base64Content = Base64Util.encode(imgData);
-        if (base64Content.length() > FaceConsts.FACE_DETECT_MAX_IMAGE_SIZE) {
-            return AipError.IMAGE_SIZE_ERROR.toJsonResult();
+        
+        ArrayList<String> buffer = new ArrayList<String>();
+        for (byte[] data : images) {
+            String base64Str = Base64Util.encode(data);
+            buffer.add(base64Str);
         }
-        request.addBody("image", base64Content);
-        request.addBody(options);
-        request.setUri(FaceConsts.FACE_DETECT_URL);
+        String imgDataAll = Util.mkString(buffer.iterator(), ',');
+        request.addBody("images", imgDataAll);
+
+        if (options != null) {
+            request.addBody(options);
+        }
+        request.setUri(FaceConsts.MATCH);
         postOperation(request);
-
         return requestServer(request);
-
     }
 
     /**
-     * 比较多张人脸图片的相似度
-     * @param imgPaths 图片路径集合
-     * @param options 可选参数：
-     *                ext_fields: 返回质量信息，取值固定: 如 qualities(质量检测)
-     *                image_liveness: 返回的活体信息，逗号分割，
-     *                      ",faceliveness"表示对第一张图片不做活体检测、第二张图做活体检测。
-     * @return 服务器返回数据
+     * 人脸比对接口
+     *
+     *
+     * @param images - 本地图片路径
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   ext_fields 返回质量信息，取值固定:目前支持qualities(质量检测)。(对所有图片都会做改处理)
+     *   image_liveness 返回的活体信息，“faceliveness,faceliveness” 表示对比对的两张图片都做活体检测；“,faceliveness” 表示对第一张图片不做活体检测、第二张图做活体检测；“faceliveness,” 表示对第一张图片做活体检测、第二张图不做活体检测；<br>**注：需要用于判断活体的图片，图片中的人脸像素面积需要不小于100px\*100px，人脸长宽与图片长宽比例，不小于1/3**
+     *   types 请求对比的两张图片的类型，示例：“7,13”<br>**12**表示带水印证件照：一般为带水印的小图，如公安网小图<br>**7**表示生活照：通常为手机、相机拍摄的人像图片、或从网络获取的人像图片等<br>**13**表示证件照片：如拍摄的身份证、工卡、护照、学生证等证件图片，**注**：需要确保人脸部分不可太小，通常为100px\*100px
+     * @return JSONObject
      */
-    public JSONObject match(List<String> imgPaths, HashMap<String, String> options) {
+    public JSONObject match(List<String> images, HashMap<String, String> options) {
         try {
-            byte[][] imgData = new byte[imgPaths.size()][];
+            byte[][] imgData = new byte[images.size()][];
             int idx = 0;
-            for (String path : imgPaths) {
+            for (String path : images) {
                 imgData[idx] = Util.readFileByBytes(path);
                 ++idx;
             }
+            
             return match(imgData, options);
         } catch (IOException e) {
             e.printStackTrace();
@@ -95,285 +138,47 @@ public class AipFace extends BaseClient {
     }
 
     /**
-     * 比较多张人脸图片的相似度
-     * @param imgData 图片二进制数据集合
-     * @param options 可选参数：
-     *                ext_fields: 返回质量信息，取值固定: 如 qualities(质量检测)
-     *                image_liveness: 返回的活体信息，逗号分割，
-     *                      ",faceliveness"表示对第一张图片不做活体检测、第二张图做活体检测。
-     * @return 服务器返回数据
-     */
-    public JSONObject match(byte[][] imgData, HashMap<String, String> options) {
-        AipRequest request = new AipRequest();
-        ArrayList<String> buffer = new ArrayList<String>();
-        for (byte[] data : imgData) {
-            String base64Str = Base64Util.encode(data);
-            buffer.add(base64Str);
-        }
-        String imgDataAll = Util.mkString(buffer.iterator(), ',');
-        if (imgDataAll.length() > FaceConsts.FACE_MATCH_MAX_IMAGE_SIZE) {
-            return AipError.IMAGE_SIZE_ERROR.toJsonResult();
-        }
-        preOperation(request);
-        request.addBody("images", imgDataAll);
-        if (options != null) {
-            for (Map.Entry<String, String> entry : options.entrySet()) {
-                request.addBody(entry.getKey(), entry.getValue());
-            }
-        }
-        request.setUri(FaceConsts.FACE_MATCH_URL);
-        postOperation(request);
-
-        return requestServer(request);
-    }
-
-    /**
+     * 人脸识别接口   
      *
-     * @param uid 需要增加的用户id，组成为字母/数字/下划线，长度不超过128B
-     * @param userInfo 用户个人信息，长度不超过256B
-     * @param groupId 用户所在组id, 组成为字母/数字/下划线，长度不超过128B
-     * @param imgPath 用户图像本地路径
-     * @param options 可选参数
-     * @return json对象，包含本次请求的logid
-     */
-    public JSONObject addUser(String uid, String userInfo, List<String> groupId,
-                              String imgPath, HashMap<String, String> options) {
-        try {
-            byte[] imgData = Util.readFileByBytes(imgPath);
-            return addUser(uid, userInfo, groupId, imgData, options);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return AipError.IMAGE_READ_ERROR.toJsonResult();
-        }
-    }
-
-    /**
      *
-     * @param uid 需要增加的用户id，组成为字母/数字/下划线，长度不超过128B
-     * @param userInfo 用户个人信息，长度不超过256B
-     * @param groupId 用户所在组id, 组成为字母/数字/下划线，长度不超过128B
-     * @param imgData 用户图像二进制数据
-     * @param options 可选参数
-     * @return json对象，包含本次请求的logid
+     * @param groupId - 用户组id，标识一组用户（由数字、字母、下划线组成），长度限制128B。如果需要将一个uid注册到多个group下，group\_id需要用多个逗号分隔，每个group_id长度限制为48个英文字符。**注：group无需单独创建，注册用户时则会自动创建group。**<br>**产品建议**：根据您的业务需求，可以将需要注册的用户，按照业务划分，分配到不同的group下，例如按照会员手机尾号作为groupid，用于刷脸支付、会员计费消费等，这样可以尽可能控制每个group下的用户数与人脸数，提升检索的准确率
+     * @param image - 二进制图像数据
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   ext_fields 特殊返回信息，多个用逗号分隔，取值固定: 目前支持faceliveness(活体检测)。**注：需要用于判断活体的图片，图片中的人脸像素面积需要不小于100px\*100px，人脸长宽与图片长宽比例，不小于1/3**
+     *   user_top_num 返回用户top数，默认为1，最多返回5个
+     * @return JSONObject
      */
-    public JSONObject addUser(String uid, String userInfo, List<String> groupId,
-                              byte[] imgData,  HashMap<String, String> options) {
-        AipError checkGid = checkGroupId(groupId);
-        if (!checkGid.equals(AipError.SUCCESS)) {
-            return checkGid.toJsonResult();
-        }
-
+    public JSONObject identifyUser(String groupId, byte[] image, HashMap<String, String> options) {
         AipRequest request = new AipRequest();
-        String base64Str = Base64Util.encode(imgData);
-
         preOperation(request);
-        request.addBody("uid", uid);
-        request.addBody("user_info", userInfo);
-        request.addBody("group_id", Util.mkString(groupId.iterator(), ','));
-        request.addBody("image", base64Str);
-        if (options != null) {
-            for (Map.Entry<String, String> entry : options.entrySet()) {
-                request.addBody(entry.getKey(), entry.getValue());
-            }
-        }
-        request.setUri(FaceConsts.FACE_SEARCH_FACESET_USER_ADD_URL);
-        // check params
-        AipError checkRet = checkSearchParams(request.getBody());
-        if (!checkRet.equals(AipError.SUCCESS)) {
-            return checkRet.toJsonResult();
-        }
-        postOperation(request);
-
-        return requestServer(request);
-    }
-
-    /**
-     * 从人脸库更新用户图像
-     * @param uid uid
-     * @param userInfo 用户信息
-     * @param groupId group_id
-     * @param imgPath 图片路径
-     * @param options 可选参数，包括:
-     *                "user_info": 如果有的话则替换该字段，没有则忽略
-     *                "action_type": 如果为replace时，则uid不存在时，不报错，会自动注册。
-     *                               不存在该参数时，如果uid不存在会提示错误
-     * @return 服务器返回值
-     */
-    public JSONObject updateUser(String uid, String userInfo, String groupId,
-                                 String imgPath, HashMap<String, String> options) {
-        try {
-            byte[] imgData = Util.readFileByBytes(imgPath);
-            return updateUser(uid, userInfo, groupId, imgData, options);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return AipError.IMAGE_READ_ERROR.toJsonResult();
-        }
-    }
-
-    /**
-     * 从人脸库更新用户图像
-     * @param uid uid
-     * @param userInfo 用户信息
-     * @param groupId group_id
-     * @param imgData 图片二进制数据
-     * @param options 可选参数，包括:
-     *                "user_info": 如果有的话则替换该字段，没有则忽略
-     *                "action_type": 如果为replace时，则uid不存在时，不报错，会自动注册。
-     *                               不存在该参数时，如果uid不存在会提示错误
-     * @return 服务器返回值
-     */
-    public JSONObject updateUser(String uid, String userInfo, String groupId,
-                                 byte[] imgData, HashMap<String, String> options) {
-        AipError ret = checkSingleGroupId(groupId);
-        if (ret != AipError.SUCCESS) {
-            return ret.toJsonResult();
-        }
-
-        AipRequest request = new AipRequest();
-
-        String base64Str = Base64Util.encode(imgData);
-
-        preOperation(request);
-        request.addBody("uid", uid);
-        request.addBody("image", base64Str);
+        
         request.addBody("group_id", groupId);
-        request.addBody("user_info", userInfo);
+        
+        String base64Content = Base64Util.encode(image);
+        request.addBody("image", base64Content);
         if (options != null) {
-            for (Map.Entry<String, String> entry : options.entrySet()) {
-                request.addBody(entry.getKey(), entry.getValue());
-            }
+            request.addBody(options);
         }
-
-        request.setUri(FaceConsts.FACE_SEARCH_FACESET_USER_UPDATE_URL);
-        // check params
-        AipError checkRet = checkSearchParams(request.getBody());
-        if (!checkRet.equals(AipError.SUCCESS)) {
-            return checkRet.toJsonResult();
-        }
+        request.setUri(FaceConsts.IDENTIFY);
         postOperation(request);
-
-        return requestServer(request);
-
-    }
-
-    /**
-     * 从库中整体删除该uid数据
-     * @param uid uid
-     * @return 服务器返回数据
-     */
-    public JSONObject deleteUser(String uid) {
-        AipRequest request = new AipRequest();
-        preOperation(request);
-        request.addBody("uid", uid);
-        request.setUri(FaceConsts.FACE_SEARCH_FACESET_USER_DELETE_URL);
-        // check params
-        AipError checkRet = checkSearchParams(request.getBody());
-        if (!checkRet.equals(AipError.SUCCESS)) {
-            return checkRet.toJsonResult();
-        }
-        postOperation(request);
-
         return requestServer(request);
     }
 
     /**
-     * 从库中删除指定groupId下对应uid的数据
-     * @param uid uid
-     * @param groupId groupId
-     * @return 服务器返回数据
+     * 人脸识别接口
+     *
+     *
+     * @param groupId - 用户组id，标识一组用户（由数字、字母、下划线组成），长度限制128B。如果需要将一个uid注册到多个group下，group\_id需要用多个逗号分隔，每个group_id长度限制为48个英文字符。**注：group无需单独创建，注册用户时则会自动创建group。**<br>**产品建议**：根据您的业务需求，可以将需要注册的用户，按照业务划分，分配到不同的group下，例如按照会员手机尾号作为groupid，用于刷脸支付、会员计费消费等，这样可以尽可能控制每个group下的用户数与人脸数，提升检索的准确率* @param image - 本地图片路径
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   ext_fields 特殊返回信息，多个用逗号分隔，取值固定: 目前支持faceliveness(活体检测)。**注：需要用于判断活体的图片，图片中的人脸像素面积需要不小于100px\*100px，人脸长宽与图片长宽比例，不小于1/3**
+     *   user_top_num 返回用户top数，默认为1，最多返回5个
+     * @return JSONObject
      */
-    public JSONObject deleteUser(String uid, List<String> groupId) {
-        AipError ret = checkGroupId(groupId);
-        if (ret != AipError.SUCCESS) {
-            return ret.toJsonResult();
-        }
-        AipRequest request = new AipRequest();
-        preOperation(request);
-        request.addBody("uid", uid);
-        request.addBody("group_id", Util.mkString(groupId.iterator(), ','));
-        request.setUri(FaceConsts.FACE_SEARCH_FACESET_USER_DELETE_URL);
-        // check params
-        AipError checkRet = checkSearchParams(request.getBody());
-        if (!checkRet.equals(AipError.SUCCESS)) {
-            return checkRet.toJsonResult();
-        }
-        postOperation(request);
-
-        return requestServer(request);
-    }
-
-    /**
-     * 从指定用户组中认证用户
-     * @param uid uid
-     * @param groupId 需要查找的用户组列表
-     * @param imgPath 图片路径
-     * @param options 可选参数，包括：
-     *                top_num: 返回匹配得分top数，默认为1
-     *                ext_fields: 特殊返回信息，多个用逗号分隔,取值固定: 如 faceliveness(活体检测)
-     * @return 服务器返回数据
-     */
-    public JSONObject verifyUser(String uid, List<String> groupId,
-                                 String imgPath, HashMap<String, Object> options) {
+    public JSONObject identifyUser(String groupId, String image, HashMap<String, String> options) {
         try {
-            byte[] imgData = Util.readFileByBytes(imgPath);
-            return verifyUser(uid, groupId, imgData, options);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return AipError.IMAGE_READ_ERROR.toJsonResult();
-        }
-    }
-
-    /**
-     * 从指定用户组中认证用户
-     * @param uid uid
-     * @param groupId 需要查找的用户组列表
-     * @param imgData 图片二进制数据
-     * @param options 可选参数，包括：
-     *                top_num: 返回匹配得分top数，默认为1
-     *                ext_fields: 特殊返回信息，多个用逗号分隔,取值固定: 如 faceliveness(活体检测)
-     * @return 服务器返回数据
-     */
-    public JSONObject verifyUser(String uid, List<String> groupId,
-                                 byte[] imgData, HashMap<String, Object> options) {
-        AipError checkGid = checkGroupId(groupId);
-        if (!checkGid.equals(AipError.SUCCESS)) {
-            return checkGid.toJsonResult();
-        }
-        AipRequest request = new AipRequest();
-        String base64Str = Base64Util.encode(imgData);
-
-        preOperation(request);
-        request.addBody("uid", uid);
-        request.addBody("image", base64Str);
-        request.addBody("group_id", Util.mkString(groupId.iterator(), ','));
-        if (options != null) {
-            for (Map.Entry<String, Object> entry : options.entrySet()) {
-                request.addBody(entry.getKey(), entry.getValue());
-            }
-        }
-        request.setUri(FaceConsts.FACE_SEARCH_VERIFY_URL);
-        // check params
-        AipError checkRet = checkSearchParams(request.getBody());
-        if (!checkRet.equals(AipError.SUCCESS)) {
-            return checkRet.toJsonResult();
-        }
-        postOperation(request);
-
-        return requestServer(request);
-    }
-
-    /**
-     * 人脸识别（1：N）接口
-     * @param groupId 待查找的groupId列表
-     * @param imgPath 图片路径
-     * @param options 可选参数：
-     *                user_top_num: 返回识别结果top数，默认为1 （最多返回5个）
-     *                ext_fields: 特殊返回信息，多个用逗号分隔,取值固定: 如 faceliveness(活体检测)
-     * @return 服务器返回数据
-     */
-    public JSONObject identifyUser(List<String> groupId, String imgPath, HashMap<String, Object> options) {
-        try {
-            byte[] imgData = Util.readFileByBytes(imgPath);
+            byte[] imgData = Util.readFileByBytes(image);
             return identifyUser(groupId, imgData, options);
         } catch (IOException e) {
             e.printStackTrace();
@@ -382,193 +187,304 @@ public class AipFace extends BaseClient {
     }
 
     /**
-     * 人脸识别（1：N）接口
-     * @param groupId 待查找的groupId列表
-     * @param imgData 图片二进制数据
-     * @param options 可选参数：
-     *                user_top_num: 返回识别结果top数，默认为1 （最多返回5个）
-     *                ext_fields: 特殊返回信息，多个用逗号分隔,取值固定: 如 faceliveness(活体检测)
-     * @return 服务器返回数据
+     * 人脸认证接口   
+     *
+     *
+     * @param uid - 用户id（由数字、字母、下划线组成），长度限制128B
+     * @param groupId - 用户组id，标识一组用户（由数字、字母、下划线组成），长度限制128B。如果需要将一个uid注册到多个group下，group\_id需要用多个逗号分隔，每个group_id长度限制为48个英文字符。**注：group无需单独创建，注册用户时则会自动创建group。**<br>**产品建议**：根据您的业务需求，可以将需要注册的用户，按照业务划分，分配到不同的group下，例如按照会员手机尾号作为groupid，用于刷脸支付、会员计费消费等，这样可以尽可能控制每个group下的用户数与人脸数，提升检索的准确率
+     * @param image - 二进制图像数据
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   top_num 返回用户top数，默认为1
+     *   ext_fields 特殊返回信息，多个用逗号分隔，取值固定: 目前支持faceliveness(活体检测)。**注：需要用于判断活体的图片，图片中的人脸像素面积需要不小于100px\*100px，人脸长宽与图片长宽比例，不小于1/3**
+     * @return JSONObject
      */
-    public JSONObject identifyUser(List<String> groupId, byte[] imgData, HashMap<String, Object> options) {
-        AipError checkGid = checkGroupId(groupId);
-        if (!checkGid.equals(AipError.SUCCESS)) {
-            return checkGid.toJsonResult();
-        }
-
-        AipRequest request = new AipRequest();
-        String base64Str = Base64Util.encode(imgData);
-
-        preOperation(request);
-        request.addBody("group_id", Util.mkString(groupId.iterator(), ','));
-        request.addBody("image", base64Str);
-        if (options != null) {
-            for (Map.Entry<String, Object> entry : options.entrySet()) {
-                request.addBody(entry.getKey(), entry.getValue());
-            }
-        }
-        request.setUri(FaceConsts.FACE_SEARCH_IDENTIFY_URL);
-        // check params
-        AipError checkRet = checkSearchParams(request.getBody());
-        if (!checkRet.equals(AipError.SUCCESS)) {
-            return checkRet.toJsonResult();
-        }
-        postOperation(request);
-
-        return requestServer(request);
-    }
-
-    /**
-     * 用户信息查询接口
-     * @param uid uid
-     * @return 用户信息
-     */
-    public JSONObject getUser(String uid) {
+    public JSONObject verifyUser(String uid, String groupId, byte[] image, HashMap<String, String> options) {
         AipRequest request = new AipRequest();
         preOperation(request);
+        
         request.addBody("uid", uid);
-        request.setUri(FaceConsts.FACE_SEARCH_FACESET_USER_GET_URL);
-        // check params
-        AipError checkRet = checkSearchParams(request.getBody());
-        if (!checkRet.equals(AipError.SUCCESS)) {
-            return checkRet.toJsonResult();
-        }
-        postOperation(request);
-
-        return requestServer(request);
-    }
-
-    /**
-     * 用户信息查询接口
-     * @param uid uid
-     * @param groupId 组id
-     * @return 用户信息
-     */
-    public JSONObject getUser(String uid, List<String> groupId) {
-        AipError ret = checkGroupId(groupId);
-        if (ret != AipError.SUCCESS) {
-            return ret.toJsonResult();
-        }
-
-        AipRequest request = new AipRequest();
-        preOperation(request);
-        request.addBody("uid", uid);
-        request.addBody("group_id", Util.mkString(groupId.iterator(), ','));
-        request.setUri(FaceConsts.FACE_SEARCH_FACESET_USER_GET_URL);
-        // check params
-        AipError checkRet = checkSearchParams(request.getBody());
-        if (!checkRet.equals(AipError.SUCCESS)) {
-            return checkRet.toJsonResult();
-        }
-        postOperation(request);
-
-        return requestServer(request);
-    }
-
-    /**
-     * 组列表查询接口
-     * @param options 可选参数
-     * @return 组列表数据
-     */
-    public JSONObject getGroupList(HashMap<String, Object> options) {
-        AipRequest request = new AipRequest();
-        preOperation(request);
-        for (Map.Entry<String, Object> entry : options.entrySet()) {
-            request.addBody(entry.getKey(), entry.getValue());
-        }
-        request.setUri(FaceConsts.FACE_SEARCH_FACESET_GROUP_GET_LIST_URL);
-        // check params
-        AipError checkRet = checkSearchParams(request.getBody());
-        if (!checkRet.equals(AipError.SUCCESS)) {
-            return checkRet.toJsonResult();
-        }
-        postOperation(request);
-
-        return requestServer(request);
-    }
-
-    /**
-     * 组内用户列表查询接口
-     * @param groupId 组id
-     * @param options 可选参数
-     * @return 用户列表数据
-     */
-    public JSONObject getGroupUsers(String groupId, HashMap<String, Object> options) {
-        AipError checkGid = checkSingleGroupId(groupId);
-        if (!checkGid.equals(AipError.SUCCESS)) {
-            return checkGid.toJsonResult();
-        }
-
-        AipRequest request = new AipRequest();
-        preOperation(request);
+        
         request.addBody("group_id", groupId);
-        for (Map.Entry<String, Object> entry : options.entrySet()) {
-            request.addBody(entry.getKey(), entry.getValue());
+        
+        String base64Content = Base64Util.encode(image);
+        request.addBody("image", base64Content);
+        if (options != null) {
+            request.addBody(options);
         }
-        request.setUri(FaceConsts.FACE_SEARCH_FACESET_GROUP_GET_USERS_URL);
-        // check params
-        AipError checkRet = checkSearchParams(request.getBody());
-        if (!checkRet.equals(AipError.SUCCESS)) {
-            return checkRet.toJsonResult();
-        }
+        request.setUri(FaceConsts.VERIFY);
         postOperation(request);
-
         return requestServer(request);
     }
 
     /**
-     * 从指定group内复制用户信息，建议谨慎使用
-     * @param srcGroupId 源groupId
-     * @param dstGroupId 要复制到的group列表
-     * @param uid 待复制的uid
-     * @return 服务器返回数据
+     * 人脸认证接口
+     *
+     *
+     * @param uid - 用户id（由数字、字母、下划线组成），长度限制128B* @param groupId - 用户组id，标识一组用户（由数字、字母、下划线组成），长度限制128B。如果需要将一个uid注册到多个group下，group\_id需要用多个逗号分隔，每个group_id长度限制为48个英文字符。**注：group无需单独创建，注册用户时则会自动创建group。**<br>**产品建议**：根据您的业务需求，可以将需要注册的用户，按照业务划分，分配到不同的group下，例如按照会员手机尾号作为groupid，用于刷脸支付、会员计费消费等，这样可以尽可能控制每个group下的用户数与人脸数，提升检索的准确率* @param image - 本地图片路径
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   top_num 返回用户top数，默认为1
+     *   ext_fields 特殊返回信息，多个用逗号分隔，取值固定: 目前支持faceliveness(活体检测)。**注：需要用于判断活体的图片，图片中的人脸像素面积需要不小于100px\*100px，人脸长宽与图片长宽比例，不小于1/3**
+     * @return JSONObject
      */
-    public JSONObject addGroupUser(String srcGroupId, List<String> dstGroupId, String uid) {
-        AipError checkGid = checkSingleGroupId(srcGroupId);
-        if (!checkGid.equals(AipError.SUCCESS)) {
-            return checkGid.toJsonResult();
+    public JSONObject verifyUser(String uid, String groupId, String image, HashMap<String, String> options) {
+        try {
+            byte[] imgData = Util.readFileByBytes(image);
+            return verifyUser(uid, groupId, imgData, options);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return AipError.IMAGE_READ_ERROR.toJsonResult();
         }
+    }
 
-        checkGid = checkGroupId(dstGroupId);
-        if (!checkGid.equals(AipError.SUCCESS)) {
-            return checkGid.toJsonResult();
-        }
-
+    /**
+     * 人脸注册接口   
+     *
+     *
+     * @param uid - 用户id（由数字、字母、下划线组成），长度限制128B
+     * @param userInfo - 用户资料，长度限制256B
+     * @param groupId - 用户组id，标识一组用户（由数字、字母、下划线组成），长度限制128B。如果需要将一个uid注册到多个group下，group\_id需要用多个逗号分隔，每个group_id长度限制为48个英文字符。**注：group无需单独创建，注册用户时则会自动创建group。**<br/>**产品建议**：根据您的业务需求，可以将需要注册的用户，按照业务划分，分配到不同的group下，例如按照会员手机尾号作为groupid，用于刷脸支付、会员计费消费等，这样可以尽可能控制每个group下的用户数与人脸数，提升检索的准确率
+     * @param image - 二进制图像数据
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   action_type 参数包含append、replace。**如果为“replace”，则每次注册时进行替换replace（新增或更新）操作，默认为append操作**。例如：uid在库中已经存在时，对此uid重复注册时，新注册的图片默认会**追加**到该uid下，如果手动选择`action_type:replace`，则会用新图替换库中该uid下所有图片。
+     * @return JSONObject
+     */
+    public JSONObject addUser(String uid, String userInfo, String groupId, byte[] image, HashMap<String, String> options) {
         AipRequest request = new AipRequest();
         preOperation(request);
-        request.addBody("group_id", Util.mkString(dstGroupId.iterator(), ','));
+        
         request.addBody("uid", uid);
+        
+        request.addBody("user_info", userInfo);
+        
+        request.addBody("group_id", groupId);
+        
+        String base64Content = Base64Util.encode(image);
+        request.addBody("image", base64Content);
+        if (options != null) {
+            request.addBody(options);
+        }
+        request.setUri(FaceConsts.USER_ADD);
+        postOperation(request);
+        return requestServer(request);
+    }
+
+    /**
+     * 人脸注册接口
+     *
+     *
+     * @param uid - 用户id（由数字、字母、下划线组成），长度限制128B* @param userInfo - 用户资料，长度限制256B* @param groupId - 用户组id，标识一组用户（由数字、字母、下划线组成），长度限制128B。如果需要将一个uid注册到多个group下，group\_id需要用多个逗号分隔，每个group_id长度限制为48个英文字符。**注：group无需单独创建，注册用户时则会自动创建group。**<br/>**产品建议**：根据您的业务需求，可以将需要注册的用户，按照业务划分，分配到不同的group下，例如按照会员手机尾号作为groupid，用于刷脸支付、会员计费消费等，这样可以尽可能控制每个group下的用户数与人脸数，提升检索的准确率* @param image - 本地图片路径
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   action_type 参数包含append、replace。**如果为“replace”，则每次注册时进行替换replace（新增或更新）操作，默认为append操作**。例如：uid在库中已经存在时，对此uid重复注册时，新注册的图片默认会**追加**到该uid下，如果手动选择`action_type:replace`，则会用新图替换库中该uid下所有图片。
+     * @return JSONObject
+     */
+    public JSONObject addUser(String uid, String userInfo, String groupId, String image, HashMap<String, String> options) {
+        try {
+            byte[] imgData = Util.readFileByBytes(image);
+            return addUser(uid, userInfo, groupId, imgData, options);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return AipError.IMAGE_READ_ERROR.toJsonResult();
+        }
+    }
+
+    /**
+     * 人脸更新接口   
+     *
+     *
+     * @param uid - 用户id（由数字、字母、下划线组成），长度限制128B
+     * @param userInfo - 用户资料，长度限制256B
+     * @param groupId - 更新指定groupid下uid对应的信息
+     * @param image - 二进制图像数据
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   action_type 目前仅支持replace，uid不存在时，不报错，会自动变为注册操作；未选择该参数时，如果uid不存在会提示错误
+     * @return JSONObject
+     */
+    public JSONObject updateUser(String uid, String userInfo, String groupId, byte[] image, HashMap<String, String> options) {
+        AipRequest request = new AipRequest();
+        preOperation(request);
+        
+        request.addBody("uid", uid);
+        
+        request.addBody("user_info", userInfo);
+        
+        request.addBody("group_id", groupId);
+        
+        String base64Content = Base64Util.encode(image);
+        request.addBody("image", base64Content);
+        if (options != null) {
+            request.addBody(options);
+        }
+        request.setUri(FaceConsts.USER_UPDATE);
+        postOperation(request);
+        return requestServer(request);
+    }
+
+    /**
+     * 人脸更新接口
+     *
+     *
+     * @param uid - 用户id（由数字、字母、下划线组成），长度限制128B* @param userInfo - 用户资料，长度限制256B* @param groupId - 更新指定groupid下uid对应的信息* @param image - 本地图片路径
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   action_type 目前仅支持replace，uid不存在时，不报错，会自动变为注册操作；未选择该参数时，如果uid不存在会提示错误
+     * @return JSONObject
+     */
+    public JSONObject updateUser(String uid, String userInfo, String groupId, String image, HashMap<String, String> options) {
+        try {
+            byte[] imgData = Util.readFileByBytes(image);
+            return updateUser(uid, userInfo, groupId, imgData, options);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return AipError.IMAGE_READ_ERROR.toJsonResult();
+        }
+    }
+
+    /**
+     * 人脸删除接口   
+     *
+     *
+     * @param uid - 用户id（由数字、字母、下划线组成），长度限制128B
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   group_id 删除指定groupid下uid对应的信息
+     * @return JSONObject
+     */
+    public JSONObject deleteUser(String uid, HashMap<String, String> options) {
+        AipRequest request = new AipRequest();
+        preOperation(request);
+        
+        request.addBody("uid", uid);
+        if (options != null) {
+            request.addBody(options);
+        }
+        request.setUri(FaceConsts.USER_DELETE);
+        postOperation(request);
+        return requestServer(request);
+    }
+
+    /**
+     * 用户信息查询接口   
+     *
+     *
+     * @param uid - 用户id（由数字、字母、下划线组成），长度限制128B
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   group_id 选择指定group_id则只查找group列表下的uid内容，如果不指定则查找所有group下对应uid的信息
+     * @return JSONObject
+     */
+    public JSONObject getUser(String uid, HashMap<String, String> options) {
+        AipRequest request = new AipRequest();
+        preOperation(request);
+        
+        request.addBody("uid", uid);
+        if (options != null) {
+            request.addBody(options);
+        }
+        request.setUri(FaceConsts.USER_GET);
+        postOperation(request);
+        return requestServer(request);
+    }
+
+    /**
+     * 组列表查询接口   
+     *
+     *
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   start 默认值0，起始序号
+     *   end 返回数量，默认值100，最大值1000
+     * @return JSONObject
+     */
+    public JSONObject getGroupList(HashMap<String, String> options) {
+        AipRequest request = new AipRequest();
+        preOperation(request);
+        if (options != null) {
+            request.addBody(options);
+        }
+        request.setUri(FaceConsts.GROUP_GETLIST);
+        postOperation(request);
+        return requestServer(request);
+    }
+
+    /**
+     * 组内用户列表查询接口   
+     *
+     *
+     * @param groupId - 用户组id（由数字、字母、下划线组成），长度限制128B
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   start 默认值0，起始序号
+     *   end 返回数量，默认值100，最大值1000
+     * @return JSONObject
+     */
+    public JSONObject getGroupUsers(String groupId, HashMap<String, String> options) {
+        AipRequest request = new AipRequest();
+        preOperation(request);
+        
+        request.addBody("group_id", groupId);
+        if (options != null) {
+            request.addBody(options);
+        }
+        request.setUri(FaceConsts.GROUP_GETUSERS);
+        postOperation(request);
+        return requestServer(request);
+    }
+
+    /**
+     * 组间复制用户接口   
+     *
+     *
+     * @param srcGroupId - 从指定group里复制信息
+     * @param groupId - 用户组id，标识一组用户（由数字、字母、下划线组成），长度限制128B。如果需要将一个uid注册到多个group下，group\_id需要用多个逗号分隔，每个group_id长度限制为48个英文字符。**注：group无需单独创建，注册用户时则会自动创建group。**<br>**产品建议**：根据您的业务需求，可以将需要注册的用户，按照业务划分，分配到不同的group下，例如按照会员手机尾号作为groupid，用于刷脸支付、会员计费消费等，这样可以尽可能控制每个group下的用户数与人脸数，提升检索的准确率
+     * @param uid - 用户id（由数字、字母、下划线组成），长度限制128B
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     * @return JSONObject
+     */
+    public JSONObject addGroupUser(String srcGroupId, String groupId, String uid, HashMap<String, String> options) {
+        AipRequest request = new AipRequest();
+        preOperation(request);
+        
         request.addBody("src_group_id", srcGroupId);
-        request.setUri(FaceConsts.FACE_SEARCH_FACESET_GROUP_ADD_USER_URL);
-        // check params
-        AipError checkRet = checkSearchParams(request.getBody());
-        if (!checkRet.equals(AipError.SUCCESS)) {
-            return checkRet.toJsonResult();
+        
+        request.addBody("group_id", groupId);
+        
+        request.addBody("uid", uid);
+        if (options != null) {
+            request.addBody(options);
         }
+        request.setUri(FaceConsts.GROUP_ADDUSER);
         postOperation(request);
-
         return requestServer(request);
     }
 
     /**
-     * 从指定组删除用户信息
-     * @param groupId 需要删除该uid的组列表
-     * @param uid 待删除的uid
-     * @return 服务器返回数据
+     * 组内删除用户接口   
+     *
+     *
+     * @param groupId - 用户组id，标识一组用户（由数字、字母、下划线组成），长度限制128B。如果需要将一个uid注册到多个group下，group\_id需要用多个逗号分隔，每个group_id长度限制为48个英文字符。**注：group无需单独创建，注册用户时则会自动创建group。**<br>**产品建议**：根据您的业务需求，可以将需要注册的用户，按照业务划分，分配到不同的group下，例如按照会员手机尾号作为groupid，用于刷脸支付、会员计费消费等，这样可以尽可能控制每个group下的用户数与人脸数，提升检索的准确率
+     * @param uid - 用户id（由数字、字母、下划线组成），长度限制128B
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     * @return JSONObject
      */
-    public JSONObject deleteGroupUser(List<String> groupId, String uid) {
+    public JSONObject deleteGroupUser(String groupId, String uid, HashMap<String, String> options) {
         AipRequest request = new AipRequest();
         preOperation(request);
-        request.addBody("group_id", Util.mkString(groupId.iterator(), ','));
+        
+        request.addBody("group_id", groupId);
+        
         request.addBody("uid", uid);
-        request.setUri(FaceConsts.FACE_SEARCH_FACESET_GROUP_DELETE_USER_URL);
-        // check params
-        AipError checkRet = checkSearchParams(request.getBody());
-        if (!checkRet.equals(AipError.SUCCESS)) {
-            return checkRet.toJsonResult();
+        if (options != null) {
+            request.addBody(options);
         }
+        request.setUri(FaceConsts.GROUP_DELETEUSER);
         postOperation(request);
-
         return requestServer(request);
     }
 
@@ -594,66 +510,6 @@ public class AipFace extends BaseClient {
         request.setUri(FaceConsts.FACE_LIVENESS_VERIFY_URL);
         postOperation(request);
         return requestServer(request);
-    }
-
-    private AipError checkSearchParams(HashMap<String, Object> body) {
-        // image size
-        if (body.containsKey("image")) {
-            int imgSize = ((String) body.get("image")).length();
-            if (imgSize > FaceConsts.FACE_SEARCH_MAX_IMAGE_SIZE) {
-                return AipError.IMAGE_SIZE_ERROR;
-            }
-        }
-        // uid
-        if (body.containsKey("uid")) {
-            String uid = (String) body.get("uid");
-            if (uid.length() > FaceConsts.FACE_SEARCH_MAX_UID_SIZE) {
-                return AipError.UID_SIZE_ERROR;
-            }
-            if (!Util.isLiteral(uid)) {
-                return AipError.UID_FORMAT_ERROR;
-            }
-        }
-        // user_info
-        if (body.containsKey("user_info")) {
-            int size = ((String) body.get("user_info")).length();
-            if (size > FaceConsts.FACE_SEARCH_MAX_USER_INFO_SIZE) {
-                return AipError.USER_INFO_SIZE_ERROR;
-            }
-        }
-
-        if (body.containsKey("group_id")) {
-            String groupId = (String) body.get("group_id");
-            for (String gid : groupId.split(",")) {
-                if (gid.length() > FaceConsts.FACE_SEARCH_MAX_GROUP_ID_SIZE) {
-                    return AipError.GROUP_ID_SIZE_ERROR;
-                }
-                if (!Util.isLiteral(gid)) {
-                    return AipError.GROUP_ID_FORMAT_ERROR;
-                }
-            }
-        }
-        return AipError.SUCCESS;
-    }
-
-    private AipError checkGroupId(List<String> groupId) {
-        for (String gid : groupId) {
-            AipError ret = checkSingleGroupId(gid);
-            if (ret != AipError.SUCCESS) {
-                return ret;
-            }
-        }
-        return AipError.SUCCESS;
-    }
-
-    private AipError checkSingleGroupId(String groupId) {
-        if (groupId.length() > FaceConsts.FACE_SEARCH_MAX_GROUP_ID_SIZE) {
-            return AipError.GROUP_ID_SIZE_ERROR;
-        }
-        if (!Util.isLiteral(groupId)) {
-            return AipError.GROUP_ID_FORMAT_ERROR;
-        }
-        return AipError.SUCCESS;
     }
 
 }

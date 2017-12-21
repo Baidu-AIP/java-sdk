@@ -30,7 +30,7 @@ public class AipImageClassify extends BaseClient {
     }
 
     /**
-     * 菜品识别接口
+     * 菜品识别接口   
      * 该请求用于菜品识别。即对于输入的一张图片（可正常解码，且长宽比适宜），输出图片的菜品名称、卡路里信息、置信度。
      *
      * @param image - 二进制图像数据
@@ -44,9 +44,7 @@ public class AipImageClassify extends BaseClient {
         preOperation(request);
         
         String base64Content = Base64Util.encode(image);
-
         request.addBody("image", base64Content);
-        
         if (options != null) {
             request.addBody(options);
         }
@@ -76,7 +74,7 @@ public class AipImageClassify extends BaseClient {
     }
 
     /**
-     * 车辆识别接口
+     * 车辆识别接口   
      * 该请求用于检测一张车辆图片的具体车型。即对于输入的一张图片（可正常解码，且长宽比适宜），输出图片的车辆品牌及型号。
      *
      * @param image - 二进制图像数据
@@ -90,9 +88,7 @@ public class AipImageClassify extends BaseClient {
         preOperation(request);
         
         String base64Content = Base64Util.encode(image);
-
         request.addBody("image", base64Content);
-        
         if (options != null) {
             request.addBody(options);
         }
@@ -122,7 +118,7 @@ public class AipImageClassify extends BaseClient {
     }
 
     /**
-     * logo商标识别接口
+     * logo商标识别接口   
      * 该请求用于检测和识别图片中的品牌LOGO信息。即对于输入的一张图片（可正常解码，且长宽比适宜），输出图片中LOGO的名称、位置和置信度。 当效果欠佳时，可以建立子库（请加入QQ群：649285136 联系工作人员申请建库）并自定义logo入库，提高识别效果。
      *
      * @param image - 二进制图像数据
@@ -136,9 +132,7 @@ public class AipImageClassify extends BaseClient {
         preOperation(request);
         
         String base64Content = Base64Util.encode(image);
-
         request.addBody("image", base64Content);
-        
         if (options != null) {
             request.addBody(options);
         }
@@ -168,10 +162,10 @@ public class AipImageClassify extends BaseClient {
     }
 
     /**
-     * logo商标识别—添加接口
+     * logo商标识别—添加接口   
      * 该接口尚在邀测阶段，使用该接口之前需要线下联系工作人员完成建库方可使用，请加入QQ群：649285136 联系相关人员。
      *
-     * @param image - 二进制图像数据*
+     * @param image - 二进制图像数据
      * @param brief - brief，检索时带回。此处要传对应的name与code字段，name长度小于100B，code长度小于150B
      * @param options - 可选参数对象，key: value都为string类型
      * options - options列表:
@@ -182,11 +176,9 @@ public class AipImageClassify extends BaseClient {
         preOperation(request);
         
         String base64Content = Base64Util.encode(image);
-
         request.addBody("image", base64Content);
         
         request.addBody("brief", brief);
-        
         if (options != null) {
             request.addBody(options);
         }
@@ -199,8 +191,7 @@ public class AipImageClassify extends BaseClient {
      * logo商标识别—添加接口
      * 该接口尚在邀测阶段，使用该接口之前需要线下联系工作人员完成建库方可使用，请加入QQ群：649285136 联系相关人员。
      *
-     * @param image - 本地图片路径*
-     * @param brief - brief，检索时带回。此处要传对应的name与code字段，name长度小于100B，code长度小于150B
+     * @param image - 本地图片路径* @param brief - brief，检索时带回。此处要传对应的name与code字段，name长度小于100B，code长度小于150B
      * @param options - 可选参数对象，key: value都为string类型
      * options - options列表:
      * @return JSONObject
@@ -216,7 +207,7 @@ public class AipImageClassify extends BaseClient {
     }
 
     /**
-     * logo商标识别—删除接口
+     * logo商标识别—删除接口   
      * 该接口尚在邀测阶段，使用该接口之前需要线下联系工作人员完成建库方可使用，请加入QQ群：649285136 联系相关人员。
      *
      * @param image - 二进制图像数据
@@ -229,9 +220,7 @@ public class AipImageClassify extends BaseClient {
         preOperation(request);
         
         String base64Content = Base64Util.encode(image);
-
         request.addBody("image", base64Content);
-        
         if (options != null) {
             request.addBody(options);
         }
@@ -260,7 +249,7 @@ public class AipImageClassify extends BaseClient {
     }
 
     /**
-     * logo商标识别—删除接口
+     * logo商标识别—删除接口   
      * 该接口尚在邀测阶段，使用该接口之前需要线下联系工作人员完成建库方可使用，请加入QQ群：649285136 联系相关人员。
      *
      * @param contSign - 图片签名（和image二选一，image优先级更高）
@@ -273,7 +262,6 @@ public class AipImageClassify extends BaseClient {
         preOperation(request);
         
         request.addBody("cont_sign", contSign);
-        
         if (options != null) {
             request.addBody(options);
         }
@@ -283,7 +271,7 @@ public class AipImageClassify extends BaseClient {
     }
 
     /**
-     * 动物识别接口
+     * 动物识别接口   
      * 该请求用于识别一张图片。即对于输入的一张图片（可正常解码，且长宽比适宜），输出动物识别结果
      *
      * @param image - 二进制图像数据
@@ -297,9 +285,7 @@ public class AipImageClassify extends BaseClient {
         preOperation(request);
         
         String base64Content = Base64Util.encode(image);
-
         request.addBody("image", base64Content);
-        
         if (options != null) {
             request.addBody(options);
         }
@@ -329,7 +315,7 @@ public class AipImageClassify extends BaseClient {
     }
 
     /**
-     * 植物识别接口
+     * 植物识别接口   
      * 该请求用于识别一张图片。即对于输入的一张图片（可正常解码，且长宽比适宜），输出植物识别结果。
      *
      * @param image - 二进制图像数据
@@ -342,9 +328,7 @@ public class AipImageClassify extends BaseClient {
         preOperation(request);
         
         String base64Content = Base64Util.encode(image);
-
         request.addBody("image", base64Content);
-        
         if (options != null) {
             request.addBody(options);
         }
@@ -373,7 +357,7 @@ public class AipImageClassify extends BaseClient {
     }
 
     /**
-     * 图像主体检测接口
+     * 图像主体检测接口   
      * 用户向服务请求检测图像中的主体位置。
      *
      * @param image - 二进制图像数据
@@ -387,9 +371,7 @@ public class AipImageClassify extends BaseClient {
         preOperation(request);
         
         String base64Content = Base64Util.encode(image);
-
         request.addBody("image", base64Content);
-        
         if (options != null) {
             request.addBody(options);
         }

@@ -30,7 +30,7 @@ public class AipImageSearch extends BaseClient {
     }
 
     /**
-     * 相同图检索—入库接口
+     * 相同图检索—入库接口   
      * 该请求用于实时检索相同图片集合。即对于输入的一张图片（可正常解码，且长宽比适宜），返回自建图库中相同的图片集合。相同图检索包含入库、检索、删除三个子接口；**在正式使用之前请加入QQ群：649285136 联系工作人员完成建库并调用入库接口完成图片入库**。
      *
      * @param image - 二进制图像数据
@@ -44,9 +44,7 @@ public class AipImageSearch extends BaseClient {
         preOperation(request);
         
         String base64Content = Base64Util.encode(image);
-
         request.addBody("image", base64Content);
-        
         if (options != null) {
             request.addBody(options);
         }
@@ -76,7 +74,7 @@ public class AipImageSearch extends BaseClient {
     }
 
     /**
-     * 相同图检索—检索接口
+     * 相同图检索—检索接口   
      * 使用该接口前，请加入QQ群：649285136 ，联系工作人员完成建库。
      *
      * @param image - 二进制图像数据
@@ -89,9 +87,7 @@ public class AipImageSearch extends BaseClient {
         preOperation(request);
         
         String base64Content = Base64Util.encode(image);
-
         request.addBody("image", base64Content);
-        
         if (options != null) {
             request.addBody(options);
         }
@@ -120,7 +116,7 @@ public class AipImageSearch extends BaseClient {
     }
 
     /**
-     * 相同图检索—删除接口
+     * 相同图检索—删除接口   
      * 删除相同图
      *
      * @param image - 二进制图像数据
@@ -133,9 +129,7 @@ public class AipImageSearch extends BaseClient {
         preOperation(request);
         
         String base64Content = Base64Util.encode(image);
-
         request.addBody("image", base64Content);
-        
         if (options != null) {
             request.addBody(options);
         }
@@ -164,7 +158,7 @@ public class AipImageSearch extends BaseClient {
     }
 
     /**
-     * 相同图检索—删除接口
+     * 相同图检索—删除接口   
      * 删除相同图
      *
      * @param contSign - 图片签名（和image二选一，image优先级更高）
@@ -177,7 +171,6 @@ public class AipImageSearch extends BaseClient {
         preOperation(request);
         
         request.addBody("cont_sign", contSign);
-        
         if (options != null) {
             request.addBody(options);
         }
@@ -187,7 +180,7 @@ public class AipImageSearch extends BaseClient {
     }
 
     /**
-     * 相似图检索—入库接口
+     * 相似图检索—入库接口   
      * 该请求用于实时检索相似图片集合。即对于输入的一张图片（可正常解码，且长宽比适宜），返回自建图库中相似的图片集合。相似图检索包含入库、检索、删除三个子接口；**在正式使用之前请加入QQ群：649285136 联系工作人员完成建库并调用入库接口完成图片入库**。
      *
      * @param image - 二进制图像数据
@@ -201,9 +194,7 @@ public class AipImageSearch extends BaseClient {
         preOperation(request);
         
         String base64Content = Base64Util.encode(image);
-
         request.addBody("image", base64Content);
-        
         if (options != null) {
             request.addBody(options);
         }
@@ -233,7 +224,7 @@ public class AipImageSearch extends BaseClient {
     }
 
     /**
-     * 相似图检索—检索接口
+     * 相似图检索—检索接口   
      * 使用该接口前，请加入QQ群：649285136 ，联系工作人员完成建库。
      *
      * @param image - 二进制图像数据
@@ -246,9 +237,7 @@ public class AipImageSearch extends BaseClient {
         preOperation(request);
         
         String base64Content = Base64Util.encode(image);
-
         request.addBody("image", base64Content);
-        
         if (options != null) {
             request.addBody(options);
         }
@@ -277,7 +266,7 @@ public class AipImageSearch extends BaseClient {
     }
 
     /**
-     * 相似图检索—删除接口
+     * 相似图检索—删除接口   
      * 删除相似图
      *
      * @param image - 二进制图像数据
@@ -290,9 +279,7 @@ public class AipImageSearch extends BaseClient {
         preOperation(request);
         
         String base64Content = Base64Util.encode(image);
-
         request.addBody("image", base64Content);
-        
         if (options != null) {
             request.addBody(options);
         }
@@ -321,7 +308,7 @@ public class AipImageSearch extends BaseClient {
     }
 
     /**
-     * 相似图检索—删除接口
+     * 相似图检索—删除接口   
      * 删除相似图
      *
      * @param contSign - 图片签名（和image二选一，image优先级更高）
@@ -334,7 +321,6 @@ public class AipImageSearch extends BaseClient {
         preOperation(request);
         
         request.addBody("cont_sign", contSign);
-        
         if (options != null) {
             request.addBody(options);
         }
@@ -344,7 +330,7 @@ public class AipImageSearch extends BaseClient {
     }
 
     /**
-     * 商品检索—入库接口
+     * 商品检索—入库接口   
      * 该请求用于实时检索商品类型图片相同或相似的图片集合，适用于电商平台或商品展示等场景，即对于输入的一张图片（可正常解码，且长宽比适宜），返回自建商品库中相同或相似的图片集合。
      *
      * @param image - 二进制图像数据
@@ -360,9 +346,7 @@ public class AipImageSearch extends BaseClient {
         preOperation(request);
         
         String base64Content = Base64Util.encode(image);
-
         request.addBody("image", base64Content);
-        
         if (options != null) {
             request.addBody(options);
         }
@@ -394,7 +378,7 @@ public class AipImageSearch extends BaseClient {
     }
 
     /**
-     * 商品检索—检索接口
+     * 商品检索—检索接口   
      * 完成入库后，可使用该接口实现商品检索。**请注意，检索接口不返回原图，仅反馈当前填写的brief信息，请调用入库接口时尽量填写可关联至本地图库的图片id或者图片url等信息**
      *
      * @param image - 二进制图像数据
@@ -409,9 +393,7 @@ public class AipImageSearch extends BaseClient {
         preOperation(request);
         
         String base64Content = Base64Util.encode(image);
-
         request.addBody("image", base64Content);
-        
         if (options != null) {
             request.addBody(options);
         }
@@ -442,7 +424,7 @@ public class AipImageSearch extends BaseClient {
     }
 
     /**
-     * 商品检索—删除接口
+     * 商品检索—删除接口   
      * 删除商品
      *
      * @param image - 二进制图像数据
@@ -455,9 +437,7 @@ public class AipImageSearch extends BaseClient {
         preOperation(request);
         
         String base64Content = Base64Util.encode(image);
-
         request.addBody("image", base64Content);
-        
         if (options != null) {
             request.addBody(options);
         }
@@ -486,7 +466,7 @@ public class AipImageSearch extends BaseClient {
     }
 
     /**
-     * 商品检索—删除接口
+     * 商品检索—删除接口   
      * 删除商品
      *
      * @param contSign - 图片签名（和image二选一，image优先级更高）
@@ -499,7 +479,6 @@ public class AipImageSearch extends BaseClient {
         preOperation(request);
         
         request.addBody("cont_sign", contSign);
-        
         if (options != null) {
             request.addBody(options);
         }

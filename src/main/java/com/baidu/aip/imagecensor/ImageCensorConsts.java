@@ -25,6 +25,10 @@ public class ImageCensorConsts {
     static final String IMAGE_CENSOR_COMB_URL = "https://aip.baidubce.com/api/v1/solution/direct/img_censor";
     static final String FACE_AUDIT_URL = "https://aip.baidubce.com/rest/2.0/solution/v1/face_audit";
 
+    static final String REPORT_URL = "https://aip.baidubce.com/rpc/2.0/feedback/v1/report";
+
+    static final String USER_DEFINED_URL = "https://aip.baidubce.com/rest/2.0/solution/v1/img_censor/user_defined";
+
     public static final Long ANTIPORN_MAX_IMAGE_SIZE = 4194304L; // 4 * 1024 * 1024
 
     public static final Integer ANTIPORN_MIN_IMAGE_SIDE_LENGTH = 10;

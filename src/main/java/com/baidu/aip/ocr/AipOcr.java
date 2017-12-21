@@ -10,245 +10,69 @@
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
+
 package com.baidu.aip.ocr;
 
 import com.baidu.aip.client.BaseClient;
 import com.baidu.aip.error.AipError;
 import com.baidu.aip.http.AipRequest;
 import com.baidu.aip.util.Base64Util;
-import com.baidu.aip.util.ImageUtil;
 import com.baidu.aip.util.Util;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.Calendar;
 import java.util.HashMap;
-import java.util.Map;
+import java.util.Calendar;
 
 public class AipOcr extends BaseClient {
 
-    public AipOcr(String appId, String aipKey, String aipToken) {
-        super(appId, aipKey, aipToken);
+    public AipOcr(String appId, String apiKey, String secretKey) {
+        super(appId, apiKey, secretKey);
     }
 
-
     /**
+     * 通用文字识别接口   
+     * 用户向服务请求识别某张图中的所有文字
      *
-     * @param imgPath 本地文件路径
-     * @param isFront 图像是否为身份证正面
-     * @param options 可选参数
-     * @return 服务器检测结果
+     * @param image - 二进制图像数据
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   language_type 识别语言类型，默认为CHN_ENG。可选值包括：<br/>- CHN_ENG：中英文混合；<br/>- ENG：英文；<br/>- POR：葡萄牙语；<br/>- FRE：法语；<br/>- GER：德语；<br/>- ITA：意大利语；<br/>- SPA：西班牙语；<br/>- RUS：俄语；<br/>- JAP：日语；<br/>- KOR：韩语；
+     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br/>- true：检测朝向；<br/>- false：不检测朝向。
+     *   detect_language 是否检测语言，默认不检测。当前支持（中文、英语、日语、韩语）
+     *   probability 是否返回识别结果中每一行的置信度
+     * @return JSONObject
      */
-    public JSONObject idcard(String imgPath, Boolean isFront, HashMap<String, String> options) {
-
-        try {
-            byte[] imgData = Util.readFileByBytes(imgPath);
-            return idcard(imgData, isFront, options);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return AipError.IMAGE_READ_ERROR.toJsonResult();
+    public JSONObject basicGeneral(byte[] image, HashMap<String, String> options) {
+        AipRequest request = new AipRequest();
+        preOperation(request);
+        
+        String base64Content = Base64Util.encode(image);
+        request.addBody("image", base64Content);
+        if (options != null) {
+            request.addBody(options);
         }
+        request.setUri(OcrConsts.GENERAL_BASIC);
+        postOperation(request);
+        return requestServer(request);
     }
 
     /**
+     * 通用文字识别接口
+     * 用户向服务请求识别某张图中的所有文字
      *
-     * @param imgData 本地图像二进制数据
-     * @param isFront 是否为正面
-     * @param options 可选参数
-     * @return json result
+     * @param image - 本地图片路径
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   language_type 识别语言类型，默认为CHN_ENG。可选值包括：<br/>- CHN_ENG：中英文混合；<br/>- ENG：英文；<br/>- POR：葡萄牙语；<br/>- FRE：法语；<br/>- GER：德语；<br/>- ITA：意大利语；<br/>- SPA：西班牙语；<br/>- RUS：俄语；<br/>- JAP：日语；<br/>- KOR：韩语；
+     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br/>- true：检测朝向；<br/>- false：不检测朝向。
+     *   detect_language 是否检测语言，默认不检测。当前支持（中文、英语、日语、韩语）
+     *   probability 是否返回识别结果中每一行的置信度
+     * @return JSONObject
      */
-    public JSONObject idcard(byte[] imgData, Boolean isFront, HashMap<String, String> options) {
-        AipRequest request = new AipRequest();
-        // check param
-        JSONObject checkRet = checkParam(imgData);
-        if (!"0".equals(checkRet.getString("error_code"))) {
-            return checkRet;
-        }
-
-        preOperation(request);
-
-        String base64Content = Base64Util.encode(imgData);
-        // check size
-        if (base64Content.length() > OcrConsts.OCR_MAX_IMAGE_SIZE) {
-            return AipError.IMAGE_SIZE_ERROR.toJsonResult();
-        }
-
-        request.addBody("image", base64Content);
-        request.addBody("id_card_side", isFront ? "front" : "back");
-        for (Map.Entry<String, String> entry : options.entrySet()) {
-            request.addBody(entry.getKey(), entry.getValue());
-        }
-
-        request.setUri(OcrConsts.OCR_IDCARD_URL);
-        postOperation(request);
-
-        return requestServer(request);
-    }
-
-    // 银行卡识别接口
-    public JSONObject bankcard(String imgPath) {
+    public JSONObject basicGeneral(String image, HashMap<String, String> options) {
         try {
-            byte[] imgData = Util.readFileByBytes(imgPath);
-            return bankcard(imgData);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return AipError.IMAGE_READ_ERROR.toJsonResult();
-        }
-    }
-
-    public JSONObject bankcard(byte[] imgData) {
-        AipRequest request = new AipRequest();
-        // check param
-        JSONObject checkRet = checkParam(imgData);
-        if (!"0".equals(checkRet.getString("error_code"))) {
-            return checkRet;
-        }
-        preOperation(request);
-        // 添加内容到request
-        String base64Content = Base64Util.encode(imgData);
-        // check size
-        if (base64Content.length() > OcrConsts.OCR_MAX_IMAGE_SIZE) {
-            return AipError.IMAGE_SIZE_ERROR.toJsonResult();
-        }
-        request.addBody("image", base64Content);
-        request.setUri(OcrConsts.OCR_BANDCARD_URL);
-        postOperation(request);
-
-        return requestServer(request);
-    }
-
-    // 通用识别接口
-
-    /**
-     * 通用文字识别（带位置信息版）
-     * @param imgPath 图片路径
-     * @param options 接口可选参数
-     *                detect_direction : true/false
-     *                language_type :
-     *                <p>识别语言类型，若不传则默认为CHN_ENG。
-     *                  可选值包括：CHN_ENG - 中英文混合；
-     *                  ENG - 英文；
-     *                  POR - 葡萄牙语；
-     *                  FRE - 法语；
-     *                  GER - 德语；
-     *                  ITA - 意大利语；
-     *                  SPA - 西班牙语；
-     *                  RUS - 俄语；
-     *                  JAP - 日语</p>
-     *                recognize_granularity： big/small
-     *                mask : 表示mask区域的黑白灰度图片，白色代表选中, base64编码
-     *                detect_language: true/false
-     * @return  Json格式的服务器返回值
-     */
-    public JSONObject general(String imgPath, HashMap<String, String> options) {
-        try {
-            byte[] imgData = Util.readFileByBytes(imgPath);
-            return general(imgData, options);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return AipError.IMAGE_READ_ERROR.toJsonResult();
-        }
-    }
-
-    /**
-     * 通用文字识别（带位置信息版）
-     * @param imgData 图片原始文件数据
-     * @param options 接口可选参数
-     *                detect_direction : true/false
-     *                language_type :
-     *                <p>识别语言类型，若不传则默认为CHN_ENG。
-     *                  可选值包括：CHN_ENG - 中英文混合；
-     *                  ENG - 英文；
-     *                  POR - 葡萄牙语；
-     *                  FRE - 法语；
-     *                  GER - 德语；
-     *                  ITA - 意大利语；
-     *                  SPA - 西班牙语；
-     *                  RUS - 俄语；
-     *                  JAP - 日语</p>
-     *                recognize_granularity： big/small
-     *                mask : 表示mask区域的黑白灰度图片，白色代表选中, base64编码
-     *                detect_language: true/false
-     * @return  Json格式的服务器返回值
-     */
-    public JSONObject general(byte[] imgData, HashMap<String, String> options) {
-        AipRequest request = new AipRequest();
-        // check param
-        JSONObject checkRet = checkParam(imgData);
-        if (!"0".equals(checkRet.getString("error_code"))) {
-            return checkRet;
-        }
-        preOperation(request);
-        // 添加内容到request
-        String base64Content = Base64Util.encode(imgData);
-        // check size
-        if (base64Content.length() > OcrConsts.OCR_MAX_IMAGE_SIZE) {
-            return AipError.IMAGE_SIZE_ERROR.toJsonResult();
-        }
-        request.addBody("image", base64Content);
-        request.addBody(options);
-        request.setUri(OcrConsts.OCR_GENERAL_URL);
-        postOperation(request);
-
-        return requestServer(request);
-    }
-
-    /**
-     * 通用文字识别（带位置信息版）
-     * @param imgUrl 图片链接，需要有完整协议头，如http://some.com
-     * @param options 接口可选参数
-     *                detect_direction : true/false
-     *                language_type :
-     *                <p>识别语言类型，若不传则默认为CHN_ENG。
-     *                  可选值包括：CHN_ENG - 中英文混合；
-     *                  ENG - 英文；
-     *                  POR - 葡萄牙语；
-     *                  FRE - 法语；
-     *                  GER - 德语；
-     *                  ITA - 意大利语；
-     *                  SPA - 西班牙语；
-     *                  RUS - 俄语；
-     *                  JAP - 日语</p>
-     *                recognize_granularity： big/small
-     *                mask : 表示mask区域的黑白灰度图片，白色代表选中, base64编码
-     *                detect_language: true/false
-     * @return  Json格式的服务器返回值
-     */
-    public JSONObject generalUrl(String imgUrl, HashMap<String, String> options) {
-        AipRequest request = new AipRequest();
-
-        preOperation(request);
-
-        request.addBody("url", imgUrl);
-        request.addBody(options);
-        request.setUri(OcrConsts.OCR_GENERAL_URL);
-        postOperation(request);
-
-        return requestServer(request);
-    }
-
-    /**
-     * 基础通用文字识别
-     * @param imgPath 图片路径
-     * @param options 接口可选参数
-     *                detect_direction : true/false
-     *                language_type :
-     *                <p>识别语言类型，若不传则默认为CHN_ENG。
-     *                  可选值包括：CHN_ENG - 中英文混合；
-     *                  ENG - 英文；
-     *                  POR - 葡萄牙语；
-     *                  FRE - 法语；
-     *                  GER - 德语；
-     *                  ITA - 意大利语；
-     *                  SPA - 西班牙语；
-     *                  RUS - 俄语；
-     *                  JAP - 日语</p>
-     *                detect_language: true/false
-     * @return  Json格式的服务器返回值
-     */
-    public JSONObject basicGeneral(String imgPath, HashMap<String, String> options) {
-        try {
-            byte[] imgData = Util.readFileByBytes(imgPath);
+            byte[] imgData = Util.readFileByBytes(image);
             return basicGeneral(imgData, options);
         } catch (IOException e) {
             e.printStackTrace();
@@ -257,133 +81,70 @@ public class AipOcr extends BaseClient {
     }
 
     /**
-     * 基础通用文字识别
-     * @param imgData 图片原始文件数据
-     * @param options 接口可选参数
-     *                detect_direction : true/false
-     *                language_type :
-     *                <p>识别语言类型，若不传则默认为CHN_ENG。
-     *                  可选值包括：CHN_ENG - 中英文混合；
-     *                  ENG - 英文；
-     *                  POR - 葡萄牙语；
-     *                  FRE - 法语；
-     *                  GER - 德语；
-     *                  ITA - 意大利语；
-     *                  SPA - 西班牙语；
-     *                  RUS - 俄语；
-     *                  JAP - 日语</p>
-     *                detect_language: true/false
-     * @return  Json格式的服务器返回值
+     * 通用文字识别接口   
+     * 用户向服务请求识别某张图中的所有文字
+     *
+     * @param url - 图片完整URL，URL长度不超过1024字节，URL对应的图片base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式，当image字段存在时url字段失效
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   language_type 识别语言类型，默认为CHN_ENG。可选值包括：<br/>- CHN_ENG：中英文混合；<br/>- ENG：英文；<br/>- POR：葡萄牙语；<br/>- FRE：法语；<br/>- GER：德语；<br/>- ITA：意大利语；<br/>- SPA：西班牙语；<br/>- RUS：俄语；<br/>- JAP：日语；<br/>- KOR：韩语；
+     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br/>- true：检测朝向；<br/>- false：不检测朝向。
+     *   detect_language 是否检测语言，默认不检测。当前支持（中文、英语、日语、韩语）
+     *   probability 是否返回识别结果中每一行的置信度
+     * @return JSONObject
      */
-    public JSONObject basicGeneral(byte[] imgData, HashMap<String, String> options) {
+    public JSONObject basicGeneralUrl(String url, HashMap<String, String> options) {
         AipRequest request = new AipRequest();
-        // check param
-        JSONObject checkRet = checkParam(imgData);
-        if (!"0".equals(checkRet.getString("error_code"))) {
-            return checkRet;
-        }
         preOperation(request);
-        // 添加内容到request
-        String base64Content = Base64Util.encode(imgData);
-        // check size
-        if (base64Content.length() > OcrConsts.OCR_MAX_IMAGE_SIZE) {
-            return AipError.IMAGE_SIZE_ERROR.toJsonResult();
+        
+        request.addBody("url", url);
+        if (options != null) {
+            request.addBody(options);
         }
+        request.setUri(OcrConsts.GENERAL_BASIC);
+        postOperation(request);
+        return requestServer(request);
+    }
+
+    /**
+     * 通用文字识别（高精度版）接口   
+     * 用户向服务请求识别某张图中的所有文字，相对于通用文字识别该产品精度更高，但是没有免费额度，如果您需要使用该产品，您可以在产品页面点击合作咨询或加入文字识别的官网QQ群：631977213向管理员申请试用。
+     *
+     * @param image - 二进制图像数据
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br/>- true：检测朝向；<br/>- false：不检测朝向。
+     *   probability 是否返回识别结果中每一行的置信度
+     * @return JSONObject
+     */
+    public JSONObject basicAccurateGeneral(byte[] image, HashMap<String, String> options) {
+        AipRequest request = new AipRequest();
+        preOperation(request);
+        
+        String base64Content = Base64Util.encode(image);
         request.addBody("image", base64Content);
-        request.addBody(options);
-        request.setUri(OcrConsts.OCR_BASIC_GENERAL_URL);
-        postOperation(request);
-
-        return requestServer(request);
-    }
-
-    /**
-     * 基础通用文字识别
-     * @param imgUrl 图片链接，需要有完整协议头，如http://some.com
-     * @param options 接口可选参数
-     *                detect_direction : true/false
-     *                language_type :
-     *                <p>识别语言类型，若不传则默认为CHN_ENG。
-     *                  可选值包括：CHN_ENG - 中英文混合；
-     *                  ENG - 英文；
-     *                  POR - 葡萄牙语；
-     *                  FRE - 法语；
-     *                  GER - 德语；
-     *                  ITA - 意大利语；
-     *                  SPA - 西班牙语；
-     *                  RUS - 俄语；
-     *                  JAP - 日语</p>
-     *                detect_language: true/false
-     * @return  Json格式的服务器返回值
-     */
-    public JSONObject basicGeneralUrl(String imgUrl, HashMap<String, String> options) {
-        AipRequest request = new AipRequest();
-        preOperation(request);
-
-        request.addBody("url", imgUrl);
-        request.addBody(options);
-        request.setUri(OcrConsts.OCR_BASIC_GENERAL_URL);
-        postOperation(request);
-
-        return requestServer(request);
-    }
-
-    // 高精度版通用文字识别
-    /**
-     * 通用文字识别高精度版（带位置信息）
-     * @param imgPath 图片路径
-     * @param options 接口可选参数
-     *                detect_direction : true/false
-     *                recognize_granularity： big/small
-     *                detect_language: true/false
-     * @return  Json格式的服务器返回值
-     */
-    public JSONObject accurateGeneral(String imgPath, HashMap<String, String> options) {
-        try {
-            byte[] imgData = Util.readFileByBytes(imgPath);
-            return accurateGeneral(imgData, options);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return AipError.IMAGE_READ_ERROR.toJsonResult();
+        if (options != null) {
+            request.addBody(options);
         }
-    }
-
-    /**
-     * 通用文字识别高精度版（带位置信息）
-     * @param imgData 图片原始文件数据
-     * @param options 接口可选参数
-     *                detect_direction : true/false
-     *                recognize_granularity： big/small
-     *                detect_language: true/false
-     * @return  Json格式的服务器返回值
-     */
-    public JSONObject accurateGeneral(byte[] imgData, HashMap<String, String> options) {
-        AipRequest request = new AipRequest();
-
-        preOperation(request);
-        // 添加内容到request
-        String base64Content = Base64Util.encode(imgData);
-
-        request.addBody("image", base64Content);
-        request.addBody(options);
-        request.setUri(OcrConsts.OCR_ACCURATE_URL);
+        request.setUri(OcrConsts.ACCURATE_BASIC);
         postOperation(request);
-
         return requestServer(request);
     }
 
     /**
-     * 基础通用文字识别高精度版
-     * @param imgPath 图片路径
-     * @param options 接口可选参数
-     *                detect_direction : true/false
-     *                mask : 表示mask区域的黑白灰度图片，白色代表选中, base64编码
-     *                detect_language: true/false
-     * @return  Json格式的服务器返回值
+     * 通用文字识别（高精度版）接口
+     * 用户向服务请求识别某张图中的所有文字，相对于通用文字识别该产品精度更高，但是没有免费额度，如果您需要使用该产品，您可以在产品页面点击合作咨询或加入文字识别的官网QQ群：631977213向管理员申请试用。
+     *
+     * @param image - 本地图片路径
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br/>- true：检测朝向；<br/>- false：不检测朝向。
+     *   probability 是否返回识别结果中每一行的置信度
+     * @return JSONObject
      */
-    public JSONObject basicAccurateGeneral(String imgPath, HashMap<String, String> options) {
+    public JSONObject basicAccurateGeneral(String image, HashMap<String, String> options) {
         try {
-            byte[] imgData = Util.readFileByBytes(imgPath);
+            byte[] imgData = Util.readFileByBytes(image);
             return basicAccurateGeneral(imgData, options);
         } catch (IOException e) {
             e.printStackTrace();
@@ -392,160 +153,180 @@ public class AipOcr extends BaseClient {
     }
 
     /**
-     * 基础通用文字识别高精度版
-     * @param imgData 图片原始文件数据
-     * @param options 接口可选参数
-     *                detect_direction : true/false
-     *                language_type :
-     *                mask : 表示mask区域的黑白灰度图片，白色代表选中, base64编码
-     *                detect_language: true/false
-     * @return  Json格式的服务器返回值
+     * 通用文字识别（含位置信息版）接口   
+     * 用户向服务请求识别某张图中的所有文字，并返回文字在图中的位置信息。
+     *
+     * @param image - 二进制图像数据
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   recognize_granularity 是否定位单字符位置，big：不定位单字符位置，默认值；small：定位单字符位置
+     *   language_type 识别语言类型，默认为CHN_ENG。可选值包括：<br/>- CHN_ENG：中英文混合；<br/>- ENG：英文；<br/>- POR：葡萄牙语；<br/>- FRE：法语；<br/>- GER：德语；<br/>- ITA：意大利语；<br/>- SPA：西班牙语；<br/>- RUS：俄语；<br/>- JAP：日语；<br/>- KOR：韩语；
+     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br/>- true：检测朝向；<br/>- false：不检测朝向。
+     *   detect_language 是否检测语言，默认不检测。当前支持（中文、英语、日语、韩语）
+     *   vertexes_location 是否返回文字外接多边形顶点位置，不支持单字位置。默认为false
+     *   probability 是否返回识别结果中每一行的置信度
+     * @return JSONObject
      */
-    public JSONObject basicAccurateGeneral(byte[] imgData, HashMap<String, String> options) {
+    public JSONObject general(byte[] image, HashMap<String, String> options) {
         AipRequest request = new AipRequest();
-
         preOperation(request);
-        // 添加内容到request
-        String base64Content = Base64Util.encode(imgData);
-
+        
+        String base64Content = Base64Util.encode(image);
         request.addBody("image", base64Content);
-        request.addBody(options);
-        request.setUri(OcrConsts.OCR_BASIC_ACCURATE_URL);
+        if (options != null) {
+            request.addBody(options);
+        }
+        request.setUri(OcrConsts.GENERAL);
         postOperation(request);
-
         return requestServer(request);
     }
 
-    // 网图识别接口
     /**
-     * 网图识别接口
-     * @param imgPath 图片路径
-     * @param options 接口可选参数
-     *                detect_direction : true/false
-     *                language_type :
-     *                <p>识别语言类型，若不传则默认为CHN_ENG。
-     *                  可选值包括：CHN_ENG - 中英文混合；
-     *                  ENG - 英文；
-     *                  POR - 葡萄牙语；
-     *                  FRE - 法语；
-     *                  GER - 德语；
-     *                  ITA - 意大利语；
-     *                  SPA - 西班牙语；
-     *                  RUS - 俄语；
-     *                  JAP - 日语</p>
-     *                mask : 表示mask区域的黑白灰度图片，白色代表选中, base64编码
-     *                detect_language: true/false
-     * @return  Json格式的服务器返回值
+     * 通用文字识别（含位置信息版）接口
+     * 用户向服务请求识别某张图中的所有文字，并返回文字在图中的位置信息。
+     *
+     * @param image - 本地图片路径
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   recognize_granularity 是否定位单字符位置，big：不定位单字符位置，默认值；small：定位单字符位置
+     *   language_type 识别语言类型，默认为CHN_ENG。可选值包括：<br/>- CHN_ENG：中英文混合；<br/>- ENG：英文；<br/>- POR：葡萄牙语；<br/>- FRE：法语；<br/>- GER：德语；<br/>- ITA：意大利语；<br/>- SPA：西班牙语；<br/>- RUS：俄语；<br/>- JAP：日语；<br/>- KOR：韩语；
+     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br/>- true：检测朝向；<br/>- false：不检测朝向。
+     *   detect_language 是否检测语言，默认不检测。当前支持（中文、英语、日语、韩语）
+     *   vertexes_location 是否返回文字外接多边形顶点位置，不支持单字位置。默认为false
+     *   probability 是否返回识别结果中每一行的置信度
+     * @return JSONObject
      */
-    public JSONObject webImage(String imgPath, HashMap<String, String> options) {
+    public JSONObject general(String image, HashMap<String, String> options) {
         try {
-            byte[] imgData = Util.readFileByBytes(imgPath);
-            return webImage(imgData, options);
+            byte[] imgData = Util.readFileByBytes(image);
+            return general(imgData, options);
         } catch (IOException e) {
             e.printStackTrace();
             return AipError.IMAGE_READ_ERROR.toJsonResult();
         }
     }
 
+    /**
+     * 通用文字识别（含位置信息版）接口   
+     * 用户向服务请求识别某张图中的所有文字，并返回文字在图中的位置信息。
+     *
+     * @param url - 图片完整URL，URL长度不超过1024字节，URL对应的图片base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式，当image字段存在时url字段失效
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   recognize_granularity 是否定位单字符位置，big：不定位单字符位置，默认值；small：定位单字符位置
+     *   language_type 识别语言类型，默认为CHN_ENG。可选值包括：<br/>- CHN_ENG：中英文混合；<br/>- ENG：英文；<br/>- POR：葡萄牙语；<br/>- FRE：法语；<br/>- GER：德语；<br/>- ITA：意大利语；<br/>- SPA：西班牙语；<br/>- RUS：俄语；<br/>- JAP：日语；<br/>- KOR：韩语；
+     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br/>- true：检测朝向；<br/>- false：不检测朝向。
+     *   detect_language 是否检测语言，默认不检测。当前支持（中文、英语、日语、韩语）
+     *   vertexes_location 是否返回文字外接多边形顶点位置，不支持单字位置。默认为false
+     *   probability 是否返回识别结果中每一行的置信度
+     * @return JSONObject
+     */
+    public JSONObject generalUrl(String url, HashMap<String, String> options) {
+        AipRequest request = new AipRequest();
+        preOperation(request);
+        
+        request.addBody("url", url);
+        if (options != null) {
+            request.addBody(options);
+        }
+        request.setUri(OcrConsts.GENERAL);
+        postOperation(request);
+        return requestServer(request);
+    }
 
     /**
-     * 网图识别接口
-     * @param imgData 图片二进制数据
-     * @param options 接口可选参数
-     *                detect_direction : true/false
-     *                language_type :
-     *                <p>识别语言类型，若不传则默认为CHN_ENG。
-     *                  可选值包括：CHN_ENG - 中英文混合；
-     *                  ENG - 英文；
-     *                  POR - 葡萄牙语；
-     *                  FRE - 法语；
-     *                  GER - 德语；
-     *                  ITA - 意大利语；
-     *                  SPA - 西班牙语；
-     *                  RUS - 俄语；
-     *                  JAP - 日语</p>
-     *                mask : 表示mask区域的黑白灰度图片，白色代表选中, base64编码
-     *                detect_language: true/false
-     * @return  Json格式的服务器返回值
+     * 通用文字识别（含位置高精度版）接口   
+     * 用户向服务请求识别某张图中的所有文字，相对于通用文字识别（含位置信息版）该产品精度更高，但是没有免费额度，如果您需要使用该产品，您可以在产品页面点击合作咨询或加入文字识别的官网QQ群：631977213向管理员申请试用。
+     *
+     * @param image - 二进制图像数据
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   recognize_granularity 是否定位单字符位置，big：不定位单字符位置，默认值；small：定位单字符位置
+     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br/>- true：检测朝向；<br/>- false：不检测朝向。
+     *   vertexes_location 是否返回文字外接多边形顶点位置，不支持单字位置。默认为false
+     *   probability 是否返回识别结果中每一行的置信度
+     * @return JSONObject
      */
-    public JSONObject webImage(byte[] imgData, HashMap<String, String> options) {
+    public JSONObject accurateGeneral(byte[] image, HashMap<String, String> options) {
         AipRequest request = new AipRequest();
-        // check param
-        JSONObject checkRet = checkParam(imgData);
-        if (!"0".equals(checkRet.getString("error_code"))) {
-            return checkRet;
-        }
         preOperation(request);
-        // 添加内容到request
-        String base64Content = Base64Util.encode(imgData);
-        // check size
-        if (base64Content.length() > OcrConsts.OCR_MAX_IMAGE_SIZE) {
-            return AipError.IMAGE_SIZE_ERROR.toJsonResult();
-        }
+        
+        String base64Content = Base64Util.encode(image);
         request.addBody("image", base64Content);
-        request.addBody(options);
-        request.setUri(OcrConsts.OCR_WEB_IMAGE_URL);
+        if (options != null) {
+            request.addBody(options);
+        }
+        request.setUri(OcrConsts.ACCURATE);
         postOperation(request);
-
         return requestServer(request);
     }
 
     /**
-     * 网图识别接口
-     * @param imgUrl 图片链接，需要有完整协议头，如http://some.com
-     * @param options 接口可选参数
-     *                detect_direction : true/false
-     *                language_type :
-     *                <p>识别语言类型，若不传则默认为CHN_ENG。
-     *                  可选值包括：CHN_ENG - 中英文混合；
-     *                  ENG - 英文；
-     *                  POR - 葡萄牙语；
-     *                  FRE - 法语；
-     *                  GER - 德语；
-     *                  ITA - 意大利语；
-     *                  SPA - 西班牙语；
-     *                  RUS - 俄语；
-     *                  JAP - 日语</p>
-     *                mask : 表示mask区域的黑白灰度图片，白色代表选中, base64编码
-     *                detect_language: true/false
-     * @return  Json格式的服务器返回值
+     * 通用文字识别（含位置高精度版）接口
+     * 用户向服务请求识别某张图中的所有文字，相对于通用文字识别（含位置信息版）该产品精度更高，但是没有免费额度，如果您需要使用该产品，您可以在产品页面点击合作咨询或加入文字识别的官网QQ群：631977213向管理员申请试用。
+     *
+     * @param image - 本地图片路径
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   recognize_granularity 是否定位单字符位置，big：不定位单字符位置，默认值；small：定位单字符位置
+     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br/>- true：检测朝向；<br/>- false：不检测朝向。
+     *   vertexes_location 是否返回文字外接多边形顶点位置，不支持单字位置。默认为false
+     *   probability 是否返回识别结果中每一行的置信度
+     * @return JSONObject
      */
-    public JSONObject webImageUrl(String imgUrl, HashMap<String, String> options) {
-        AipRequest request = new AipRequest();
-
-        preOperation(request);
-        request.addBody("url", imgUrl);
-        request.addBody(options);
-        request.setUri(OcrConsts.OCR_WEB_IMAGE_URL);
-        postOperation(request);
-
-        return requestServer(request);
-    }
-
-    // 生僻字识别接口
-    /**
-     * 生僻字识别接口
-     * @param imgPath 图片路径
-     * @param options 接口可选参数
-     *                detect_direction : true/false
-     *                language_type :
-     *                <p>识别语言类型，若不传则默认为CHN_ENG。
-     *                  可选值包括：CHN_ENG - 中英文混合；
-     *                  ENG - 英文；
-     *                  POR - 葡萄牙语；
-     *                  FRE - 法语；
-     *                  GER - 德语；
-     *                  ITA - 意大利语；
-     *                  SPA - 西班牙语；
-     *                  RUS - 俄语；
-     *                  JAP - 日语</p>
-     *                mask : 表示mask区域的黑白灰度图片，白色代表选中, base64编码
-     *                detect_language: true/false
-     * @return  Json格式的服务器返回值
-     */
-    public JSONObject enhancedGeneral(String imgPath, HashMap<String, String> options) {
+    public JSONObject accurateGeneral(String image, HashMap<String, String> options) {
         try {
-            byte[] imgData = Util.readFileByBytes(imgPath);
+            byte[] imgData = Util.readFileByBytes(image);
+            return accurateGeneral(imgData, options);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return AipError.IMAGE_READ_ERROR.toJsonResult();
+        }
+    }
+
+    /**
+     * 通用文字识别（含生僻字版）接口   
+     * 某些场景中，图片中的中文不光有常用字，还包含了生僻字，这时用户需要对该图进行文字识别，应使用通用文字识别（含生僻字版）。
+     *
+     * @param image - 二进制图像数据
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   language_type 识别语言类型，默认为CHN_ENG。可选值包括：<br/>- CHN_ENG：中英文混合；<br/>- ENG：英文；<br/>- POR：葡萄牙语；<br/>- FRE：法语；<br/>- GER：德语；<br/>- ITA：意大利语；<br/>- SPA：西班牙语；<br/>- RUS：俄语；<br/>- JAP：日语；<br/>- KOR：韩语；
+     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br/>- true：检测朝向；<br/>- false：不检测朝向。
+     *   detect_language 是否检测语言，默认不检测。当前支持（中文、英语、日语、韩语）
+     *   probability 是否返回识别结果中每一行的置信度
+     * @return JSONObject
+     */
+    public JSONObject enhancedGeneral(byte[] image, HashMap<String, String> options) {
+        AipRequest request = new AipRequest();
+        preOperation(request);
+        
+        String base64Content = Base64Util.encode(image);
+        request.addBody("image", base64Content);
+        if (options != null) {
+            request.addBody(options);
+        }
+        request.setUri(OcrConsts.GENERAL_ENHANCED);
+        postOperation(request);
+        return requestServer(request);
+    }
+
+    /**
+     * 通用文字识别（含生僻字版）接口
+     * 某些场景中，图片中的中文不光有常用字，还包含了生僻字，这时用户需要对该图进行文字识别，应使用通用文字识别（含生僻字版）。
+     *
+     * @param image - 本地图片路径
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   language_type 识别语言类型，默认为CHN_ENG。可选值包括：<br/>- CHN_ENG：中英文混合；<br/>- ENG：英文；<br/>- POR：葡萄牙语；<br/>- FRE：法语；<br/>- GER：德语；<br/>- ITA：意大利语；<br/>- SPA：西班牙语；<br/>- RUS：俄语；<br/>- JAP：日语；<br/>- KOR：韩语；
+     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br/>- true：检测朝向；<br/>- false：不检测朝向。
+     *   detect_language 是否检测语言，默认不检测。当前支持（中文、英语、日语、韩语）
+     *   probability 是否返回识别结果中每一行的置信度
+     * @return JSONObject
+     */
+    public JSONObject enhancedGeneral(String image, HashMap<String, String> options) {
+        try {
+            byte[] imgData = Util.readFileByBytes(image);
             return enhancedGeneral(imgData, options);
         } catch (IOException e) {
             e.printStackTrace();
@@ -553,85 +334,230 @@ public class AipOcr extends BaseClient {
         }
     }
 
+    /**
+     * 通用文字识别（含生僻字版）接口   
+     * 某些场景中，图片中的中文不光有常用字，还包含了生僻字，这时用户需要对该图进行文字识别，应使用通用文字识别（含生僻字版）。
+     *
+     * @param url - 图片完整URL，URL长度不超过1024字节，URL对应的图片base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式，当image字段存在时url字段失效
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   language_type 识别语言类型，默认为CHN_ENG。可选值包括：<br/>- CHN_ENG：中英文混合；<br/>- ENG：英文；<br/>- POR：葡萄牙语；<br/>- FRE：法语；<br/>- GER：德语；<br/>- ITA：意大利语；<br/>- SPA：西班牙语；<br/>- RUS：俄语；<br/>- JAP：日语；<br/>- KOR：韩语；
+     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br/>- true：检测朝向；<br/>- false：不检测朝向。
+     *   detect_language 是否检测语言，默认不检测。当前支持（中文、英语、日语、韩语）
+     *   probability 是否返回识别结果中每一行的置信度
+     * @return JSONObject
+     */
+    public JSONObject enhancedGeneralUrl(String url, HashMap<String, String> options) {
+        AipRequest request = new AipRequest();
+        preOperation(request);
+        
+        request.addBody("url", url);
+        if (options != null) {
+            request.addBody(options);
+        }
+        request.setUri(OcrConsts.GENERAL_ENHANCED);
+        postOperation(request);
+        return requestServer(request);
+    }
 
     /**
-     * 生僻字识别接口
-     * @param imgData 图片二进制数据
-     * @param options 接口可选参数
-     *                detect_direction : true/false
-     *                language_type :
-     *                <p>识别语言类型，若不传则默认为CHN_ENG。
-     *                  可选值包括：CHN_ENG - 中英文混合；
-     *                  ENG - 英文；
-     *                  POR - 葡萄牙语；
-     *                  FRE - 法语；
-     *                  GER - 德语；
-     *                  ITA - 意大利语；
-     *                  SPA - 西班牙语；
-     *                  RUS - 俄语；
-     *                  JAP - 日语</p>
-     *                mask : 表示mask区域的黑白灰度图片，白色代表选中, base64编码
-     *                detect_language: true/false
-     * @return  Json格式的服务器返回值
+     * 网络图片文字识别接口   
+     * 用户向服务请求识别一些网络上背景复杂，特殊字体的文字。
+     *
+     * @param image - 二进制图像数据
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br/>- true：检测朝向；<br/>- false：不检测朝向。
+     *   detect_language 是否检测语言，默认不检测。当前支持（中文、英语、日语、韩语）
+     * @return JSONObject
      */
-    public JSONObject enhancedGeneral(byte[] imgData, HashMap<String, String> options) {
+    public JSONObject webImage(byte[] image, HashMap<String, String> options) {
         AipRequest request = new AipRequest();
-        // check param
-        JSONObject checkRet = checkParam(imgData);
-        if (!"0".equals(checkRet.getString("error_code"))) {
-            return checkRet;
-        }
         preOperation(request);
-        // 添加内容到request
-        String base64Content = Base64Util.encode(imgData);
-        // check size
-        if (base64Content.length() > OcrConsts.OCR_MAX_IMAGE_SIZE) {
-            return AipError.IMAGE_SIZE_ERROR.toJsonResult();
-        }
+        
+        String base64Content = Base64Util.encode(image);
         request.addBody("image", base64Content);
-        request.addBody(options);
-        request.setUri(OcrConsts.OCR_ENHANCED_GENERAL_URL);
+        if (options != null) {
+            request.addBody(options);
+        }
+        request.setUri(OcrConsts.WEB_IMAGE);
         postOperation(request);
-
         return requestServer(request);
     }
 
     /**
-     * 生僻字识别接口
-     * @param imgUrl 图片链接，需要有完整协议头，如http://some.com
-     * @param options 接口可选参数
-     *                detect_direction : true/false
-     *                language_type :
-     *                <p>识别语言类型，若不传则默认为CHN_ENG。
-     *                  可选值包括：CHN_ENG - 中英文混合；
-     *                  ENG - 英文；
-     *                  POR - 葡萄牙语；
-     *                  FRE - 法语；
-     *                  GER - 德语；
-     *                  ITA - 意大利语；
-     *                  SPA - 西班牙语；
-     *                  RUS - 俄语；
-     *                  JAP - 日语</p>
-     *                mask : 表示mask区域的黑白灰度图片，白色代表选中, base64编码
-     *                detect_language: true/false
-     * @return  Json格式的服务器返回值
+     * 网络图片文字识别接口
+     * 用户向服务请求识别一些网络上背景复杂，特殊字体的文字。
+     *
+     * @param image - 本地图片路径
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br/>- true：检测朝向；<br/>- false：不检测朝向。
+     *   detect_language 是否检测语言，默认不检测。当前支持（中文、英语、日语、韩语）
+     * @return JSONObject
      */
-    public JSONObject enhancedGeneralUrl(String imgUrl, HashMap<String, String> options) {
+    public JSONObject webImage(String image, HashMap<String, String> options) {
+        try {
+            byte[] imgData = Util.readFileByBytes(image);
+            return webImage(imgData, options);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return AipError.IMAGE_READ_ERROR.toJsonResult();
+        }
+    }
+
+    /**
+     * 网络图片文字识别接口   
+     * 用户向服务请求识别一些网络上背景复杂，特殊字体的文字。
+     *
+     * @param url - 图片完整URL，URL长度不超过1024字节，URL对应的图片base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式，当image字段存在时url字段失效
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br/>- true：检测朝向；<br/>- false：不检测朝向。
+     *   detect_language 是否检测语言，默认不检测。当前支持（中文、英语、日语、韩语）
+     * @return JSONObject
+     */
+    public JSONObject webImageUrl(String url, HashMap<String, String> options) {
         AipRequest request = new AipRequest();
-
         preOperation(request);
-
-        request.addBody("url", imgUrl);
-        request.addBody(options);
-        request.setUri(OcrConsts.OCR_ENHANCED_GENERAL_URL);
+        
+        request.addBody("url", url);
+        if (options != null) {
+            request.addBody(options);
+        }
+        request.setUri(OcrConsts.WEB_IMAGE);
         postOperation(request);
-
         return requestServer(request);
     }
 
-    public JSONObject drivingLicense(String imgPath, HashMap<String, String> options) {
+    /**
+     * 身份证识别接口   
+     * 用户向服务请求识别身份证，身份证识别包括正面和背面。
+     *
+     * @param image - 二进制图像数据
+     * @param idCardSide - front：身份证正面；back：身份证背面
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br/>- true：检测朝向；<br/>- false：不检测朝向。
+     *   detect_risk 是否开启身份证风险类型(身份证复印件、临时身份证、身份证翻拍、修改过的身份证)功能，默认不开启，即：false。可选值:true-开启；false-不开启
+     * @return JSONObject
+     */
+    public JSONObject idcard(byte[] image, String idCardSide, HashMap<String, String> options) {
+        AipRequest request = new AipRequest();
+        preOperation(request);
+        
+        String base64Content = Base64Util.encode(image);
+        request.addBody("image", base64Content);
+        
+        request.addBody("id_card_side", idCardSide);
+        if (options != null) {
+            request.addBody(options);
+        }
+        request.setUri(OcrConsts.IDCARD);
+        postOperation(request);
+        return requestServer(request);
+    }
+
+    /**
+     * 身份证识别接口
+     * 用户向服务请求识别身份证，身份证识别包括正面和背面。
+     *
+     * @param image - 本地图片路径* @param idCardSide - front：身份证正面；back：身份证背面
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br/>- true：检测朝向；<br/>- false：不检测朝向。
+     *   detect_risk 是否开启身份证风险类型(身份证复印件、临时身份证、身份证翻拍、修改过的身份证)功能，默认不开启，即：false。可选值:true-开启；false-不开启
+     * @return JSONObject
+     */
+    public JSONObject idcard(String image, String idCardSide, HashMap<String, String> options) {
         try {
-            byte[] imgData = Util.readFileByBytes(imgPath);
+            byte[] imgData = Util.readFileByBytes(image);
+            return idcard(imgData, idCardSide, options);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return AipError.IMAGE_READ_ERROR.toJsonResult();
+        }
+    }
+
+    /**
+     * 银行卡识别接口   
+     * 识别银行卡并返回卡号和发卡行。
+     *
+     * @param image - 二进制图像数据
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     * @return JSONObject
+     */
+    public JSONObject bankcard(byte[] image, HashMap<String, String> options) {
+        AipRequest request = new AipRequest();
+        preOperation(request);
+        
+        String base64Content = Base64Util.encode(image);
+        request.addBody("image", base64Content);
+        if (options != null) {
+            request.addBody(options);
+        }
+        request.setUri(OcrConsts.BANKCARD);
+        postOperation(request);
+        return requestServer(request);
+    }
+
+    /**
+     * 银行卡识别接口
+     * 识别银行卡并返回卡号和发卡行。
+     *
+     * @param image - 本地图片路径
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     * @return JSONObject
+     */
+    public JSONObject bankcard(String image, HashMap<String, String> options) {
+        try {
+            byte[] imgData = Util.readFileByBytes(image);
+            return bankcard(imgData, options);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return AipError.IMAGE_READ_ERROR.toJsonResult();
+        }
+    }
+
+    /**
+     * 驾驶证识别接口   
+     * 对机动车驾驶证所有关键字段进行识别
+     *
+     * @param image - 二进制图像数据
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br/>- true：检测朝向；<br/>- false：不检测朝向。
+     * @return JSONObject
+     */
+    public JSONObject drivingLicense(byte[] image, HashMap<String, String> options) {
+        AipRequest request = new AipRequest();
+        preOperation(request);
+        
+        String base64Content = Base64Util.encode(image);
+        request.addBody("image", base64Content);
+        if (options != null) {
+            request.addBody(options);
+        }
+        request.setUri(OcrConsts.DRIVING_LICENSE);
+        postOperation(request);
+        return requestServer(request);
+    }
+
+    /**
+     * 驾驶证识别接口
+     * 对机动车驾驶证所有关键字段进行识别
+     *
+     * @param image - 本地图片路径
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br/>- true：检测朝向；<br/>- false：不检测朝向。
+     * @return JSONObject
+     */
+    public JSONObject drivingLicense(String image, HashMap<String, String> options) {
+        try {
+            byte[] imgData = Util.readFileByBytes(image);
             return drivingLicense(imgData, options);
         } catch (IOException e) {
             e.printStackTrace();
@@ -639,25 +565,45 @@ public class AipOcr extends BaseClient {
         }
     }
 
-    public JSONObject drivingLicense(byte[] imgData, HashMap<String, String> options) {
+    /**
+     * 行驶证识别接口   
+     * 对机动车行驶证正本所有关键字段进行识别
+     *
+     * @param image - 二进制图像数据
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br/>- true：检测朝向；<br/>- false：不检测朝向。
+     *   accuracy normal 使用快速服务，1200ms左右时延；缺省或其它值使用高精度服务，1600ms左右时延
+     * @return JSONObject
+     */
+    public JSONObject vehicleLicense(byte[] image, HashMap<String, String> options) {
         AipRequest request = new AipRequest();
-
         preOperation(request);
-        // 添加内容到request
-        String base64Content = Base64Util.encode(imgData);
+        
+        String base64Content = Base64Util.encode(image);
         request.addBody("image", base64Content);
         if (options != null) {
             request.addBody(options);
         }
-        request.setUri(OcrConsts.DRIVING_LICENSE_URL);
+        request.setUri(OcrConsts.VEHICLE_LICENSE);
         postOperation(request);
-
         return requestServer(request);
     }
 
-    public JSONObject vehicleLicense(String imgPath, HashMap<String, String> options) {
+    /**
+     * 行驶证识别接口
+     * 对机动车行驶证正本所有关键字段进行识别
+     *
+     * @param image - 本地图片路径
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br/>- true：检测朝向；<br/>- false：不检测朝向。
+     *   accuracy normal 使用快速服务，1200ms左右时延；缺省或其它值使用高精度服务，1600ms左右时延
+     * @return JSONObject
+     */
+    public JSONObject vehicleLicense(String image, HashMap<String, String> options) {
         try {
-            byte[] imgData = Util.readFileByBytes(imgPath);
+            byte[] imgData = Util.readFileByBytes(image);
             return vehicleLicense(imgData, options);
         } catch (IOException e) {
             e.printStackTrace();
@@ -665,31 +611,44 @@ public class AipOcr extends BaseClient {
         }
     }
 
-    public JSONObject vehicleLicense(byte[] imgData, HashMap<String, String> options) {
+    /**
+     * 车牌识别接口   
+     * 识别机动车车牌，并返回签发地和号牌。
+     *
+     * @param image - 二进制图像数据
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   multi_detect 是否检测多张车牌，默认为false，当置为true的时候可以对一张图片内的多张车牌进行识别
+     * @return JSONObject
+     */
+    public JSONObject plateLicense(byte[] image, HashMap<String, String> options) {
         AipRequest request = new AipRequest();
-
         preOperation(request);
-        // 添加内容到request
-        String base64Content = Base64Util.encode(imgData);
+        
+        String base64Content = Base64Util.encode(image);
         request.addBody("image", base64Content);
         if (options != null) {
             request.addBody(options);
         }
-        request.setUri(OcrConsts.VEHICLE_LICENSE_URL);
+        request.setUri(OcrConsts.LICENSE_PLATE);
         postOperation(request);
-
         return requestServer(request);
     }
 
     /**
      * 车牌识别接口
-     * @param imgPath 图片路径
-     * @return json识别结果
+     * 识别机动车车牌，并返回签发地和号牌。
+     *
+     * @param image - 本地图片路径
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   multi_detect 是否检测多张车牌，默认为false，当置为true的时候可以对一张图片内的多张车牌进行识别
+     * @return JSONObject
      */
-    public JSONObject plateLicense(String imgPath) {
+    public JSONObject plateLicense(String image, HashMap<String, String> options) {
         try {
-            byte[] imgData = Util.readFileByBytes(imgPath);
-            return plateLicense(imgData);
+            byte[] imgData = Util.readFileByBytes(image);
+            return plateLicense(imgData, options);
         } catch (IOException e) {
             e.printStackTrace();
             return AipError.IMAGE_READ_ERROR.toJsonResult();
@@ -697,70 +656,40 @@ public class AipOcr extends BaseClient {
     }
 
     /**
-     * 车牌识别接口
-     * @param imgData 图片二进制数据
-     * @return json识别结果
+     * 营业执照识别接口   
+     * 识别营业执照，并返回关键字段的值，包括单位名称、法人、地址、有效期、证件编号、社会信用代码等。
+     *
+     * @param image - 二进制图像数据
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     * @return JSONObject
      */
-    public JSONObject plateLicense(byte[] imgData) {
+    public JSONObject businessLicense(byte[] image, HashMap<String, String> options) {
         AipRequest request = new AipRequest();
-
         preOperation(request);
-        // 添加内容到request
-        String base64Content = Base64Util.encode(imgData);
-        request.addBody("image", base64Content);
-        request.setUri(OcrConsts.OCR_LICENSE_PLATE_URL);
-        postOperation(request);
-
-        return requestServer(request);
-    }
-
-    /**
-     * 票据识别接口
-     * @param imgPath 图片路径
-     * @param options 可选参数
-     * @return json识别结果
-     */
-    public JSONObject receipt(String imgPath, HashMap<String, String> options) {
-        try {
-            byte[] imgData = Util.readFileByBytes(imgPath);
-            return receipt(imgData, options);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return AipError.IMAGE_READ_ERROR.toJsonResult();
-        }
-    }
-
-    /**
-     * 票据识别接口
-     * @param imgData 图片二进制数据
-     * @param options 可选参数
-     * @return json识别结果
-     */
-    public JSONObject receipt(byte[] imgData, HashMap<String, String> options) {
-        AipRequest request = new AipRequest();
-
-        preOperation(request);
-        // 添加内容到request
-        String base64Content = Base64Util.encode(imgData);
+        
+        String base64Content = Base64Util.encode(image);
         request.addBody("image", base64Content);
         if (options != null) {
             request.addBody(options);
         }
-        request.setUri(OcrConsts.OCR_RECEIPT_URL);
+        request.setUri(OcrConsts.BUSINESS_LICENSE);
         postOperation(request);
-
         return requestServer(request);
     }
 
     /**
      * 营业执照识别接口
-     * @param imgPath 图片路径
-     * @param options 可选参数
-     * @return json识别结果
+     * 识别营业执照，并返回关键字段的值，包括单位名称、法人、地址、有效期、证件编号、社会信用代码等。
+     *
+     * @param image - 本地图片路径
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     * @return JSONObject
      */
-    public JSONObject businessLicense(String imgPath, HashMap<String, String> options) {
+    public JSONObject businessLicense(String image, HashMap<String, String> options) {
         try {
-            byte[] imgData = Util.readFileByBytes(imgPath);
+            byte[] imgData = Util.readFileByBytes(image);
             return businessLicense(imgData, options);
         } catch (IOException e) {
             e.printStackTrace();
@@ -769,36 +698,49 @@ public class AipOcr extends BaseClient {
     }
 
     /**
-     * 营业执照识别接口
-     * @param imgData 图片二进制数据
-     * @param options 可选参数
-     * @return json识别结果
+     * 通用票据识别接口   
+     * 用户向服务请求识别医疗票据、发票、的士票、保险保单等票据类图片中的所有文字，并返回文字在图中的位置信息。
+     *
+     * @param image - 二进制图像数据
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   recognize_granularity 是否定位单字符位置，big：不定位单字符位置，默认值；small：定位单字符位置
+     *   probability 是否返回识别结果中每一行的置信度
+     *   accuracy normal 使用快速服务，1200ms左右时延；缺省或其它值使用高精度服务，1600ms左右时延
+     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br/>- true：检测朝向；<br/>- false：不检测朝向。
+     * @return JSONObject
      */
-    public JSONObject businessLicense(byte[] imgData, HashMap<String, String> options) {
+    public JSONObject receipt(byte[] image, HashMap<String, String> options) {
         AipRequest request = new AipRequest();
-
         preOperation(request);
-        // 添加内容到request
-        String base64Content = Base64Util.encode(imgData);
+        
+        String base64Content = Base64Util.encode(image);
         request.addBody("image", base64Content);
         if (options != null) {
             request.addBody(options);
         }
-        request.setUri(OcrConsts.OCR_BUSINESS_LICENSE_URL);
+        request.setUri(OcrConsts.RECEIPT);
         postOperation(request);
-
         return requestServer(request);
     }
 
     /**
-     * 表格文字识别接口。（异步）
-     * @param imgPath 识别图片路径
-     * @return json对象，包含request_id
+     * 通用票据识别接口
+     * 用户向服务请求识别医疗票据、发票、的士票、保险保单等票据类图片中的所有文字，并返回文字在图中的位置信息。
+     *
+     * @param image - 本地图片路径
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   recognize_granularity 是否定位单字符位置，big：不定位单字符位置，默认值；small：定位单字符位置
+     *   probability 是否返回识别结果中每一行的置信度
+     *   accuracy normal 使用快速服务，1200ms左右时延；缺省或其它值使用高精度服务，1600ms左右时延
+     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br/>- true：检测朝向；<br/>- false：不检测朝向。
+     * @return JSONObject
      */
-    public JSONObject tableRecognitionAsync(String imgPath) {
+    public JSONObject receipt(String image, HashMap<String, String> options) {
         try {
-            byte[] imgData = Util.readFileByBytes(imgPath);
-            return tableRecognitionAsync(imgData);
+            byte[] imgData = Util.readFileByBytes(image);
+            return receipt(imgData, options);
         } catch (IOException e) {
             e.printStackTrace();
             return AipError.IMAGE_READ_ERROR.toJsonResult();
@@ -806,20 +748,67 @@ public class AipOcr extends BaseClient {
     }
 
     /**
-     * 表格文字识别接口。（异步）
-     * @param imgData 识别图片二进制数据
-     * @return json对象，包含request_id
+     * 表格文字识别接口   
+     * 自动识别表格线及表格内容，结构化输出表头、表尾及每个单元格的文字内容。表格文字识别接口为异步接口，分为两个API：提交请求接口、获取结果接口。
+     *
+     * @param image - 二进制图像数据
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     * @return JSONObject
      */
-    public JSONObject tableRecognitionAsync(byte[] imgData) {
+    public JSONObject tableRecognitionAsync(byte[] image, HashMap<String, String> options) {
         AipRequest request = new AipRequest();
         preOperation(request);
-
-        String base64Content = Base64Util.encode(imgData);
+        
+        String base64Content = Base64Util.encode(image);
         request.addBody("image", base64Content);
-
-        request.setUri(OcrConsts.OCR_TABLE_URL);
+        if (options != null) {
+            request.addBody(options);
+        }
+        request.setUri(OcrConsts.TABLE_RECOGNIZE);
         postOperation(request);
+        return requestServer(request);
+    }
 
+    /**
+     * 表格文字识别接口
+     * 自动识别表格线及表格内容，结构化输出表头、表尾及每个单元格的文字内容。表格文字识别接口为异步接口，分为两个API：提交请求接口、获取结果接口。
+     *
+     * @param image - 本地图片路径
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     * @return JSONObject
+     */
+    public JSONObject tableRecognitionAsync(String image, HashMap<String, String> options) {
+        try {
+            byte[] imgData = Util.readFileByBytes(image);
+            return tableRecognitionAsync(imgData, options);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return AipError.IMAGE_READ_ERROR.toJsonResult();
+        }
+    }
+
+    /**
+     * 表格识别结果接口   
+     * 获取表格文字识别结果
+     *
+     * @param requestId - 发送表格文字识别请求时返回的request id
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   result_type 期望获取结果的类型，取值为“excel”时返回xls文件的地址，取值为“json”时返回json格式的字符串,默认为”excel”
+     * @return JSONObject
+     */
+    public JSONObject tableResultGet(String requestId, HashMap<String, String> options) {
+        AipRequest request = new AipRequest();
+        preOperation(request);
+        
+        request.addBody("request_id", requestId);
+        if (options != null) {
+            request.addBody(options);
+        }
+        request.setUri(OcrConsts.TABLE_RESULT_GET);
+        postOperation(request);
         return requestServer(request);
     }
 
@@ -847,7 +836,7 @@ public class AipOcr extends BaseClient {
         preOperation(request);
         request.addBody("request_id", requestId);
         request.addBody("result_type", resultType);
-        request.setUri(OcrConsts.OCR_TABLE_RESULT_URL);
+        request.setUri(OcrConsts.TABLE_RESULT_GET);
         postOperation(request);
         return requestServer(request);
     }
@@ -906,7 +895,7 @@ public class AipOcr extends BaseClient {
 
     // 表格识别接口包装同步接口，负责发起识别请求并等待结果生成。
     private JSONObject tableRecSyncHelper(byte[] imgData, long timeout, String resultType) {
-        JSONObject res = tableRecognitionAsync(imgData);
+        JSONObject res = tableRecognitionAsync(imgData, null);
         if (res.has("error_code")) {
             return res;
         }
@@ -939,27 +928,5 @@ public class AipOcr extends BaseClient {
         }
     }
 
-    private JSONObject checkParam(byte[] imgData) {
-        // side length
-        HashMap<String, Integer> imgInfo = ImageUtil.getImageInfoByBytes(imgData);
-        if (imgInfo == null) {
-            return AipError.IMAGE_READ_ERROR.toJsonResult();
-        }
-        Integer width = imgInfo.get("width");
-        Integer height = imgInfo.get("height");
-        if (width < OcrConsts.OCR_MIN_IMAGE_SIDE_LENGTH
-                || width > OcrConsts.OCR_MAX_IMAGE_SIDE_LENGTH
-                || height < OcrConsts.OCR_MIN_IMAGE_SIDE_LENGTH
-                || height > OcrConsts.OCR_MAX_IMAGE_SIDE_LENGTH) {
-            return AipError.IMAGE_LENGTH_ERROR.toJsonResult();
-        }
 
-        // image format
-        String format = ImageUtil.getImageFormatByBytes(imgData);
-        if (!OcrConsts.OCR_SUPPORT_IMAGE_FORMAT.contains(format)) {
-            return AipError.UNSUPPORTED_IMAGE_FORMAT_ERROR.toJsonResult();
-        }
-
-        return AipError.SUCCESS.toJsonResult();
-    }
 }

@@ -36,6 +36,11 @@ public class AipImageCensor extends BaseClient {
         super(appId, aipKey, aipToken);
     }
 
+    /**
+     * 色情识别接口
+     * @param imgPath 本地图片路径
+     * @return JSONObject
+     */
     public JSONObject antiPorn(String imgPath) {
         try {
             byte[] imgData = Util.readFileByBytes(imgPath);
@@ -45,6 +50,11 @@ public class AipImageCensor extends BaseClient {
         }
     }
 
+    /**
+     * 色情识别接口
+     * @param imgData 图片二进制数据
+     * @return JSONObject
+     */
     public JSONObject antiPorn(byte[] imgData) {
         AipRequest request = new AipRequest();
         // check param
@@ -64,6 +74,11 @@ public class AipImageCensor extends BaseClient {
         return requestServer(request);
     }
 
+    /**
+     * GIF色情图像识别
+     * @param imgPath 本地图片路径
+     * @return JSONObject
+     */
     public JSONObject antiPornGif(String imgPath) {
         try {
             byte[] imgData = Util.readFileByBytes(imgPath);
@@ -73,6 +88,11 @@ public class AipImageCensor extends BaseClient {
         }
     }
 
+    /**
+     * GIF色情图像识别
+     * @param imgData 图片二进制数据
+     * @return JSONObject
+     */
     public JSONObject antiPornGif(byte[] imgData) {
         AipRequest request = new AipRequest();
         // check param
@@ -93,6 +113,11 @@ public class AipImageCensor extends BaseClient {
         return requestServer(request);
     }
 
+    /**
+     * 暴恐图像识别
+     * @param imgPath 本地图片路径
+     * @return JSONObject
+     */
     public JSONObject antiTerror(String imgPath) {
         try {
             byte[] imgData = Util.readFileByBytes(imgPath);
@@ -102,6 +127,11 @@ public class AipImageCensor extends BaseClient {
         }
     }
 
+    /**
+     * 暴恐图像识别
+     * @param imgData 图片二进制数据
+     * @return JSONObject
+     */
     public JSONObject antiTerror(byte[] imgData) {
         AipRequest request = new AipRequest();
 
@@ -116,6 +146,14 @@ public class AipImageCensor extends BaseClient {
         return requestServer(request);
     }
 
+    /**
+     * 组合审核接口
+     * @param imgPath 本地图片路径或url
+     * @param type imgPath类型：FILE或URL
+     * @param scenes 需要审核的服务类型
+     * @param options 可选参数
+     * @return JSONObject
+     */
     public JSONObject imageCensorComb(String imgPath, EImgType type,
                                       List<String> scenes, HashMap<String, String> options) {
         if (type == EImgType.FILE) {
@@ -135,6 +173,13 @@ public class AipImageCensor extends BaseClient {
         return imageCensorCombHelper(request, scenes, options);
     }
 
+    /**
+     * 组合审核接口
+     * @param imgData 图片二进制数据
+     * @param scenes 需要审核的服务类型
+     * @param options 可选参数
+     * @return JSONObject
+     */
     public JSONObject imageCensorComb(byte[] imgData, List<String> scenes, HashMap<String, String> options) {
         AipRequest request = new AipRequest();
 
@@ -164,7 +209,13 @@ public class AipImageCensor extends BaseClient {
         return requestServer(request);
     }
 
-
+    /**
+     * 头像审核接口
+     * @param imgPaths 本地图片路径或图片url列表
+     * @param type imgPaths参数类型：FILE或URL
+     * @param options 可选参数
+     * @return JSONObject
+     */
     public JSONObject faceAudit(List<String> imgPaths, EImgType type,
                                 HashMap<String, String> options) {
         if (type == EImgType.FILE) {
@@ -188,6 +239,12 @@ public class AipImageCensor extends BaseClient {
         return faceAuditHelper(request, options);
     }
 
+    /**
+     * 头像审核接口
+     * @param imgData 图片二进制数据数组
+     * @param options 可选参数
+     * @return JSONObject
+     */
     public JSONObject faceAudit(byte[][] imgData, HashMap<String, String> options) {
         AipRequest request = new AipRequest();
         ArrayList<String> buffer = new ArrayList<String>();
@@ -214,6 +271,77 @@ public class AipImageCensor extends BaseClient {
         return requestServer(request);
     }
 
+    /**
+     * 反馈接口
+     * @param reportData 反馈图片识别结果好坏的json数组
+     * @return JSONObject
+     */
+    public JSONObject report(JSONArray reportData) {
+        AipRequest request = new AipRequest();
+        preOperation(request);
+        request.addBody("feedback", reportData);
+        request.setUri(ImageCensorConsts.REPORT_URL);
+        request.setBodyFormat(EBodyFormat.RAW_JSON);
+        request.addHeader(Headers.CONTENT_TYPE, HttpContentType.JSON_DATA);
+        postOperation(request);
+        return requestServer(request);
+    }
+
+
+    /**
+     * 图像审核接口
+     * 本接口除了支持自定义配置外，还对返回结果进行了总体的包装，按照用户在控制台中配置的规则直接返回是否合规，如果不合规则指出具体不合规的内容。
+     * @param image 本地图片路径或图片url
+     * @param type image参数类型：FILE或URL
+     * @param options 可选参数
+     * @return JSONObject
+     */
+    public JSONObject imageCensorUserDefined(String image, EImgType type, HashMap<String, String> options) {
+        if (type == EImgType.FILE) {
+            try {
+                byte[] imgData = Util.readFileByBytes(image);
+                return imageCensorUserDefined(imgData, options);
+            } catch (IOException e) {
+                return AipError.IMAGE_READ_ERROR.toJsonResult();
+            }
+        }
+
+        // url
+        AipRequest request = new AipRequest();
+
+        request.addBody("imgUrl", image);
+
+        return imageCensorUserDefinedHelper(request, options);
+    }
+
+    /**
+     * 图像审核接口
+     * 本接口除了支持自定义配置外，还对返回结果进行了总体的包装，按照用户在控制台中配置的规则直接返回是否合规，如果不合规则指出具体不合规的内容。
+     * @param imgData 图片二进制数据
+     * @param options 可选参数
+     * @return JSONObject
+     */
+    public JSONObject imageCensorUserDefined(byte[] imgData, HashMap<String, String> options) {
+        AipRequest request = new AipRequest();
+
+        String base64Content = Base64Util.encode(imgData);
+        request.addBody("image", base64Content);
+
+        return imageCensorUserDefinedHelper(request, options);
+    }
+
+    private JSONObject imageCensorUserDefinedHelper(AipRequest request, HashMap<String, String> options) {
+        preOperation(request);
+
+        if (options != null) {
+            for (Map.Entry<String, String> entry : options.entrySet()) {
+                request.addBody(entry.getKey(), entry.getValue());
+            }
+        }
+        request.setUri(ImageCensorConsts.USER_DEFINED_URL);
+        postOperation(request);
+        return requestServer(request);
+    }
 
     private JSONObject checkParam(byte[] imgData) {
         // image format

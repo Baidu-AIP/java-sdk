@@ -10,16 +10,21 @@
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
-package com.baidu.aip.kg;
 
+package com.baidu.aip.kg;
 
 public class KnowledgeGraphicConsts {
 
-    static final String KG_GET_ALL_TASKS_URL = "https://aip.baidubce.com/rest/2.0/kg/v1/pie/task_query";
-    static final String KG_GET_TASK_URL = "https://aip.baidubce.com/rest/2.0/kg/v1/pie/task_info";
-    static final String KG_CREATE_TASK_URL = "https://aip.baidubce.com/rest/2.0/kg/v1/pie/task_create";
-    static final String KG_UPDATE_TASK_URL = "https://aip.baidubce.com/rest/2.0/kg/v1/pie/task_update";
-    static final String KG_START_TASK_URL = "https://aip.baidubce.com/rest/2.0/kg/v1/pie/task_start";
-    static final String KG_TASK_STATUS_URL = "https://aip.baidubce.com/rest/2.0/kg/v1/pie/task_status";
+    static final String CREATE_TASK = "https://aip.baidubce.com/rest/2.0/kg/v1/pie/task_create";
+
+    static final String UPDATE_TASK = "https://aip.baidubce.com/rest/2.0/kg/v1/pie/task_update";
+
+    static final String TASK_INFO = "https://aip.baidubce.com/rest/2.0/kg/v1/pie/task_info";
+
+    static final String TASK_QUERY = "https://aip.baidubce.com/rest/2.0/kg/v1/pie/task_query";
+
+    static final String TASK_START = "https://aip.baidubce.com/rest/2.0/kg/v1/pie/task_start";
+
+    static final String TASK_STATUS = "https://aip.baidubce.com/rest/2.0/kg/v1/pie/task_status";
 
 }
