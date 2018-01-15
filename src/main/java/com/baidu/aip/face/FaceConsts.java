@@ -27,6 +27,9 @@ public class FaceConsts {
     static final String VERIFY =
             "https://aip.baidubce.com/rest/2.0/face/v2/verify";
 
+    static final String MULTI_IDENTIFY =
+            "https://aip.baidubce.com/rest/2.0/face/v2/multi-identify";
+
     static final String USER_ADD =
             "https://aip.baidubce.com/rest/2.0/face/v2/faceset/user/add";
 

@@ -749,6 +749,52 @@ public class AipOcr extends BaseClient {
     }
 
     /**
+     * 自定义模版文字识别接口   
+     * 自定义模版文字识别，是针对百度官方没有推出相应的模版，但是当用户需要对某一类卡证/票据（如房产证、军官证、火车票等）进行结构化的提取内容时，可以使用该产品快速制作模版，进行识别。
+     *
+     * @param image - 二进制图像数据
+     * @param templateSign - 您在自定义文字识别平台制作的模版的ID
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     * @return JSONObject
+     */
+    public JSONObject custom(byte[] image, String templateSign, HashMap<String, String> options) {
+        AipRequest request = new AipRequest();
+        preOperation(request);
+        
+        String base64Content = Base64Util.encode(image);
+        request.addBody("image", base64Content);
+        
+        request.addBody("templateSign", templateSign);
+        if (options != null) {
+            request.addBody(options);
+        }
+        request.setUri(OcrConsts.CUSTOM);
+        postOperation(request);
+        return requestServer(request);
+    }
+
+    /**
+     * 自定义模版文字识别接口
+     * 自定义模版文字识别，是针对百度官方没有推出相应的模版，但是当用户需要对某一类卡证/票据（如房产证、军官证、火车票等）进行结构化的提取内容时，可以使用该产品快速制作模版，进行识别。
+     *
+     * @param image - 本地图片路径
+     * @param templateSign - 您在自定义文字识别平台制作的模版的ID
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     * @return JSONObject
+     */
+    public JSONObject custom(String image, String templateSign, HashMap<String, String> options) {
+        try {
+            byte[] imgData = Util.readFileByBytes(image);
+            return custom(imgData, templateSign, options);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return AipError.IMAGE_READ_ERROR.toJsonResult();
+        }
+    }
+
+    /**
      * 表格文字识别接口   
      * 自动识别表格线及表格内容，结构化输出表头、表尾及每个单元格的文字内容。表格文字识别接口为异步接口，分为两个API：提交请求接口、获取结果接口。
      *

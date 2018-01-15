@@ -33,4 +33,6 @@ public class NlpConsts {
 
     static final String SENTIMENT_CLASSIFY = "https://aip.baidubce.com/rpc/2.0/nlp/v1/sentiment_classify";
 
+    static final String KEYWORD = "https://aip.baidubce.com/rpc/2.0/nlp/v1/keyword";
+
 }

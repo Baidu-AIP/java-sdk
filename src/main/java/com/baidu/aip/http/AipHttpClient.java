@@ -12,41 +12,20 @@
  */
 package com.baidu.aip.http;
 
-import javax.net.ssl.*;
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.Proxy;
 import java.net.URL;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
 import java.util.HashMap;
 import java.util.Map;
 
 public class AipHttpClient {
 
-    private static class TrustAnyTrustManager implements X509TrustManager {
-
-        public void checkClientTrusted(X509Certificate[] chain, String authType)
-                throws CertificateException {
-        }
-
-        public void checkServerTrusted(X509Certificate[] chain, String authType)
-                throws CertificateException {
-        }
-
-        public X509Certificate[] getAcceptedIssuers() {
-            return new X509Certificate[] {};
-        }
-    }
-
-    private static class TrustAnyHostnameVerifier implements HostnameVerifier {
-        public boolean verify(String hostname, SSLSession session) {
-            return true;
-        }
-    }
 
     /**
      * post方式请求服务器(https协议)
@@ -68,18 +47,9 @@ public class AipHttpClient {
                 url = String.format("%s?%s", request.getUri().toString(), request.getParamStr());
             }
 
-            SSLContext sc = SSLContext.getInstance("SSL");
-            sc.init(null, new TrustManager[] { new TrustAnyTrustManager() },
-                    new java.security.SecureRandom());
-
             URL console = new URL(url);
             Proxy proxy = request.getConfig() == null ? Proxy.NO_PROXY : request.getConfig().getProxy();
             HttpURLConnection conn = (HttpURLConnection) console.openConnection(proxy);
-            if (url.contains("https")) {
-                HttpsURLConnection httpsConn = (HttpsURLConnection) conn;
-                httpsConn.setSSLSocketFactory(sc.getSocketFactory());
-                httpsConn.setHostnameVerifier(new TrustAnyHostnameVerifier());
-            }
 
             // set timeout
             if (request.getConfig() != null) {
@@ -122,10 +92,6 @@ public class AipHttpClient {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (KeyManagementException e) {
             e.printStackTrace();
         }
         return response;
