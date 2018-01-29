@@ -275,8 +275,8 @@ public class AipNlp extends BaseClient {
     }
 
     /**
-     * 文本标签接口
-     * 文本标签服务能够针对网络各类媒体文章进行快速的内容理解，根据输入含有标题的文章，输出多个内容标签以及对应的置信度，用于个性化推荐、相似文章聚合、文本内容分析等场景。
+     * 文章标签接口
+     * 文章标签服务能够针对网络各类媒体文章进行快速的内容理解，根据输入含有标题的文章，输出多个内容标签以及对应的置信度，用于个性化推荐、相似文章聚合、文本内容分析等场景。
      *
      * @param title - 篇章的标题，最大80字节*
      * @param content - 篇章的正文，最大65535字节
@@ -296,6 +296,35 @@ public class AipNlp extends BaseClient {
             request.addBody(options);
         }
         request.setUri(NlpConsts.KEYWORD);
+        request.addHeader(Headers.CONTENT_ENCODING, HttpCharacterEncoding.ENCODE_GBK);
+        request.addHeader(Headers.CONTENT_TYPE, HttpContentType.JSON_DATA);
+        request.setBodyFormat(EBodyFormat.RAW_JSON);
+        postOperation(request);
+        return requestServer(request);
+    }
+
+    /**
+     * 文本分类接口
+     * 文本标签服务能够针对网络各类媒体文章进行快速分类，根据输入含有标题的文章，输出一级分类以及二级分类，用于个性化推荐、文章聚类、文本内容分析等场景。
+     *
+     * @param title - 篇章的标题，最大80字节*
+     * @param content - 篇章的正文，最大65535字节
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     * @return JSONObject
+     */
+    public JSONObject topic(String title, String content, HashMap<String, Object> options) {
+        AipRequest request = new AipRequest();
+        preOperation(request);
+        
+        request.addBody("title", title);
+        
+        request.addBody("content", content);
+        
+        if (options != null) {
+            request.addBody(options);
+        }
+        request.setUri(NlpConsts.TOPIC);
         request.addHeader(Headers.CONTENT_ENCODING, HttpCharacterEncoding.ENCODE_GBK);
         request.addHeader(Headers.CONTENT_TYPE, HttpContentType.JSON_DATA);
         request.setBodyFormat(EBodyFormat.RAW_JSON);

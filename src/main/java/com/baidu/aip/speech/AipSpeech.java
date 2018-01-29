@@ -19,10 +19,13 @@ import com.baidu.aip.util.AipClientConst;
 import com.baidu.aip.util.Base64Util;
 import com.baidu.aip.util.SignUtil;
 import com.baidu.aip.util.Util;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class AipSpeech extends BaseClient {
 
@@ -129,16 +132,29 @@ public class AipSpeech extends BaseClient {
                     "null response from server"));
             return response;
         }
-        String contentType = res.getHeader().get("Content-type").get(0);
-        if (contentType.contains("json")) {
-            String data = res.getBodyStr();
-            JSONObject json = new JSONObject(data);
-            response.setResult(json);
-            return response;
+        Map<String, List<String>> header = res.getHeader();
+        if (header.containsKey("content-type")) {
+            String contentType = res.getHeader().get("content-type").get(0);
+            if (contentType.contains("json")) {
+                String data = res.getBodyStr();
+                JSONObject json = new JSONObject(data);
+                response.setResult(json);
+            }
+            else {
+                byte[] binData = res.getBody();
+                response.setData(binData);
+            }
         }
-        byte[] binData = res.getBody();
-        response.setData(binData);
-
+        else {
+            LOGGER.error("synthesis get no content-type in header: " + header);
+            LOGGER.info("synthesis response status: " + res.getStatus());
+            try {
+                JSONObject json = new JSONObject(res.getBodyStr());
+                response.setResult(json);
+            } catch (JSONException e) {
+                response.setData(res.getBody());
+            }
+        }
         return response;
     }
 }

@@ -35,4 +35,6 @@ public class NlpConsts {
 
     static final String KEYWORD = "https://aip.baidubce.com/rpc/2.0/nlp/v1/keyword";
 
+    static final String TOPIC = "https://aip.baidubce.com/rpc/2.0/nlp/v1/topic";
+
 }

@@ -25,8 +25,11 @@ import com.baidu.aip.util.AipClientConfiguration;
 import com.baidu.aip.util.AipClientConst;
 import com.baidu.aip.util.SignUtil;
 import com.baidu.aip.util.Util;
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.PropertyConfigurator;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.apache.log4j.Logger;
 
 import java.io.UnsupportedEncodingException;
 import java.net.Proxy;
@@ -44,6 +47,7 @@ public abstract class BaseClient {
     protected Calendar expireDate;
     protected AuthState state;
     protected AipClientConfiguration config;
+    protected static final Logger LOGGER = Logger.getLogger(BaseClient.class);
 
     class AuthState {
 
@@ -51,6 +55,10 @@ public abstract class BaseClient {
 
         public AuthState() {
             state = EAuthState.STATE_UNKNOWN;
+        }
+
+        public String toString() {
+            return state.name();
         }
 
         public EAuthState getState() {
@@ -120,6 +128,15 @@ public abstract class BaseClient {
         accessToken = null;
         expireDate = null;
         state = new AuthState();
+
+        // init logging
+        String log4jConf = System.getProperty(AipClientConst.LOG4J_CONF_PROPERTY);
+        if (log4jConf != null && log4jConf != "") {
+            PropertyConfigurator.configure(log4jConf);
+        }
+        else {
+            BasicConfigurator.configure();
+        }
     }
 
     /**
@@ -174,16 +191,22 @@ public abstract class BaseClient {
      */
     protected synchronized void getAccessToken(AipClientConfiguration config) {
         if (!needAuth()) {
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug(String.format("app[%s] no need to auth", this.appId));
+            }
             return;
         }
         JSONObject res = DevAuth.oauth(aipKey, aipToken, config);
         if (res == null) {
+            LOGGER.warn("oauth get null response");
             return;
         }
         if (!res.isNull("access_token")) {
             // openAPI认证成功
             state.transfer(true);
             accessToken = res.getString("access_token");
+
+            LOGGER.info("get access_token success. current state: " + state.toString());
             Integer expireSec = res.getInt("expires_in");
             Calendar c = Calendar.getInstance();
             c.add(Calendar.SECOND, expireSec);
@@ -200,9 +223,13 @@ public abstract class BaseClient {
                 }
             }
             state.transfer(hasRight);
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug("current state after check priviledge: " + state.toString());
+            }
         }
         else if (!res.isNull("error_code")) {
             state.transfer(false);
+            LOGGER.warn("oauth get error, current state: " + state.toString());
         }
     }
 
@@ -282,6 +309,9 @@ public abstract class BaseClient {
                     boolean cloudAuthState = res.isNull("error_code")
                             || res.getInt("error_code") != AipClientConst.IAM_ERROR_CODE;
                     state.transfer(cloudAuthState);
+                    if (LOGGER.isDebugEnabled()) {
+                        LOGGER.debug("state after cloud auth: " + state.toString());
+                    }
                     if (!cloudAuthState) {
                         return Util.getGeneralError(
                                 AipClientConst.OPENAPI_NO_ACCESS_ERROR_CODE,
@@ -294,6 +324,7 @@ public abstract class BaseClient {
             }
         }
         else {
+            LOGGER.warn(String.format("call failed! response status: %d, data: %s", status, resData));
             return AipError.NET_TIMEOUT_ERROR.toJsonResult();
 
         }

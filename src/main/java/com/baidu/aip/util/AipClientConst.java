@@ -42,4 +42,6 @@ public class AipClientConst {
     public static final Integer IAM_ERROR_CODE = 14;
     public static final Integer OPENAPI_NO_ACCESS_ERROR_CODE = 6;
     public static final String OPENAPI_NO_ACCESS_ERROR_MSG = "No permission to access data";
+
+    public static final String LOG4J_CONF_PROPERTY = "aip.log4j.conf";
 }
