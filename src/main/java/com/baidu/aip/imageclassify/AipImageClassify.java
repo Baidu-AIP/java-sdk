@@ -30,6 +30,48 @@ public class AipImageClassify extends BaseClient {
     }
 
     /**
+     * 通用物体识别接口   
+     * 该请求用于通用物体及场景识别，即对于输入的一张图片（可正常解码，且长宽比适宜），输出图片中的多个物体及场景标签。
+     *
+     * @param image - 二进制图像数据
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     * @return JSONObject
+     */
+    public JSONObject advancedGeneral(byte[] image, HashMap<String, String> options) {
+        AipRequest request = new AipRequest();
+        preOperation(request);
+        
+        String base64Content = Base64Util.encode(image);
+        request.addBody("image", base64Content);
+        if (options != null) {
+            request.addBody(options);
+        }
+        request.setUri(ImageClassifyConsts.ADVANCED_GENERAL);
+        postOperation(request);
+        return requestServer(request);
+    }
+
+    /**
+     * 通用物体识别接口
+     * 该请求用于通用物体及场景识别，即对于输入的一张图片（可正常解码，且长宽比适宜），输出图片中的多个物体及场景标签。
+     *
+     * @param image - 本地图片路径
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     * @return JSONObject
+     */
+    public JSONObject advancedGeneral(String image, HashMap<String, String> options) {
+        try {
+            byte[] imgData = Util.readFileByBytes(image);
+            return advancedGeneral(imgData, options);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return AipError.IMAGE_READ_ERROR.toJsonResult();
+        }
+    }
+
+    /**
      * 菜品识别接口   
      * 该请求用于菜品识别。即对于输入的一张图片（可正常解码，且长宽比适宜），输出图片的菜品名称、卡路里信息、置信度。
      *
@@ -119,7 +161,7 @@ public class AipImageClassify extends BaseClient {
 
     /**
      * logo商标识别接口   
-     * 该请求用于检测和识别图片中的品牌LOGO信息。即对于输入的一张图片（可正常解码，且长宽比适宜），输出图片中LOGO的名称、位置和置信度。 当效果欠佳时，可以建立子库（请加入QQ群：649285136 联系工作人员申请建库）并自定义logo入库，提高识别效果。
+     * 该请求用于检测和识别图片中的品牌LOGO信息。即对于输入的一张图片（可正常解码，且长宽比适宜），输出图片中LOGO的名称、位置和置信度。当效果欠佳时，可以建立子库（在[控制台](https://console.bce.baidu.com/ai/#/ai/imagerecognition/overview/index)创建应用并申请建库）并通过调用logo入口接口完成自定义logo入库，提高识别效果。
      *
      * @param image - 二进制图像数据
      * @param options - 可选参数对象，key: value都为string类型
@@ -143,7 +185,7 @@ public class AipImageClassify extends BaseClient {
 
     /**
      * logo商标识别接口
-     * 该请求用于检测和识别图片中的品牌LOGO信息。即对于输入的一张图片（可正常解码，且长宽比适宜），输出图片中LOGO的名称、位置和置信度。 当效果欠佳时，可以建立子库（请加入QQ群：649285136 联系工作人员申请建库）并自定义logo入库，提高识别效果。
+     * 该请求用于检测和识别图片中的品牌LOGO信息。即对于输入的一张图片（可正常解码，且长宽比适宜），输出图片中LOGO的名称、位置和置信度。当效果欠佳时，可以建立子库（在[控制台](https://console.bce.baidu.com/ai/#/ai/imagerecognition/overview/index)创建应用并申请建库）并通过调用logo入口接口完成自定义logo入库，提高识别效果。
      *
      * @param image - 本地图片路径
      * @param options - 可选参数对象，key: value都为string类型
@@ -163,7 +205,7 @@ public class AipImageClassify extends BaseClient {
 
     /**
      * logo商标识别—添加接口   
-     * 该接口尚在邀测阶段，使用该接口之前需要线下联系工作人员完成建库方可使用，请加入QQ群：649285136 联系相关人员。
+     * 使用入库接口请先在[控制台](https://console.bce.baidu.com/ai/#/ai/imagerecognition/overview/index)创建应用并申请建库，建库成功后方可正常使用。
      *
      * @param image - 二进制图像数据
      * @param brief - brief，检索时带回。此处要传对应的name与code字段，name长度小于100B，code长度小于150B
@@ -189,7 +231,7 @@ public class AipImageClassify extends BaseClient {
 
     /**
      * logo商标识别—添加接口
-     * 该接口尚在邀测阶段，使用该接口之前需要线下联系工作人员完成建库方可使用，请加入QQ群：649285136 联系相关人员。
+     * 使用入库接口请先在[控制台](https://console.bce.baidu.com/ai/#/ai/imagerecognition/overview/index)创建应用并申请建库，建库成功后方可正常使用。
      *
      * @param image - 本地图片路径
      * @param brief - brief，检索时带回。此处要传对应的name与code字段，name长度小于100B，code长度小于150B
@@ -209,7 +251,7 @@ public class AipImageClassify extends BaseClient {
 
     /**
      * logo商标识别—删除接口   
-     * 该接口尚在邀测阶段，使用该接口之前需要线下联系工作人员完成建库方可使用，请加入QQ群：649285136 联系相关人员。
+     * 使用删除接口请先在[控制台](https://console.bce.baidu.com/ai/#/ai/imagerecognition/overview/index)创建应用并申请建库，建库成功后先调用入库接口完成logo图片入库，删除接口用户在已入库的logo图片中删除图片。
      *
      * @param image - 二进制图像数据
      * @param options - 可选参数对象，key: value都为string类型
@@ -232,7 +274,7 @@ public class AipImageClassify extends BaseClient {
 
     /**
      * logo商标识别—删除接口
-     * 该接口尚在邀测阶段，使用该接口之前需要线下联系工作人员完成建库方可使用，请加入QQ群：649285136 联系相关人员。
+     * 使用删除接口请先在[控制台](https://console.bce.baidu.com/ai/#/ai/imagerecognition/overview/index)创建应用并申请建库，建库成功后先调用入库接口完成logo图片入库，删除接口用户在已入库的logo图片中删除图片。
      *
      * @param image - 本地图片路径
      * @param options - 可选参数对象，key: value都为string类型
@@ -251,7 +293,7 @@ public class AipImageClassify extends BaseClient {
 
     /**
      * logo商标识别—删除接口   
-     * 该接口尚在邀测阶段，使用该接口之前需要线下联系工作人员完成建库方可使用，请加入QQ群：649285136 联系相关人员。
+     * 使用删除接口请先在[控制台](https://console.bce.baidu.com/ai/#/ai/imagerecognition/overview/index)创建应用并申请建库，建库成功后先调用入库接口完成logo图片入库，删除接口用户在已入库的logo图片中删除图片。
      *
      * @param contSign - 图片签名（和image二选一，image优先级更高）
      * @param options - 可选参数对象，key: value都为string类型

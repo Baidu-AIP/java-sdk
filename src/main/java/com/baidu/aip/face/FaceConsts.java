@@ -54,6 +54,12 @@ public class FaceConsts {
     static final String GROUP_DELETEUSER =
             "https://aip.baidubce.com/rest/2.0/face/v2/faceset/group/deleteuser";
 
+    static final String PERSON_VERIFY =
+            "https://aip.baidubce.com/rest/2.0/face/v2/person/verify";
+
+    static final String FACEVERIFY =
+            "https://aip.baidubce.com/rest/2.0/face/v2/faceverify";
+
     static final String FACE_LIVENESS_VERIFY_URL =
             "https://aip.baidubce.com/rest/2.0/face/v2/faceverify";
 }

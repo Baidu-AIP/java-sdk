@@ -40,18 +40,24 @@ public class DevAuth {
             request.addBody("client_id", apiKey);
             request.addBody("client_secret", secretKey);
             request.setConfig(config);
-            AipResponse response = AipHttpClient.post(request);
+            int statusCode = 500;
+            AipResponse response = null;
+            // add retry
+            int cnt = 0;
+            while (statusCode == 500 && cnt < 3) {
+                response = AipHttpClient.post(request);
+                statusCode = response.getStatus();
+                cnt++;
+            }
             String res = response.getBodyStr();
-            int statusCode = response.getStatus();
             if (res != null && !res.equals("")) {
                 return new JSONObject(res);
-            }
-            else {
+            } else {
                 return Util.getGeneralError(statusCode, "Server response code: " + statusCode);
             }
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
-        return null;
+        return Util.getGeneralError(-1, "unknown error");
     }
 }

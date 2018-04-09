@@ -131,7 +131,7 @@ public abstract class BaseClient {
 
         // init logging
         String log4jConf = System.getProperty(AipClientConst.LOG4J_CONF_PROPERTY);
-        if (log4jConf != null && log4jConf != "") {
+        if (log4jConf != null && !log4jConf.equals("")) {
             PropertyConfigurator.configure(log4jConf);
         }
         else {

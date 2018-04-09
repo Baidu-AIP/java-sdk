@@ -435,7 +435,7 @@ public class AipOcr extends BaseClient {
      * 用户向服务请求识别身份证，身份证识别包括正面和背面。
      *
      * @param image - 二进制图像数据
-     * @param idCardSide - front：身份证正面；back：身份证背面
+     * @param idCardSide - front：身份证含照片的一面；back：身份证带国徽的一面
      * @param options - 可选参数对象，key: value都为string类型
      * options - options列表:
      *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br>- true：检测朝向；<br>- false：不检测朝向。
@@ -463,7 +463,7 @@ public class AipOcr extends BaseClient {
      * 用户向服务请求识别身份证，身份证识别包括正面和背面。
      *
      * @param image - 本地图片路径
-     * @param idCardSide - front：身份证正面；back：身份证背面
+     * @param idCardSide - front：身份证含照片的一面；back：身份证带国徽的一面
      * @param options - 可选参数对象，key: value都为string类型
      * options - options列表:
      *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br>- true：检测朝向；<br>- false：不检测朝向。
@@ -788,6 +788,48 @@ public class AipOcr extends BaseClient {
         try {
             byte[] imgData = Util.readFileByBytes(image);
             return custom(imgData, templateSign, options);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return AipError.IMAGE_READ_ERROR.toJsonResult();
+        }
+    }
+
+    /**
+     * 表格文字识别同步接口接口   
+     * 自动识别表格线及表格内容，结构化输出表头、表尾及每个单元格的文字内容。
+     *
+     * @param image - 二进制图像数据
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     * @return JSONObject
+     */
+    public JSONObject form(byte[] image, HashMap<String, String> options) {
+        AipRequest request = new AipRequest();
+        preOperation(request);
+        
+        String base64Content = Base64Util.encode(image);
+        request.addBody("image", base64Content);
+        if (options != null) {
+            request.addBody(options);
+        }
+        request.setUri(OcrConsts.FORM);
+        postOperation(request);
+        return requestServer(request);
+    }
+
+    /**
+     * 表格文字识别同步接口接口
+     * 自动识别表格线及表格内容，结构化输出表头、表尾及每个单元格的文字内容。
+     *
+     * @param image - 本地图片路径
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     * @return JSONObject
+     */
+    public JSONObject form(String image, HashMap<String, String> options) {
+        try {
+            byte[] imgData = Util.readFileByBytes(image);
+            return form(imgData, options);
         } catch (IOException e) {
             e.printStackTrace();
             return AipError.IMAGE_READ_ERROR.toJsonResult();

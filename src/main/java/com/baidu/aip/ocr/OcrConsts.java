@@ -43,6 +43,8 @@ public class OcrConsts {
 
     static final String CUSTOM = "https://aip.baidubce.com/rest/2.0/solution/v1/iocr/recognise";
 
+    static final String FORM = "https://aip.baidubce.com/rest/2.0/ocr/v1/form";
+
     static final String TABLE_RECOGNIZE = "https://aip.baidubce.com/rest/2.0/solution/v1/form_ocr/request";
 
     static final String TABLE_RESULT_GET = "https://aip.baidubce.com/rest/2.0/solution/v1/form_ocr/get_request_result";

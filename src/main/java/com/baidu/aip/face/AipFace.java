@@ -458,7 +458,7 @@ public class AipFace extends BaseClient {
      * @param options - 可选参数对象，key: value都为string类型
      * options - options列表:
      *   start 默认值0，起始序号
-     *   end 返回数量，默认值100，最大值1000
+     *   num 返回数量，默认值100，最大值1000
      * @return JSONObject
      */
     public JSONObject getGroupList(HashMap<String, String> options) {
@@ -480,7 +480,7 @@ public class AipFace extends BaseClient {
      * @param options - 可选参数对象，key: value都为string类型
      * options - options列表:
      *   start 默认值0，起始序号
-     *   end 返回数量，默认值100，最大值1000
+     *   num 返回数量，默认值100，最大值1000
      * @return JSONObject
      */
     public JSONObject getGroupUsers(String groupId, HashMap<String, String> options) {
@@ -547,6 +547,112 @@ public class AipFace extends BaseClient {
         request.setUri(FaceConsts.GROUP_DELETEUSER);
         postOperation(request);
         return requestServer(request);
+    }
+
+    /**
+     * 身份验证接口   
+     *
+     *
+     * @param image - 二进制图像数据
+     * @param idCardNumber - 身份证号（真实身份证号号码）。我们的服务端会做格式校验，并通过错误码返回，但是为了您的产品反馈体验更及时，建议在产品前端做一下号码格式校验与反馈
+     * @param name - utf8，姓名（真实姓名，和身份证号匹配）
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   quality 判断图片中的人脸质量是否符合条件。use表示需要做质量控制，质量不符合条件的照片会被直接拒绝
+     *   quality_conf 人脸质量检测中每一项指标的具体阈值设定，json串形式，当指定quality:use时生效
+     *   faceliveness 判断活体值是否达标。use表示需要做活体检测，低于活体阈值的照片会直接拒绝
+     *   faceliveness_conf 人脸活体检测的阈值设定，json串形式，当指定faceliveness:use时生效。默认使用的阈值如下：{faceliveness：0.834963}
+     *   ext_fields 可选项为faceliveness，qualities。选择具体的项，则返回参数中将会显示相应的扩展字段。如faceliveness表示返回结果中包含活体相关内容，qualities表示返回结果中包含质量检测相关内容
+     * @return JSONObject
+     */
+    public JSONObject personVerify(byte[] image, String idCardNumber, String name, HashMap<String, String> options) {
+        AipRequest request = new AipRequest();
+        preOperation(request);
+        
+        String base64Content = Base64Util.encode(image);
+        request.addBody("image", base64Content);
+        
+        request.addBody("id_card_number", idCardNumber);
+        
+        request.addBody("name", name);
+        if (options != null) {
+            request.addBody(options);
+        }
+        request.setUri(FaceConsts.PERSON_VERIFY);
+        postOperation(request);
+        return requestServer(request);
+    }
+
+    /**
+     * 身份验证接口
+     *
+     *
+     * @param image - 本地图片路径
+     * @param idCardNumber - 身份证号（真实身份证号号码）。我们的服务端会做格式校验，并通过错误码返回，但是为了您的产品反馈体验更及时，建议在产品前端做一下号码格式校验与反馈
+     * @param name - utf8，姓名（真实姓名，和身份证号匹配）
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   quality 判断图片中的人脸质量是否符合条件。use表示需要做质量控制，质量不符合条件的照片会被直接拒绝
+     *   quality_conf 人脸质量检测中每一项指标的具体阈值设定，json串形式，当指定quality:use时生效
+     *   faceliveness 判断活体值是否达标。use表示需要做活体检测，低于活体阈值的照片会直接拒绝
+     *   faceliveness_conf 人脸活体检测的阈值设定，json串形式，当指定faceliveness:use时生效。默认使用的阈值如下：{faceliveness：0.834963}
+     *   ext_fields 可选项为faceliveness，qualities。选择具体的项，则返回参数中将会显示相应的扩展字段。如faceliveness表示返回结果中包含活体相关内容，qualities表示返回结果中包含质量检测相关内容
+     * @return JSONObject
+     */
+    public JSONObject personVerify(String image, String idCardNumber, String name, HashMap<String, String> options) {
+        try {
+            byte[] imgData = Util.readFileByBytes(image);
+            return personVerify(imgData, idCardNumber, name, options);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return AipError.IMAGE_READ_ERROR.toJsonResult();
+        }
+    }
+
+    /**
+     * 在线活体检测接口   
+     *
+     *
+     * @param image - 二进制图像数据
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   max_face_num 最多处理人脸数目，默认值1
+     *   face_fields 如不选择此项，返回结果默认只有人脸框、概率和旋转角度。可选参数为qualities、faceliveness。qualities：图片质量相关判断；faceliveness：活体判断。如果两个参数都需要选择，请使用半角逗号分隔。
+     * @return JSONObject
+     */
+    public JSONObject faceverify(byte[] image, HashMap<String, String> options) {
+        AipRequest request = new AipRequest();
+        preOperation(request);
+        
+        String base64Content = Base64Util.encode(image);
+        request.addBody("image", base64Content);
+        if (options != null) {
+            request.addBody(options);
+        }
+        request.setUri(FaceConsts.FACEVERIFY);
+        postOperation(request);
+        return requestServer(request);
+    }
+
+    /**
+     * 在线活体检测接口
+     *
+     *
+     * @param image - 本地图片路径
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   max_face_num 最多处理人脸数目，默认值1
+     *   face_fields 如不选择此项，返回结果默认只有人脸框、概率和旋转角度。可选参数为qualities、faceliveness。qualities：图片质量相关判断；faceliveness：活体判断。如果两个参数都需要选择，请使用半角逗号分隔。
+     * @return JSONObject
+     */
+    public JSONObject faceverify(String image, HashMap<String, String> options) {
+        try {
+            byte[] imgData = Util.readFileByBytes(image);
+            return faceverify(imgData, options);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return AipError.IMAGE_READ_ERROR.toJsonResult();
+        }
     }
 
     // 活体检测接口

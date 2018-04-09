@@ -15,6 +15,8 @@ package com.baidu.aip.imageclassify;
 
 public class ImageClassifyConsts {
 
+    static final String ADVANCED_GENERAL = "https://aip.baidubce.com/rest/2.0/image-classify/v2/advanced_general";
+
     static final String DISH_DETECT = "https://aip.baidubce.com/rest/2.0/image-classify/v2/dish";
 
     static final String CAR_DETECT = "https://aip.baidubce.com/rest/2.0/image-classify/v1/car";

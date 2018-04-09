@@ -31,7 +31,7 @@ public class AipImageSearch extends BaseClient {
 
     /**
      * 相同图检索—入库接口   
-     * 该请求用于实时检索相同图片集合。即对于输入的一张图片（可正常解码，且长宽比适宜），返回自建图库中相同的图片集合。相同图检索包含入库、检索、删除三个子接口；**在正式使用之前请加入QQ群：649285136 联系工作人员完成建库并调用入库接口完成图片入库**。
+     * 相同图检索包含入库、检索、删除三个子接口；**在正式使用之前请在[控制台](https://console.bce.baidu.com/ai/#/ai/imagesearch/overview/index)创建应用后，在应用详情页申请建库，建库成功后方可正常使用入库、检索、删除三个接口**。
      *
      * @param image - 二进制图像数据
      * @param options - 可选参数对象，key: value都为string类型
@@ -55,7 +55,7 @@ public class AipImageSearch extends BaseClient {
 
     /**
      * 相同图检索—入库接口
-     * 该请求用于实时检索相同图片集合。即对于输入的一张图片（可正常解码，且长宽比适宜），返回自建图库中相同的图片集合。相同图检索包含入库、检索、删除三个子接口；**在正式使用之前请加入QQ群：649285136 联系工作人员完成建库并调用入库接口完成图片入库**。
+     * 相同图检索包含入库、检索、删除三个子接口；**在正式使用之前请在[控制台](https://console.bce.baidu.com/ai/#/ai/imagesearch/overview/index)创建应用后，在应用详情页申请建库，建库成功后方可正常使用入库、检索、删除三个接口**。
      *
      * @param image - 本地图片路径
      * @param options - 可选参数对象，key: value都为string类型
@@ -75,7 +75,7 @@ public class AipImageSearch extends BaseClient {
 
     /**
      * 相同图检索—检索接口   
-     * 使用该接口前，请加入QQ群：649285136 ，联系工作人员完成建库。
+     * 相同图检索包含入库、检索、删除三个子接口；**在正式使用之前请在[控制台](https://console.bce.baidu.com/ai/#/ai/imagesearch/overview/index)创建应用后，在应用详情页申请建库，建库成功后方可正常使用入库、检索、删除三个接口**。
      *
      * @param image - 二进制图像数据
      * @param options - 可选参数对象，key: value都为string类型
@@ -98,7 +98,7 @@ public class AipImageSearch extends BaseClient {
 
     /**
      * 相同图检索—检索接口
-     * 使用该接口前，请加入QQ群：649285136 ，联系工作人员完成建库。
+     * 相同图检索包含入库、检索、删除三个子接口；**在正式使用之前请在[控制台](https://console.bce.baidu.com/ai/#/ai/imagesearch/overview/index)创建应用后，在应用详情页申请建库，建库成功后方可正常使用入库、检索、删除三个接口**。
      *
      * @param image - 本地图片路径
      * @param options - 可选参数对象，key: value都为string类型
@@ -181,7 +181,7 @@ public class AipImageSearch extends BaseClient {
 
     /**
      * 相似图检索—入库接口   
-     * 该请求用于实时检索相似图片集合。即对于输入的一张图片（可正常解码，且长宽比适宜），返回自建图库中相似的图片集合。相似图检索包含入库、检索、删除三个子接口；**在正式使用之前请加入QQ群：649285136 联系工作人员完成建库并调用入库接口完成图片入库**。
+     * 该请求用于实时检索相似图片集合。即对于输入的一张图片（可正常解码，且长宽比适宜），返回自建图库中相似的图片集合。相似图检索包含入库、检索、删除三个子接口；**在正式使用之前请在[控制台](https://console.bce.baidu.com/ai/#/ai/imagesearch/overview/index)创建应用后，在应用详情页申请建库，建库成功后方可正常使用入库、检索、删除三个接口。**
      *
      * @param image - 二进制图像数据
      * @param options - 可选参数对象，key: value都为string类型
@@ -205,7 +205,7 @@ public class AipImageSearch extends BaseClient {
 
     /**
      * 相似图检索—入库接口
-     * 该请求用于实时检索相似图片集合。即对于输入的一张图片（可正常解码，且长宽比适宜），返回自建图库中相似的图片集合。相似图检索包含入库、检索、删除三个子接口；**在正式使用之前请加入QQ群：649285136 联系工作人员完成建库并调用入库接口完成图片入库**。
+     * 该请求用于实时检索相似图片集合。即对于输入的一张图片（可正常解码，且长宽比适宜），返回自建图库中相似的图片集合。相似图检索包含入库、检索、删除三个子接口；**在正式使用之前请在[控制台](https://console.bce.baidu.com/ai/#/ai/imagesearch/overview/index)创建应用后，在应用详情页申请建库，建库成功后方可正常使用入库、检索、删除三个接口。**
      *
      * @param image - 本地图片路径
      * @param options - 可选参数对象，key: value都为string类型
@@ -225,7 +225,7 @@ public class AipImageSearch extends BaseClient {
 
     /**
      * 相似图检索—检索接口   
-     * 使用该接口前，请加入QQ群：649285136 ，联系工作人员完成建库。
+     * 相似图检索包含入库、检索、删除三个子接口；**在正式使用之前请在[控制台](https://console.bce.baidu.com/ai/#/ai/imagesearch/overview/index)创建应用后，在应用详情页申请建库，建库成功后方可正常使用入库、检索、删除三个接口。**
      *
      * @param image - 二进制图像数据
      * @param options - 可选参数对象，key: value都为string类型
@@ -248,7 +248,7 @@ public class AipImageSearch extends BaseClient {
 
     /**
      * 相似图检索—检索接口
-     * 使用该接口前，请加入QQ群：649285136 ，联系工作人员完成建库。
+     * 相似图检索包含入库、检索、删除三个子接口；**在正式使用之前请在[控制台](https://console.bce.baidu.com/ai/#/ai/imagesearch/overview/index)创建应用后，在应用详情页申请建库，建库成功后方可正常使用入库、检索、删除三个接口。**
      *
      * @param image - 本地图片路径
      * @param options - 可选参数对象，key: value都为string类型
@@ -331,7 +331,7 @@ public class AipImageSearch extends BaseClient {
 
     /**
      * 商品检索—入库接口   
-     * 该请求用于实时检索商品类型图片相同或相似的图片集合，适用于电商平台或商品展示等场景，即对于输入的一张图片（可正常解码，且长宽比适宜），返回自建商品库中相同或相似的图片集合。
+     * 该请求用于实时检索商品类型图片相同或相似的图片集合，适用于电商平台或商品展示等场景，即对于输入的一张图片（可正常解码，且长宽比适宜），返回自建商品库中相同或相似的图片集合。商品检索包含入库、检索、删除三个子接口；**在正式使用之前请在[控制台](https://console.bce.baidu.com/ai/#/ai/imagesearch/overview/index)创建应用后，在应用详情页申请建库，建库成功后方可正常使用入库、检索、删除三个接口**。
      *
      * @param image - 二进制图像数据
      * @param options - 可选参数对象，key: value都为string类型
@@ -357,7 +357,7 @@ public class AipImageSearch extends BaseClient {
 
     /**
      * 商品检索—入库接口
-     * 该请求用于实时检索商品类型图片相同或相似的图片集合，适用于电商平台或商品展示等场景，即对于输入的一张图片（可正常解码，且长宽比适宜），返回自建商品库中相同或相似的图片集合。
+     * 该请求用于实时检索商品类型图片相同或相似的图片集合，适用于电商平台或商品展示等场景，即对于输入的一张图片（可正常解码，且长宽比适宜），返回自建商品库中相同或相似的图片集合。商品检索包含入库、检索、删除三个子接口；**在正式使用之前请在[控制台](https://console.bce.baidu.com/ai/#/ai/imagesearch/overview/index)创建应用后，在应用详情页申请建库，建库成功后方可正常使用入库、检索、删除三个接口**。
      *
      * @param image - 本地图片路径
      * @param options - 可选参数对象，key: value都为string类型

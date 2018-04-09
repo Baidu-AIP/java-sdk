@@ -39,6 +39,9 @@ public class AipHttpClient {
         String content = request.getBodyStr();
         HashMap<String, String> header = request.getHeaders();
         AipResponse response = new AipResponse();
+
+        DataOutputStream out = null;
+        InputStream is = null;
         try {
             if (request.getParams().isEmpty()) {
                 url = request.getUri().toString();
@@ -63,10 +66,9 @@ public class AipHttpClient {
             }
 
             conn.connect();
-            DataOutputStream out = new DataOutputStream(conn.getOutputStream());
+            out = new DataOutputStream(conn.getOutputStream());
             out.write(content.getBytes(charset));
             out.flush();
-            out.close();
             int statusCode = conn.getResponseCode();
             response.setHeader(conn.getHeaderFields());
             response.setStatus(statusCode);
@@ -75,7 +77,7 @@ public class AipHttpClient {
                 return response;
             }
 
-            InputStream is = conn.getInputStream();
+            is = conn.getInputStream();
             if (is != null) {
                 ByteArrayOutputStream outStream = new ByteArrayOutputStream();
                 byte[] buffer = new byte[1024];
@@ -83,7 +85,6 @@ public class AipHttpClient {
                 while ((len = is.read(buffer)) != -1) {
                     outStream.write(buffer, 0, len);
                 }
-                is.close();
                 response.setBody(outStream.toByteArray());
             }
             return response;
@@ -93,6 +94,21 @@ public class AipHttpClient {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            if (out != null) {
+                try {
+                    out.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (is != null) {
+                try {
+                    is.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         return response;
     }
