@@ -72,8 +72,8 @@ public class AipOcr extends BaseClient {
      */
     public JSONObject basicGeneral(String image, HashMap<String, String> options) {
         try {
-            byte[] imgData = Util.readFileByBytes(image);
-            return basicGeneral(imgData, options);
+            byte[] data = Util.readFileByBytes(image);
+            return basicGeneral(data, options);
         } catch (IOException e) {
             e.printStackTrace();
             return AipError.IMAGE_READ_ERROR.toJsonResult();
@@ -144,8 +144,8 @@ public class AipOcr extends BaseClient {
      */
     public JSONObject basicAccurateGeneral(String image, HashMap<String, String> options) {
         try {
-            byte[] imgData = Util.readFileByBytes(image);
-            return basicAccurateGeneral(imgData, options);
+            byte[] data = Util.readFileByBytes(image);
+            return basicAccurateGeneral(data, options);
         } catch (IOException e) {
             e.printStackTrace();
             return AipError.IMAGE_READ_ERROR.toJsonResult();
@@ -198,8 +198,8 @@ public class AipOcr extends BaseClient {
      */
     public JSONObject general(String image, HashMap<String, String> options) {
         try {
-            byte[] imgData = Util.readFileByBytes(image);
-            return general(imgData, options);
+            byte[] data = Util.readFileByBytes(image);
+            return general(data, options);
         } catch (IOException e) {
             e.printStackTrace();
             return AipError.IMAGE_READ_ERROR.toJsonResult();
@@ -276,8 +276,8 @@ public class AipOcr extends BaseClient {
      */
     public JSONObject accurateGeneral(String image, HashMap<String, String> options) {
         try {
-            byte[] imgData = Util.readFileByBytes(image);
-            return accurateGeneral(imgData, options);
+            byte[] data = Util.readFileByBytes(image);
+            return accurateGeneral(data, options);
         } catch (IOException e) {
             e.printStackTrace();
             return AipError.IMAGE_READ_ERROR.toJsonResult();
@@ -326,8 +326,8 @@ public class AipOcr extends BaseClient {
      */
     public JSONObject enhancedGeneral(String image, HashMap<String, String> options) {
         try {
-            byte[] imgData = Util.readFileByBytes(image);
-            return enhancedGeneral(imgData, options);
+            byte[] data = Util.readFileByBytes(image);
+            return enhancedGeneral(data, options);
         } catch (IOException e) {
             e.printStackTrace();
             return AipError.IMAGE_READ_ERROR.toJsonResult();
@@ -398,8 +398,8 @@ public class AipOcr extends BaseClient {
      */
     public JSONObject webImage(String image, HashMap<String, String> options) {
         try {
-            byte[] imgData = Util.readFileByBytes(image);
-            return webImage(imgData, options);
+            byte[] data = Util.readFileByBytes(image);
+            return webImage(data, options);
         } catch (IOException e) {
             e.printStackTrace();
             return AipError.IMAGE_READ_ERROR.toJsonResult();
@@ -472,8 +472,8 @@ public class AipOcr extends BaseClient {
      */
     public JSONObject idcard(String image, String idCardSide, HashMap<String, String> options) {
         try {
-            byte[] imgData = Util.readFileByBytes(image);
-            return idcard(imgData, idCardSide, options);
+            byte[] data = Util.readFileByBytes(image);
+            return idcard(data, idCardSide, options);
         } catch (IOException e) {
             e.printStackTrace();
             return AipError.IMAGE_READ_ERROR.toJsonResult();
@@ -514,8 +514,8 @@ public class AipOcr extends BaseClient {
      */
     public JSONObject bankcard(String image, HashMap<String, String> options) {
         try {
-            byte[] imgData = Util.readFileByBytes(image);
-            return bankcard(imgData, options);
+            byte[] data = Util.readFileByBytes(image);
+            return bankcard(data, options);
         } catch (IOException e) {
             e.printStackTrace();
             return AipError.IMAGE_READ_ERROR.toJsonResult();
@@ -558,8 +558,8 @@ public class AipOcr extends BaseClient {
      */
     public JSONObject drivingLicense(String image, HashMap<String, String> options) {
         try {
-            byte[] imgData = Util.readFileByBytes(image);
-            return drivingLicense(imgData, options);
+            byte[] data = Util.readFileByBytes(image);
+            return drivingLicense(data, options);
         } catch (IOException e) {
             e.printStackTrace();
             return AipError.IMAGE_READ_ERROR.toJsonResult();
@@ -604,8 +604,8 @@ public class AipOcr extends BaseClient {
      */
     public JSONObject vehicleLicense(String image, HashMap<String, String> options) {
         try {
-            byte[] imgData = Util.readFileByBytes(image);
-            return vehicleLicense(imgData, options);
+            byte[] data = Util.readFileByBytes(image);
+            return vehicleLicense(data, options);
         } catch (IOException e) {
             e.printStackTrace();
             return AipError.IMAGE_READ_ERROR.toJsonResult();
@@ -648,8 +648,8 @@ public class AipOcr extends BaseClient {
      */
     public JSONObject plateLicense(String image, HashMap<String, String> options) {
         try {
-            byte[] imgData = Util.readFileByBytes(image);
-            return plateLicense(imgData, options);
+            byte[] data = Util.readFileByBytes(image);
+            return plateLicense(data, options);
         } catch (IOException e) {
             e.printStackTrace();
             return AipError.IMAGE_READ_ERROR.toJsonResult();
@@ -690,8 +690,8 @@ public class AipOcr extends BaseClient {
      */
     public JSONObject businessLicense(String image, HashMap<String, String> options) {
         try {
-            byte[] imgData = Util.readFileByBytes(image);
-            return businessLicense(imgData, options);
+            byte[] data = Util.readFileByBytes(image);
+            return businessLicense(data, options);
         } catch (IOException e) {
             e.printStackTrace();
             return AipError.IMAGE_READ_ERROR.toJsonResult();
@@ -740,54 +740,8 @@ public class AipOcr extends BaseClient {
      */
     public JSONObject receipt(String image, HashMap<String, String> options) {
         try {
-            byte[] imgData = Util.readFileByBytes(image);
-            return receipt(imgData, options);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return AipError.IMAGE_READ_ERROR.toJsonResult();
-        }
-    }
-
-    /**
-     * 自定义模版文字识别接口   
-     * 自定义模版文字识别，是针对百度官方没有推出相应的模版，但是当用户需要对某一类卡证/票据（如房产证、军官证、火车票等）进行结构化的提取内容时，可以使用该产品快速制作模版，进行识别。
-     *
-     * @param image - 二进制图像数据
-     * @param templateSign - 您在自定义文字识别平台制作的模版的ID
-     * @param options - 可选参数对象，key: value都为string类型
-     * options - options列表:
-     * @return JSONObject
-     */
-    public JSONObject custom(byte[] image, String templateSign, HashMap<String, String> options) {
-        AipRequest request = new AipRequest();
-        preOperation(request);
-        
-        String base64Content = Base64Util.encode(image);
-        request.addBody("image", base64Content);
-        
-        request.addBody("templateSign", templateSign);
-        if (options != null) {
-            request.addBody(options);
-        }
-        request.setUri(OcrConsts.CUSTOM);
-        postOperation(request);
-        return requestServer(request);
-    }
-
-    /**
-     * 自定义模版文字识别接口
-     * 自定义模版文字识别，是针对百度官方没有推出相应的模版，但是当用户需要对某一类卡证/票据（如房产证、军官证、火车票等）进行结构化的提取内容时，可以使用该产品快速制作模版，进行识别。
-     *
-     * @param image - 本地图片路径
-     * @param templateSign - 您在自定义文字识别平台制作的模版的ID
-     * @param options - 可选参数对象，key: value都为string类型
-     * options - options列表:
-     * @return JSONObject
-     */
-    public JSONObject custom(String image, String templateSign, HashMap<String, String> options) {
-        try {
-            byte[] imgData = Util.readFileByBytes(image);
-            return custom(imgData, templateSign, options);
+            byte[] data = Util.readFileByBytes(image);
+            return receipt(data, options);
         } catch (IOException e) {
             e.printStackTrace();
             return AipError.IMAGE_READ_ERROR.toJsonResult();
@@ -828,8 +782,8 @@ public class AipOcr extends BaseClient {
      */
     public JSONObject form(String image, HashMap<String, String> options) {
         try {
-            byte[] imgData = Util.readFileByBytes(image);
-            return form(imgData, options);
+            byte[] data = Util.readFileByBytes(image);
+            return form(data, options);
         } catch (IOException e) {
             e.printStackTrace();
             return AipError.IMAGE_READ_ERROR.toJsonResult();
@@ -870,8 +824,8 @@ public class AipOcr extends BaseClient {
      */
     public JSONObject tableRecognitionAsync(String image, HashMap<String, String> options) {
         try {
-            byte[] imgData = Util.readFileByBytes(image);
-            return tableRecognitionAsync(imgData, options);
+            byte[] data = Util.readFileByBytes(image);
+            return tableRecognitionAsync(data, options);
         } catch (IOException e) {
             e.printStackTrace();
             return AipError.IMAGE_READ_ERROR.toJsonResult();
@@ -899,6 +853,354 @@ public class AipOcr extends BaseClient {
         request.setUri(OcrConsts.TABLE_RESULT_GET);
         postOperation(request);
         return requestServer(request);
+    }
+
+    /**
+     * 增值税发票识别接口   
+     * 此接口需要您在页面中提交合作咨询开通权限】 识别并结构化返回增值税发票的各个字段及其对应值，包含了发票基础信息9项，货物相关信息12项，购买方/销售方的名称、识别号、地址电话、开户行及账号，共29项结构化字段。
+     *
+     * @param image - 二进制图像数据
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     * @return JSONObject
+     */
+    public JSONObject vatInvoice(byte[] image, HashMap<String, String> options) {
+        AipRequest request = new AipRequest();
+        preOperation(request);
+        
+        String base64Content = Base64Util.encode(image);
+        request.addBody("image", base64Content);
+        if (options != null) {
+            request.addBody(options);
+        }
+        request.setUri(OcrConsts.VAT_INVOICE);
+        postOperation(request);
+        return requestServer(request);
+    }
+
+    /**
+     * 增值税发票识别接口
+     * 此接口需要您在页面中提交合作咨询开通权限】 识别并结构化返回增值税发票的各个字段及其对应值，包含了发票基础信息9项，货物相关信息12项，购买方/销售方的名称、识别号、地址电话、开户行及账号，共29项结构化字段。
+     *
+     * @param image - 本地图片路径
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     * @return JSONObject
+     */
+    public JSONObject vatInvoice(String image, HashMap<String, String> options) {
+        try {
+            byte[] data = Util.readFileByBytes(image);
+            return vatInvoice(data, options);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return AipError.IMAGE_READ_ERROR.toJsonResult();
+        }
+    }
+
+    /**
+     * 二维码识别接口   
+     * 【此接口需要您在[页面](http://ai.baidu.com/tech/ocr)中提交合作咨询开通权限识别条形码、二维码中包含的URL或其他信息内容
+     *
+     * @param image - 二进制图像数据
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     * @return JSONObject
+     */
+    public JSONObject qrcode(byte[] image, HashMap<String, String> options) {
+        AipRequest request = new AipRequest();
+        preOperation(request);
+        
+        String base64Content = Base64Util.encode(image);
+        request.addBody("image", base64Content);
+        if (options != null) {
+            request.addBody(options);
+        }
+        request.setUri(OcrConsts.QRCODE);
+        postOperation(request);
+        return requestServer(request);
+    }
+
+    /**
+     * 二维码识别接口
+     * 【此接口需要您在[页面](http://ai.baidu.com/tech/ocr)中提交合作咨询开通权限识别条形码、二维码中包含的URL或其他信息内容
+     *
+     * @param image - 本地图片路径
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     * @return JSONObject
+     */
+    public JSONObject qrcode(String image, HashMap<String, String> options) {
+        try {
+            byte[] data = Util.readFileByBytes(image);
+            return qrcode(data, options);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return AipError.IMAGE_READ_ERROR.toJsonResult();
+        }
+    }
+
+    /**
+     * 数字识别接口   
+     * 【此接口需要您在[页面](http://ai.baidu.com/tech/ocr)中提交合作咨询开通权限】对图像中的阿拉伯数字进行识别提取，适用于快递单号、手机号、充值码提取等场景
+     *
+     * @param image - 二进制图像数据
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   recognize_granularity 是否定位单字符位置，big：不定位单字符位置，默认值；small：定位单字符位置
+     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br>- true：检测朝向；<br>- false：不检测朝向。
+     * @return JSONObject
+     */
+    public JSONObject numbers(byte[] image, HashMap<String, String> options) {
+        AipRequest request = new AipRequest();
+        preOperation(request);
+        
+        String base64Content = Base64Util.encode(image);
+        request.addBody("image", base64Content);
+        if (options != null) {
+            request.addBody(options);
+        }
+        request.setUri(OcrConsts.NUMBERS);
+        postOperation(request);
+        return requestServer(request);
+    }
+
+    /**
+     * 数字识别接口
+     * 【此接口需要您在[页面](http://ai.baidu.com/tech/ocr)中提交合作咨询开通权限】对图像中的阿拉伯数字进行识别提取，适用于快递单号、手机号、充值码提取等场景
+     *
+     * @param image - 本地图片路径
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   recognize_granularity 是否定位单字符位置，big：不定位单字符位置，默认值；small：定位单字符位置
+     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br>- true：检测朝向；<br>- false：不检测朝向。
+     * @return JSONObject
+     */
+    public JSONObject numbers(String image, HashMap<String, String> options) {
+        try {
+            byte[] data = Util.readFileByBytes(image);
+            return numbers(data, options);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return AipError.IMAGE_READ_ERROR.toJsonResult();
+        }
+    }
+
+    /**
+     * 彩票识别接口   
+     * 【此接口需要您在[页面](http://ai.baidu.com/tech/ocr)中提交合作咨询开通权限】对大乐透、双色球彩票进行识别，并返回识别结果
+     *
+     * @param image - 二进制图像数据
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   recognize_granularity 是否定位单字符位置，big：不定位单字符位置，默认值；small：定位单字符位置
+     * @return JSONObject
+     */
+    public JSONObject lottery(byte[] image, HashMap<String, String> options) {
+        AipRequest request = new AipRequest();
+        preOperation(request);
+        
+        String base64Content = Base64Util.encode(image);
+        request.addBody("image", base64Content);
+        if (options != null) {
+            request.addBody(options);
+        }
+        request.setUri(OcrConsts.LOTTERY);
+        postOperation(request);
+        return requestServer(request);
+    }
+
+    /**
+     * 彩票识别接口
+     * 【此接口需要您在[页面](http://ai.baidu.com/tech/ocr)中提交合作咨询开通权限】对大乐透、双色球彩票进行识别，并返回识别结果
+     *
+     * @param image - 本地图片路径
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   recognize_granularity 是否定位单字符位置，big：不定位单字符位置，默认值；small：定位单字符位置
+     * @return JSONObject
+     */
+    public JSONObject lottery(String image, HashMap<String, String> options) {
+        try {
+            byte[] data = Util.readFileByBytes(image);
+            return lottery(data, options);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return AipError.IMAGE_READ_ERROR.toJsonResult();
+        }
+    }
+
+    /**
+     * 护照识别接口   
+     * 【此接口需要您在[页面](http://ai.baidu.com/tech/ocr)中提交合作咨询开通权限】支持对中国大陆居民护照的资料页进行结构化识别，包含国家码、姓名、性别、护照号、出生日期、签发日期、有效期至、签发地点。
+     *
+     * @param image - 二进制图像数据
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     * @return JSONObject
+     */
+    public JSONObject passport(byte[] image, HashMap<String, String> options) {
+        AipRequest request = new AipRequest();
+        preOperation(request);
+        
+        String base64Content = Base64Util.encode(image);
+        request.addBody("image", base64Content);
+        if (options != null) {
+            request.addBody(options);
+        }
+        request.setUri(OcrConsts.PASSPORT);
+        postOperation(request);
+        return requestServer(request);
+    }
+
+    /**
+     * 护照识别接口
+     * 【此接口需要您在[页面](http://ai.baidu.com/tech/ocr)中提交合作咨询开通权限】支持对中国大陆居民护照的资料页进行结构化识别，包含国家码、姓名、性别、护照号、出生日期、签发日期、有效期至、签发地点。
+     *
+     * @param image - 本地图片路径
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     * @return JSONObject
+     */
+    public JSONObject passport(String image, HashMap<String, String> options) {
+        try {
+            byte[] data = Util.readFileByBytes(image);
+            return passport(data, options);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return AipError.IMAGE_READ_ERROR.toJsonResult();
+        }
+    }
+
+    /**
+     * 名片识别接口   
+     * 【此接口需要您在[页面](http://ai.baidu.com/tech/ocr)中提交合作咨询开通权限】提供对各类名片的结构化识别功能，提取姓名、邮编、邮箱、电话、网址、地址、手机号字段
+     *
+     * @param image - 二进制图像数据
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     * @return JSONObject
+     */
+    public JSONObject businessCard(byte[] image, HashMap<String, String> options) {
+        AipRequest request = new AipRequest();
+        preOperation(request);
+        
+        String base64Content = Base64Util.encode(image);
+        request.addBody("image", base64Content);
+        if (options != null) {
+            request.addBody(options);
+        }
+        request.setUri(OcrConsts.BUSINESS_CARD);
+        postOperation(request);
+        return requestServer(request);
+    }
+
+    /**
+     * 名片识别接口
+     * 【此接口需要您在[页面](http://ai.baidu.com/tech/ocr)中提交合作咨询开通权限】提供对各类名片的结构化识别功能，提取姓名、邮编、邮箱、电话、网址、地址、手机号字段
+     *
+     * @param image - 本地图片路径
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     * @return JSONObject
+     */
+    public JSONObject businessCard(String image, HashMap<String, String> options) {
+        try {
+            byte[] data = Util.readFileByBytes(image);
+            return businessCard(data, options);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return AipError.IMAGE_READ_ERROR.toJsonResult();
+        }
+    }
+
+    /**
+     * 手写文字识别接口   
+     * 【此接口需要您在[页面](http://ai.baidu.com/tech/ocr)中提交合作咨询开通权限】提供对各类名片的结构化识别功能，提取姓名、邮编、邮箱、电话、网址、地址、手机号字段
+     *
+     * @param image - 二进制图像数据
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   recognize_granularity 是否定位单字符位置，big：不定位单字符位置，默认值；small：定位单字符位置
+     * @return JSONObject
+     */
+    public JSONObject handwriting(byte[] image, HashMap<String, String> options) {
+        AipRequest request = new AipRequest();
+        preOperation(request);
+        
+        String base64Content = Base64Util.encode(image);
+        request.addBody("image", base64Content);
+        if (options != null) {
+            request.addBody(options);
+        }
+        request.setUri(OcrConsts.HANDWRITING);
+        postOperation(request);
+        return requestServer(request);
+    }
+
+    /**
+     * 手写文字识别接口
+     * 【此接口需要您在[页面](http://ai.baidu.com/tech/ocr)中提交合作咨询开通权限】提供对各类名片的结构化识别功能，提取姓名、邮编、邮箱、电话、网址、地址、手机号字段
+     *
+     * @param image - 本地图片路径
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   recognize_granularity 是否定位单字符位置，big：不定位单字符位置，默认值；small：定位单字符位置
+     * @return JSONObject
+     */
+    public JSONObject handwriting(String image, HashMap<String, String> options) {
+        try {
+            byte[] data = Util.readFileByBytes(image);
+            return handwriting(data, options);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return AipError.IMAGE_READ_ERROR.toJsonResult();
+        }
+    }
+
+    /**
+     * 自定义模板文字识别接口   
+     * 自定义模板文字识别，是针对百度官方没有推出相应的模板，但是当用户需要对某一类卡证/票据（如房产证、军官证、火车票等）进行结构化的提取内容时，可以使用该产品快速制作模板，进行识别。
+     *
+     * @param image - 二进制图像数据
+     * @param templateSign - 您在自定义文字识别平台制作的模板的ID
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     * @return JSONObject
+     */
+    public JSONObject custom(byte[] image, String templateSign, HashMap<String, String> options) {
+        AipRequest request = new AipRequest();
+        preOperation(request);
+        
+        String base64Content = Base64Util.encode(image);
+        request.addBody("image", base64Content);
+        
+        request.addBody("templateSign", templateSign);
+        if (options != null) {
+            request.addBody(options);
+        }
+        request.setUri(OcrConsts.CUSTOM);
+        postOperation(request);
+        return requestServer(request);
+    }
+
+    /**
+     * 自定义模板文字识别接口
+     * 自定义模板文字识别，是针对百度官方没有推出相应的模板，但是当用户需要对某一类卡证/票据（如房产证、军官证、火车票等）进行结构化的提取内容时，可以使用该产品快速制作模板，进行识别。
+     *
+     * @param image - 本地图片路径
+     * @param templateSign - 您在自定义文字识别平台制作的模板的ID
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     * @return JSONObject
+     */
+    public JSONObject custom(String image, String templateSign, HashMap<String, String> options) {
+        try {
+            byte[] data = Util.readFileByBytes(image);
+            return custom(data, templateSign, options);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return AipError.IMAGE_READ_ERROR.toJsonResult();
+        }
     }
 
     /**

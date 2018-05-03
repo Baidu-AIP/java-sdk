@@ -16,50 +16,56 @@ package com.baidu.aip.face;
 public class FaceConsts {
 
     static final String DETECT =
-            "https://aip.baidubce.com/rest/2.0/face/v2/detect";
+            "https://aip.baidubce.com/rest/2.0/face/v3/detect";
 
-    static final String MATCH =
-            "https://aip.baidubce.com/rest/2.0/face/v2/match";
-
-    static final String IDENTIFY =
-            "https://aip.baidubce.com/rest/2.0/face/v2/identify";
-
-    static final String VERIFY =
-            "https://aip.baidubce.com/rest/2.0/face/v2/verify";
-
-    static final String MULTI_IDENTIFY =
-            "https://aip.baidubce.com/rest/2.0/face/v2/multi-identify";
+    static final String SEARCH =
+            "https://aip.baidubce.com/rest/2.0/face/v3/search";
 
     static final String USER_ADD =
-            "https://aip.baidubce.com/rest/2.0/face/v2/faceset/user/add";
+            "https://aip.baidubce.com/rest/2.0/face/v3/faceset/user/add";
 
     static final String USER_UPDATE =
-            "https://aip.baidubce.com/rest/2.0/face/v2/faceset/user/update";
+            "https://aip.baidubce.com/rest/2.0/face/v3/faceset/user/update";
 
-    static final String USER_DELETE =
-            "https://aip.baidubce.com/rest/2.0/face/v2/faceset/user/delete";
+    static final String FACE_DELETE =
+            "https://aip.baidubce.com/rest/2.0/face/v3/faceset/face/delete";
 
     static final String USER_GET =
-            "https://aip.baidubce.com/rest/2.0/face/v2/faceset/user/get";
+            "https://aip.baidubce.com/rest/2.0/face/v3/faceset/user/get";
 
-    static final String GROUP_GETLIST =
-            "https://aip.baidubce.com/rest/2.0/face/v2/faceset/group/getlist";
+    static final String FACE_GETLIST =
+            "https://aip.baidubce.com/rest/2.0/face/v3/faceset/face/getlist";
 
     static final String GROUP_GETUSERS =
-            "https://aip.baidubce.com/rest/2.0/face/v2/faceset/group/getusers";
+            "https://aip.baidubce.com/rest/2.0/face/v3/faceset/group/getusers";
 
-    static final String GROUP_ADDUSER =
-            "https://aip.baidubce.com/rest/2.0/face/v2/faceset/group/adduser";
+    static final String USER_COPY =
+            "https://aip.baidubce.com/rest/2.0/face/v3/faceset/user/copy";
 
-    static final String GROUP_DELETEUSER =
-            "https://aip.baidubce.com/rest/2.0/face/v2/faceset/group/deleteuser";
+    static final String USER_DELETE =
+            "https://aip.baidubce.com/rest/2.0/face/v3/faceset/user/delete";
+
+    static final String GROUP_ADD =
+            "https://aip.baidubce.com/rest/2.0/face/v3/faceset/group/add";
+
+    static final String GROUP_DELETE =
+            "https://aip.baidubce.com/rest/2.0/face/v3/faceset/group/delete";
+
+    static final String GROUP_GETLIST =
+            "https://aip.baidubce.com/rest/2.0/face/v3/faceset/group/getlist";
 
     static final String PERSON_VERIFY =
-            "https://aip.baidubce.com/rest/2.0/face/v2/person/verify";
+            "https://aip.baidubce.com/rest/2.0/face/v3/person/verify";
 
     static final String FACEVERIFY =
-            "https://aip.baidubce.com/rest/2.0/face/v2/faceverify";
+            "https://aip.baidubce.com/rest/2.0/face/v3/faceverify";
 
-    static final String FACE_LIVENESS_VERIFY_URL =
-            "https://aip.baidubce.com/rest/2.0/face/v2/faceverify";
+    static final String VIDEO_SESSIONCODE =
+            "https://aip.baidubce.com/rest/2.0/face/v1/faceliveness/sessioncode";
+
+    static final String VIDEO_FACELIVENESS =
+            "https://aip.baidubce.com/rest/2.0/face/v1/faceliveness/verify";
+
+    static final String MATCH = "https://aip.baidubce.com/rest/2.0/face/v3/match";
+
 }

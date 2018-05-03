@@ -113,6 +113,9 @@ public class AipRequest {
             }
             return json.toString();
         }
+        else if (bodyFormat.equals(EBodyFormat.RAW_JSON_ARRAY)) {
+            return (String) body.get("body");
+        }
         return "";
     }
 

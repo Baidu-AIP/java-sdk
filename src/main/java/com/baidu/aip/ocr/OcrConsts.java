@@ -41,13 +41,27 @@ public class OcrConsts {
 
     static final String RECEIPT = "https://aip.baidubce.com/rest/2.0/ocr/v1/receipt";
 
-    static final String CUSTOM = "https://aip.baidubce.com/rest/2.0/solution/v1/iocr/recognise";
-
     static final String FORM = "https://aip.baidubce.com/rest/2.0/ocr/v1/form";
 
     static final String TABLE_RECOGNIZE = "https://aip.baidubce.com/rest/2.0/solution/v1/form_ocr/request";
 
     static final String TABLE_RESULT_GET = "https://aip.baidubce.com/rest/2.0/solution/v1/form_ocr/get_request_result";
+
+    static final String VAT_INVOICE = "https://aip.baidubce.com/rest/2.0/ocr/v1/vat_invoice";
+
+    static final String QRCODE = "https://aip.baidubce.com/rest/2.0/ocr/v1/qrcode";
+
+    static final String NUMBERS = "https://aip.baidubce.com/rest/2.0/ocr/v1/numbers";
+
+    static final String LOTTERY = "https://aip.baidubce.com/rest/2.0/ocr/v1/lottery";
+
+    static final String PASSPORT = "https://aip.baidubce.com/rest/2.0/ocr/v1/passport";
+
+    static final String BUSINESS_CARD = "https://aip.baidubce.com/rest/2.0/ocr/v1/business_card";
+
+    static final String HANDWRITING = "https://aip.baidubce.com/rest/2.0/ocr/v1/handwriting";
+
+    static final String CUSTOM = "https://aip.baidubce.com/rest/2.0/solution/v1/iocr/recognise";
 
     static final int ASYNC_TASK_STATUS_FINISHED = 3;
 }

@@ -63,8 +63,8 @@ public class AipImageClassify extends BaseClient {
      */
     public JSONObject advancedGeneral(String image, HashMap<String, String> options) {
         try {
-            byte[] imgData = Util.readFileByBytes(image);
-            return advancedGeneral(imgData, options);
+            byte[] data = Util.readFileByBytes(image);
+            return advancedGeneral(data, options);
         } catch (IOException e) {
             e.printStackTrace();
             return AipError.IMAGE_READ_ERROR.toJsonResult();
@@ -107,8 +107,8 @@ public class AipImageClassify extends BaseClient {
      */
     public JSONObject dishDetect(String image, HashMap<String, String> options) {
         try {
-            byte[] imgData = Util.readFileByBytes(image);
-            return dishDetect(imgData, options);
+            byte[] data = Util.readFileByBytes(image);
+            return dishDetect(data, options);
         } catch (IOException e) {
             e.printStackTrace();
             return AipError.IMAGE_READ_ERROR.toJsonResult();
@@ -151,8 +151,8 @@ public class AipImageClassify extends BaseClient {
      */
     public JSONObject carDetect(String image, HashMap<String, String> options) {
         try {
-            byte[] imgData = Util.readFileByBytes(image);
-            return carDetect(imgData, options);
+            byte[] data = Util.readFileByBytes(image);
+            return carDetect(data, options);
         } catch (IOException e) {
             e.printStackTrace();
             return AipError.IMAGE_READ_ERROR.toJsonResult();
@@ -195,8 +195,8 @@ public class AipImageClassify extends BaseClient {
      */
     public JSONObject logoSearch(String image, HashMap<String, String> options) {
         try {
-            byte[] imgData = Util.readFileByBytes(image);
-            return logoSearch(imgData, options);
+            byte[] data = Util.readFileByBytes(image);
+            return logoSearch(data, options);
         } catch (IOException e) {
             e.printStackTrace();
             return AipError.IMAGE_READ_ERROR.toJsonResult();
@@ -241,8 +241,8 @@ public class AipImageClassify extends BaseClient {
      */
     public JSONObject logoAdd(String image, String brief, HashMap<String, String> options) {
         try {
-            byte[] imgData = Util.readFileByBytes(image);
-            return logoAdd(imgData, brief, options);
+            byte[] data = Util.readFileByBytes(image);
+            return logoAdd(data, brief, options);
         } catch (IOException e) {
             e.printStackTrace();
             return AipError.IMAGE_READ_ERROR.toJsonResult();
@@ -283,8 +283,8 @@ public class AipImageClassify extends BaseClient {
      */
     public JSONObject logoDeleteByImage(String image, HashMap<String, String> options) {
         try {
-            byte[] imgData = Util.readFileByBytes(image);
-            return logoDeleteByImage(imgData, options);
+            byte[] data = Util.readFileByBytes(image);
+            return logoDeleteByImage(data, options);
         } catch (IOException e) {
             e.printStackTrace();
             return AipError.IMAGE_READ_ERROR.toJsonResult();
@@ -349,8 +349,8 @@ public class AipImageClassify extends BaseClient {
      */
     public JSONObject animalDetect(String image, HashMap<String, String> options) {
         try {
-            byte[] imgData = Util.readFileByBytes(image);
-            return animalDetect(imgData, options);
+            byte[] data = Util.readFileByBytes(image);
+            return animalDetect(data, options);
         } catch (IOException e) {
             e.printStackTrace();
             return AipError.IMAGE_READ_ERROR.toJsonResult();
@@ -391,8 +391,8 @@ public class AipImageClassify extends BaseClient {
      */
     public JSONObject plantDetect(String image, HashMap<String, String> options) {
         try {
-            byte[] imgData = Util.readFileByBytes(image);
-            return plantDetect(imgData, options);
+            byte[] data = Util.readFileByBytes(image);
+            return plantDetect(data, options);
         } catch (IOException e) {
             e.printStackTrace();
             return AipError.IMAGE_READ_ERROR.toJsonResult();
@@ -435,8 +435,8 @@ public class AipImageClassify extends BaseClient {
      */
     public JSONObject objectDetect(String image, HashMap<String, String> options) {
         try {
-            byte[] imgData = Util.readFileByBytes(image);
-            return objectDetect(imgData, options);
+            byte[] data = Util.readFileByBytes(image);
+            return objectDetect(data, options);
         } catch (IOException e) {
             e.printStackTrace();
             return AipError.IMAGE_READ_ERROR.toJsonResult();

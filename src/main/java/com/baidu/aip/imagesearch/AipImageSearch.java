@@ -37,6 +37,7 @@ public class AipImageSearch extends BaseClient {
      * @param options - 可选参数对象，key: value都为string类型
      * options - options列表:
      *   brief 检索时原样带回,最长256B。
+     *   tags 1 - 65535范围内的整数，tag间以逗号分隔，最多2个tag。样例："100,11" ；检索时可圈定分类维度进行检索
      * @return JSONObject
      */
     public JSONObject sameHqAdd(byte[] image, HashMap<String, String> options) {
@@ -61,12 +62,13 @@ public class AipImageSearch extends BaseClient {
      * @param options - 可选参数对象，key: value都为string类型
      * options - options列表:
      *   brief 检索时原样带回,最长256B。
+     *   tags 1 - 65535范围内的整数，tag间以逗号分隔，最多2个tag。样例："100,11" ；检索时可圈定分类维度进行检索
      * @return JSONObject
      */
     public JSONObject sameHqAdd(String image, HashMap<String, String> options) {
         try {
-            byte[] imgData = Util.readFileByBytes(image);
-            return sameHqAdd(imgData, options);
+            byte[] data = Util.readFileByBytes(image);
+            return sameHqAdd(data, options);
         } catch (IOException e) {
             e.printStackTrace();
             return AipError.IMAGE_READ_ERROR.toJsonResult();
@@ -80,6 +82,9 @@ public class AipImageSearch extends BaseClient {
      * @param image - 二进制图像数据
      * @param options - 可选参数对象，key: value都为string类型
      * options - options列表:
+     *   tag_logic 检索时tag之间的逻辑， 0：逻辑and，1：逻辑or
+     *   pn 分页功能，起始位置，例：0。未指定分页时，默认返回前300个结果；接口返回数量最大限制1000条，例如：起始位置为900，截取条数500条，接口也只返回第900 - 1000条的结果，共计100条
+     *   rn 分页功能，截取条数，例：250
      * @return JSONObject
      */
     public JSONObject sameHqSearch(byte[] image, HashMap<String, String> options) {
@@ -103,12 +108,15 @@ public class AipImageSearch extends BaseClient {
      * @param image - 本地图片路径
      * @param options - 可选参数对象，key: value都为string类型
      * options - options列表:
+     *   tag_logic 检索时tag之间的逻辑， 0：逻辑and，1：逻辑or
+     *   pn 分页功能，起始位置，例：0。未指定分页时，默认返回前300个结果；接口返回数量最大限制1000条，例如：起始位置为900，截取条数500条，接口也只返回第900 - 1000条的结果，共计100条
+     *   rn 分页功能，截取条数，例：250
      * @return JSONObject
      */
     public JSONObject sameHqSearch(String image, HashMap<String, String> options) {
         try {
-            byte[] imgData = Util.readFileByBytes(image);
-            return sameHqSearch(imgData, options);
+            byte[] data = Util.readFileByBytes(image);
+            return sameHqSearch(data, options);
         } catch (IOException e) {
             e.printStackTrace();
             return AipError.IMAGE_READ_ERROR.toJsonResult();
@@ -149,8 +157,8 @@ public class AipImageSearch extends BaseClient {
      */
     public JSONObject sameHqDeleteByImage(String image, HashMap<String, String> options) {
         try {
-            byte[] imgData = Util.readFileByBytes(image);
-            return sameHqDeleteByImage(imgData, options);
+            byte[] data = Util.readFileByBytes(image);
+            return sameHqDeleteByImage(data, options);
         } catch (IOException e) {
             e.printStackTrace();
             return AipError.IMAGE_READ_ERROR.toJsonResult();
@@ -187,6 +195,7 @@ public class AipImageSearch extends BaseClient {
      * @param options - 可选参数对象，key: value都为string类型
      * options - options列表:
      *   brief 检索时原样带回,最长256B。
+     *   tags 1 - 65535范围内的整数，tag间以逗号分隔，最多2个tag。样例："100,11" ；检索时可圈定分类维度进行检索
      * @return JSONObject
      */
     public JSONObject similarAdd(byte[] image, HashMap<String, String> options) {
@@ -211,12 +220,13 @@ public class AipImageSearch extends BaseClient {
      * @param options - 可选参数对象，key: value都为string类型
      * options - options列表:
      *   brief 检索时原样带回,最长256B。
+     *   tags 1 - 65535范围内的整数，tag间以逗号分隔，最多2个tag。样例："100,11" ；检索时可圈定分类维度进行检索
      * @return JSONObject
      */
     public JSONObject similarAdd(String image, HashMap<String, String> options) {
         try {
-            byte[] imgData = Util.readFileByBytes(image);
-            return similarAdd(imgData, options);
+            byte[] data = Util.readFileByBytes(image);
+            return similarAdd(data, options);
         } catch (IOException e) {
             e.printStackTrace();
             return AipError.IMAGE_READ_ERROR.toJsonResult();
@@ -230,6 +240,9 @@ public class AipImageSearch extends BaseClient {
      * @param image - 二进制图像数据
      * @param options - 可选参数对象，key: value都为string类型
      * options - options列表:
+     *   tag_logic 检索时tag之间的逻辑， 0：逻辑and，1：逻辑or
+     *   pn 分页功能，起始位置，例：0。未指定分页时，默认返回前300个结果；接口返回数量最大限制1000条，例如：起始位置为900，截取条数500条，接口也只返回第900 - 1000条的结果，共计100条
+     *   rn 分页功能，截取条数，例：250
      * @return JSONObject
      */
     public JSONObject similarSearch(byte[] image, HashMap<String, String> options) {
@@ -253,12 +266,15 @@ public class AipImageSearch extends BaseClient {
      * @param image - 本地图片路径
      * @param options - 可选参数对象，key: value都为string类型
      * options - options列表:
+     *   tag_logic 检索时tag之间的逻辑， 0：逻辑and，1：逻辑or
+     *   pn 分页功能，起始位置，例：0。未指定分页时，默认返回前300个结果；接口返回数量最大限制1000条，例如：起始位置为900，截取条数500条，接口也只返回第900 - 1000条的结果，共计100条
+     *   rn 分页功能，截取条数，例：250
      * @return JSONObject
      */
     public JSONObject similarSearch(String image, HashMap<String, String> options) {
         try {
-            byte[] imgData = Util.readFileByBytes(image);
-            return similarSearch(imgData, options);
+            byte[] data = Util.readFileByBytes(image);
+            return similarSearch(data, options);
         } catch (IOException e) {
             e.printStackTrace();
             return AipError.IMAGE_READ_ERROR.toJsonResult();
@@ -299,8 +315,8 @@ public class AipImageSearch extends BaseClient {
      */
     public JSONObject similarDeleteByImage(String image, HashMap<String, String> options) {
         try {
-            byte[] imgData = Util.readFileByBytes(image);
-            return similarDeleteByImage(imgData, options);
+            byte[] data = Util.readFileByBytes(image);
+            return similarDeleteByImage(data, options);
         } catch (IOException e) {
             e.printStackTrace();
             return AipError.IMAGE_READ_ERROR.toJsonResult();
@@ -369,8 +385,8 @@ public class AipImageSearch extends BaseClient {
      */
     public JSONObject productAdd(String image, HashMap<String, String> options) {
         try {
-            byte[] imgData = Util.readFileByBytes(image);
-            return productAdd(imgData, options);
+            byte[] data = Util.readFileByBytes(image);
+            return productAdd(data, options);
         } catch (IOException e) {
             e.printStackTrace();
             return AipError.IMAGE_READ_ERROR.toJsonResult();
@@ -386,6 +402,8 @@ public class AipImageSearch extends BaseClient {
      * options - options列表:
      *   class_id1 商品分类维度1，支持1-60范围内的整数。检索时可圈定该分类维度进行检索
      *   class_id2 商品分类维度1，支持1-60范围内的整数。检索时可圈定该分类维度进行检索
+     *   pn 分页功能，起始位置，例：0。未指定分页时，默认返回前300个结果；接口返回数量最大限制1000条，例如：起始位置为900，截取条数500条，接口也只返回第900 - 1000条的结果，共计100条
+     *   rn 分页功能，截取条数，例：250
      * @return JSONObject
      */
     public JSONObject productSearch(byte[] image, HashMap<String, String> options) {
@@ -411,12 +429,14 @@ public class AipImageSearch extends BaseClient {
      * options - options列表:
      *   class_id1 商品分类维度1，支持1-60范围内的整数。检索时可圈定该分类维度进行检索
      *   class_id2 商品分类维度1，支持1-60范围内的整数。检索时可圈定该分类维度进行检索
+     *   pn 分页功能，起始位置，例：0。未指定分页时，默认返回前300个结果；接口返回数量最大限制1000条，例如：起始位置为900，截取条数500条，接口也只返回第900 - 1000条的结果，共计100条
+     *   rn 分页功能，截取条数，例：250
      * @return JSONObject
      */
     public JSONObject productSearch(String image, HashMap<String, String> options) {
         try {
-            byte[] imgData = Util.readFileByBytes(image);
-            return productSearch(imgData, options);
+            byte[] data = Util.readFileByBytes(image);
+            return productSearch(data, options);
         } catch (IOException e) {
             e.printStackTrace();
             return AipError.IMAGE_READ_ERROR.toJsonResult();
@@ -457,8 +477,8 @@ public class AipImageSearch extends BaseClient {
      */
     public JSONObject productDeleteByImage(String image, HashMap<String, String> options) {
         try {
-            byte[] imgData = Util.readFileByBytes(image);
-            return productDeleteByImage(imgData, options);
+            byte[] data = Util.readFileByBytes(image);
+            return productDeleteByImage(data, options);
         } catch (IOException e) {
             e.printStackTrace();
             return AipError.IMAGE_READ_ERROR.toJsonResult();
