@@ -57,9 +57,6 @@ public class FaceConsts {
     static final String PERSON_VERIFY =
             "https://aip.baidubce.com/rest/2.0/face/v3/person/verify";
 
-    static final String FACEVERIFY =
-            "https://aip.baidubce.com/rest/2.0/face/v3/faceverify";
-
     static final String VIDEO_SESSIONCODE =
             "https://aip.baidubce.com/rest/2.0/face/v1/faceliveness/sessioncode";
 
@@ -68,4 +65,6 @@ public class FaceConsts {
 
     static final String MATCH = "https://aip.baidubce.com/rest/2.0/face/v3/match";
 
+    static final String FACEVERIFY =
+            "https://aip.baidubce.com/rest/2.0/face/v3/faceverify";
 }
