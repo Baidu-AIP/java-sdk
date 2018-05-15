@@ -430,7 +430,7 @@ public class AipFace extends BaseClient {
     }
 
     /**
-     * 视频活体检测接口接口   
+     * 视频活体检测接口接口
      *
      * @param sessionId - 语音校验码会话id，使用此接口的前提是已经调用了语音校验码接口
      * @param videoBase64 - 二进制图像数据
@@ -441,16 +441,15 @@ public class AipFace extends BaseClient {
     public JSONObject videoFaceliveness(String sessionId, byte[] videoBase64, HashMap<String, String> options) {
         AipRequest request = new AipRequest();
         preOperation(request);
-        
+
         request.addBody("session_id", sessionId);
-        
+
         String base64Content = Base64Util.encode(videoBase64);
         request.addBody("video_base64", base64Content);
         if (options != null) {
             request.addBody(options);
         }
         request.setUri(FaceConsts.VIDEO_FACELIVENESS);
-        request.setBodyFormat(EBodyFormat.RAW_JSON);
         postOperation(request);
         return requestServer(request);
     }
