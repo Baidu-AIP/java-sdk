@@ -433,18 +433,18 @@ public class AipFace extends BaseClient {
      * 视频活体检测接口接口
      *
      * @param sessionId - 语音校验码会话id，使用此接口的前提是已经调用了语音校验码接口
-     * @param videoBase64 - 二进制图像数据
+     * @param video - 二进制图像数据
      * @param options - 可选参数对象，key: value都为string类型
      * options - options列表:
      * @return JSONObject
      */
-    public JSONObject videoFaceliveness(String sessionId, byte[] videoBase64, HashMap<String, String> options) {
+    public JSONObject videoFaceliveness(String sessionId, byte[] video, HashMap<String, String> options) {
         AipRequest request = new AipRequest();
         preOperation(request);
 
         request.addBody("session_id", sessionId);
 
-        String base64Content = Base64Util.encode(videoBase64);
+        String base64Content = Base64Util.encode(video);
         request.addBody("video_base64", base64Content);
         if (options != null) {
             request.addBody(options);
@@ -458,14 +458,14 @@ public class AipFace extends BaseClient {
      * 视频活体检测接口接口
      *
      * @param sessionId - 语音校验码会话id，使用此接口的前提是已经调用了语音校验码接口
-     * @param videoBase64 - 本地图片路径
+     * @param video - 本地图片路径
      * @param options - 可选参数对象，key: value都为string类型
      * options - options列表:
      * @return JSONObject
      */
-    public JSONObject videoFaceliveness(String sessionId, String videoBase64, HashMap<String, String> options) {
+    public JSONObject videoFaceliveness(String sessionId, String video, HashMap<String, String> options) {
         try {
-            byte[] data = Util.readFileByBytes(videoBase64);
+            byte[] data = Util.readFileByBytes(video);
             return videoFaceliveness(sessionId, data, options);
         } catch (IOException e) {
             e.printStackTrace();
