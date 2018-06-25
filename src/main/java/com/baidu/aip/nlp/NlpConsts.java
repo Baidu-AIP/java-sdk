@@ -37,4 +37,8 @@ public class NlpConsts {
 
     static final String TOPIC = "https://aip.baidubce.com/rpc/2.0/nlp/v1/topic";
 
+    static final String ECNET = "https://aip.baidubce.com/rpc/2.0/nlp/v1/ecnet";
+
+    static final String EMOTION = "https://aip.baidubce.com/rpc/2.0/nlp/v1/emotion";
+
 }
