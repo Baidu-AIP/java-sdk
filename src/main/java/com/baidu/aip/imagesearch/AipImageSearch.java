@@ -126,6 +126,52 @@ public class AipImageSearch extends BaseClient {
     }
 
     /**
+     * 相同图检索—更新接口   
+     * 更新图库中图片的摘要和分类信息（具体变量为brief、tags）
+     *
+     * @param image - 二进制图像数据
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   brief 更新的摘要信息，最长256B。样例：{"name":"周杰伦", "id":"666"}
+     *   tags 1 - 65535范围内的整数，tag间以逗号分隔，最多2个tag。样例："100,11" ；检索时可圈定分类维度进行检索
+     * @return JSONObject
+     */
+    public JSONObject sameHqUpdate(byte[] image, HashMap<String, String> options) {
+        AipRequest request = new AipRequest();
+        preOperation(request);
+        
+        String base64Content = Base64Util.encode(image);
+        request.addBody("image", base64Content);
+        if (options != null) {
+            request.addBody(options);
+        }
+        request.setUri(ImageSearchConsts.SAME_HQ_UPDATE);
+        postOperation(request);
+        return requestServer(request);
+    }
+
+    /**
+     * 相同图检索—更新接口
+     * 更新图库中图片的摘要和分类信息（具体变量为brief、tags）
+     *
+     * @param image - 本地图片路径
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   brief 更新的摘要信息，最长256B。样例：{"name":"周杰伦", "id":"666"}
+     *   tags 1 - 65535范围内的整数，tag间以逗号分隔，最多2个tag。样例："100,11" ；检索时可圈定分类维度进行检索
+     * @return JSONObject
+     */
+    public JSONObject sameHqUpdate(String image, HashMap<String, String> options) {
+        try {
+            byte[] data = Util.readFileByBytes(image);
+            return sameHqUpdate(data, options);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return AipError.IMAGE_READ_ERROR.toJsonResult();
+        }
+    }
+
+    /**
      * 相同图检索—删除接口   
      * 删除相同图
      *
@@ -171,7 +217,7 @@ public class AipImageSearch extends BaseClient {
      * 相同图检索—删除接口   
      * 删除相同图
      *
-     * @param contSign - 图片签名（和image二选一，image优先级更高）
+     * @param contSign - 图片签名（和image二选一），**支持批量删除，批量删除时请勿传image，最多支持1000个cont_sign列表，**样例："932301884,1068006219;316336521,553141152;2491030726,1352091083"
      * @param options - 可选参数对象，key: value都为string类型
      * options - options列表:
      * @return JSONObject
@@ -279,6 +325,52 @@ public class AipImageSearch extends BaseClient {
         try {
             byte[] data = Util.readFileByBytes(image);
             return similarSearch(data, options);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return AipError.IMAGE_READ_ERROR.toJsonResult();
+        }
+    }
+
+    /**
+     * 相似图检索—更新接口   
+     * 更新图库中图片的摘要和分类信息（具体变量为brief、tags）
+     *
+     * @param image - 二进制图像数据
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   brief 更新的摘要信息，最长256B。样例：{"name":"周杰伦", "id":"666"}
+     *   tags 1 - 65535范围内的整数，tag间以逗号分隔，最多2个tag。样例："100,11" ；检索时可圈定分类维度进行检索
+     * @return JSONObject
+     */
+    public JSONObject similarUpdate(byte[] image, HashMap<String, String> options) {
+        AipRequest request = new AipRequest();
+        preOperation(request);
+        
+        String base64Content = Base64Util.encode(image);
+        request.addBody("image", base64Content);
+        if (options != null) {
+            request.addBody(options);
+        }
+        request.setUri(ImageSearchConsts.SIMILAR_UPDATE);
+        postOperation(request);
+        return requestServer(request);
+    }
+
+    /**
+     * 相似图检索—更新接口
+     * 更新图库中图片的摘要和分类信息（具体变量为brief、tags）
+     *
+     * @param image - 本地图片路径
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   brief 更新的摘要信息，最长256B。样例：{"name":"周杰伦", "id":"666"}
+     *   tags 1 - 65535范围内的整数，tag间以逗号分隔，最多2个tag。样例："100,11" ；检索时可圈定分类维度进行检索
+     * @return JSONObject
+     */
+    public JSONObject similarUpdate(String image, HashMap<String, String> options) {
+        try {
+            byte[] data = Util.readFileByBytes(image);
+            return similarUpdate(data, options);
         } catch (IOException e) {
             e.printStackTrace();
             return AipError.IMAGE_READ_ERROR.toJsonResult();
@@ -441,6 +533,54 @@ public class AipImageSearch extends BaseClient {
         try {
             byte[] data = Util.readFileByBytes(image);
             return productSearch(data, options);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return AipError.IMAGE_READ_ERROR.toJsonResult();
+        }
+    }
+
+    /**
+     * 商品检索—更新接口   
+     * 更新图库中图片的摘要和分类信息（具体变量为brief、class_id1/class_id2）
+     *
+     * @param image - 二进制图像数据
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   brief 更新的摘要信息，最长256B。样例：{"name":"周杰伦", "id":"666"}
+     *   class_id1 更新的商品分类1，支持1-60范围内的整数。
+     *   class_id2 更新的商品分类2，支持1-60范围内的整数。
+     * @return JSONObject
+     */
+    public JSONObject productUpdate(byte[] image, HashMap<String, String> options) {
+        AipRequest request = new AipRequest();
+        preOperation(request);
+        
+        String base64Content = Base64Util.encode(image);
+        request.addBody("image", base64Content);
+        if (options != null) {
+            request.addBody(options);
+        }
+        request.setUri(ImageSearchConsts.PRODUCT_UPDATE);
+        postOperation(request);
+        return requestServer(request);
+    }
+
+    /**
+     * 商品检索—更新接口
+     * 更新图库中图片的摘要和分类信息（具体变量为brief、class_id1/class_id2）
+     *
+     * @param image - 本地图片路径
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   brief 更新的摘要信息，最长256B。样例：{"name":"周杰伦", "id":"666"}
+     *   class_id1 更新的商品分类1，支持1-60范围内的整数。
+     *   class_id2 更新的商品分类2，支持1-60范围内的整数。
+     * @return JSONObject
+     */
+    public JSONObject productUpdate(String image, HashMap<String, String> options) {
+        try {
+            byte[] data = Util.readFileByBytes(image);
+            return productUpdate(data, options);
         } catch (IOException e) {
             e.printStackTrace();
             return AipError.IMAGE_READ_ERROR.toJsonResult();
