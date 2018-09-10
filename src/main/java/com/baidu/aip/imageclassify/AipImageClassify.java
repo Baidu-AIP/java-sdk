@@ -36,6 +36,7 @@ public class AipImageClassify extends BaseClient {
      * @param image - 二进制图像数据
      * @param options - 可选参数对象，key: value都为string类型
      * options - options列表:
+     *   baike_num 返回百科信息的结果数，默认不返回
      * @return JSONObject
      */
     public JSONObject advancedGeneral(byte[] image, HashMap<String, String> options) {
@@ -59,6 +60,7 @@ public class AipImageClassify extends BaseClient {
      * @param image - 本地图片路径
      * @param options - 可选参数对象，key: value都为string类型
      * options - options列表:
+     *   baike_num 返回百科信息的结果数，默认不返回
      * @return JSONObject
      */
     public JSONObject advancedGeneral(String image, HashMap<String, String> options) {
@@ -79,6 +81,8 @@ public class AipImageClassify extends BaseClient {
      * @param options - 可选参数对象，key: value都为string类型
      * options - options列表:
      *   top_num 返回预测得分top结果数，默认为5
+     *   filter_threshold 默认0.95，可以通过该参数调节识别效果，降低非菜识别率.
+     *   baike_num 返回百科信息的结果数，默认不返回
      * @return JSONObject
      */
     public JSONObject dishDetect(byte[] image, HashMap<String, String> options) {
@@ -103,6 +107,8 @@ public class AipImageClassify extends BaseClient {
      * @param options - 可选参数对象，key: value都为string类型
      * options - options列表:
      *   top_num 返回预测得分top结果数，默认为5
+     *   filter_threshold 默认0.95，可以通过该参数调节识别效果，降低非菜识别率.
+     *   baike_num 返回百科信息的结果数，默认不返回
      * @return JSONObject
      */
     public JSONObject dishDetect(String image, HashMap<String, String> options) {
@@ -123,6 +129,7 @@ public class AipImageClassify extends BaseClient {
      * @param options - 可选参数对象，key: value都为string类型
      * options - options列表:
      *   top_num 返回预测得分top结果数，默认为5
+     *   baike_num 返回百科信息的结果数，默认不返回
      * @return JSONObject
      */
     public JSONObject carDetect(byte[] image, HashMap<String, String> options) {
@@ -147,6 +154,7 @@ public class AipImageClassify extends BaseClient {
      * @param options - 可选参数对象，key: value都为string类型
      * options - options列表:
      *   top_num 返回预测得分top结果数，默认为5
+     *   baike_num 返回百科信息的结果数，默认不返回
      * @return JSONObject
      */
     public JSONObject carDetect(String image, HashMap<String, String> options) {
@@ -321,6 +329,7 @@ public class AipImageClassify extends BaseClient {
      * @param options - 可选参数对象，key: value都为string类型
      * options - options列表:
      *   top_num 返回预测得分top结果数，默认为6
+     *   baike_num 返回百科信息的结果数，默认不返回
      * @return JSONObject
      */
     public JSONObject animalDetect(byte[] image, HashMap<String, String> options) {
@@ -345,6 +354,7 @@ public class AipImageClassify extends BaseClient {
      * @param options - 可选参数对象，key: value都为string类型
      * options - options列表:
      *   top_num 返回预测得分top结果数，默认为6
+     *   baike_num 返回百科信息的结果数，默认不返回
      * @return JSONObject
      */
     public JSONObject animalDetect(String image, HashMap<String, String> options) {
@@ -364,6 +374,7 @@ public class AipImageClassify extends BaseClient {
      * @param image - 二进制图像数据
      * @param options - 可选参数对象，key: value都为string类型
      * options - options列表:
+     *   baike_num 返回百科信息的结果数，默认不返回
      * @return JSONObject
      */
     public JSONObject plantDetect(byte[] image, HashMap<String, String> options) {
@@ -387,6 +398,7 @@ public class AipImageClassify extends BaseClient {
      * @param image - 本地图片路径
      * @param options - 可选参数对象，key: value都为string类型
      * options - options列表:
+     *   baike_num 返回百科信息的结果数，默认不返回
      * @return JSONObject
      */
     public JSONObject plantDetect(String image, HashMap<String, String> options) {
