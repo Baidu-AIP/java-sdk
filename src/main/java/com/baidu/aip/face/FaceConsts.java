@@ -68,4 +68,7 @@ public class FaceConsts {
     static final String VIDEO_FACELIVENESS =
             "https://aip.baidubce.com/rest/2.0/face/v1/faceliveness/verify";
 
+    static final String ID_MATCH =
+            "https://aip.baidubce.com/rest/2.0/face/v3/person/idmatch";
+
 }

@@ -526,4 +526,23 @@ public class AipFace extends BaseClient {
         return requestServer(request);
     }
 
+    /**
+     * 身份证与名字比对接口
+     */
+    public JSONObject idMatch(String idCardNum, String name, HashMap<String, Object> options) {
+        AipRequest request = new AipRequest();
+
+        preOperation(request);
+        request.addBody("id_card_number", idCardNum);
+        request.addBody("name", name);
+        if (options != null) {
+            request.addBody(options);
+        }
+        request.setUri(FaceConsts.ID_MATCH);
+        request.setBodyFormat(EBodyFormat.RAW_JSON);
+        postOperation(request);
+        return requestServer(request);
+
+    }
+
 }
