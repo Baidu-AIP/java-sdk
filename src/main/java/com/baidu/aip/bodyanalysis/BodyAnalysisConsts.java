@@ -21,4 +21,8 @@ public class BodyAnalysisConsts {
 
     static final String BODY_NUM = "https://aip.baidubce.com/rest/2.0/image-classify/v1/body_num";
 
+    static final String GESTURE = "https://aip.baidubce.com/rest/2.0/image-classify/v1/gesture";
+
+    static final String BODY_SEG = "https://aip.baidubce.com/rest/2.0/image-classify/v1/body_seg";
+
 }

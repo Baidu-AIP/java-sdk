@@ -20,7 +20,14 @@ import com.baidu.aip.util.Base64Util;
 import com.baidu.aip.util.Util;
 import org.json.JSONObject;
 
+import javax.imageio.ImageIO;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 
 public class AipBodyAnalysis extends BaseClient {
@@ -158,6 +165,129 @@ public class AipBodyAnalysis extends BaseClient {
         } catch (IOException e) {
             e.printStackTrace();
             return AipError.IMAGE_READ_ERROR.toJsonResult();
+        }
+    }
+
+    /**
+     * 手势识别接口   
+     * 识别图片中的手势类型，返回手势名称、手势矩形框、概率分数，可识别22种手势，支持动态手势识别，适用于手势特效、智能家居手势交互等场景；支持的22类手势列表：手指、掌心向前、拳头、OK、祈祷、作揖、作别、单手比心、点赞、diss、rock、掌心向上、双手比心（3种）、数字（7种）。
+     *
+     * @param image - 二进制图像数据
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     * @return JSONObject
+     */
+    public JSONObject gesture(byte[] image, HashMap<String, String> options) {
+        AipRequest request = new AipRequest();
+        preOperation(request);
+        
+        String base64Content = Base64Util.encode(image);
+        request.addBody("image", base64Content);
+        if (options != null) {
+            request.addBody(options);
+        }
+        request.setUri(BodyAnalysisConsts.GESTURE);
+        postOperation(request);
+        return requestServer(request);
+    }
+
+    /**
+     * 手势识别接口
+     * 识别图片中的手势类型，返回手势名称、手势矩形框、概率分数，可识别22种手势，支持动态手势识别，适用于手势特效、智能家居手势交互等场景；支持的22类手势列表：手指、掌心向前、拳头、OK、祈祷、作揖、作别、单手比心、点赞、diss、rock、掌心向上、双手比心（3种）、数字（7种）。
+     *
+     * @param image - 本地图片路径
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     * @return JSONObject
+     */
+    public JSONObject gesture(String image, HashMap<String, String> options) {
+        try {
+            byte[] data = Util.readFileByBytes(image);
+            return gesture(data, options);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return AipError.IMAGE_READ_ERROR.toJsonResult();
+        }
+    }
+
+    /**
+     * 人像分割接口   
+     * 对于输入的一张图片（可正常解码，且长宽比适宜），**识别人体的轮廓范围，与背景进行分离，适用于拍照背景替换、照片合成、身体特效等场景。输入正常人像图片，返回分割后的二值结果图和分割类型（目前仅支持person）。**
+     *
+     * @param image - 二进制图像数据
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     * @return JSONObject
+     */
+    public JSONObject bodySeg(byte[] image, HashMap<String, String> options) {
+        AipRequest request = new AipRequest();
+        preOperation(request);
+        
+        String base64Content = Base64Util.encode(image);
+        request.addBody("image", base64Content);
+        if (options != null) {
+            request.addBody(options);
+        }
+        request.setUri(BodyAnalysisConsts.BODY_SEG);
+        postOperation(request);
+        return requestServer(request);
+    }
+
+    /**
+     * 人像分割接口
+     * 对于输入的一张图片（可正常解码，且长宽比适宜），**识别人体的轮廓范围，与背景进行分离，适用于拍照背景替换、照片合成、身体特效等场景。输入正常人像图片，返回分割后的二值结果图和分割类型（目前仅支持person）。**
+     *
+     * @param image - 本地图片路径
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     * @return JSONObject
+     */
+    public JSONObject bodySeg(String image, HashMap<String, String> options) {
+        try {
+            byte[] data = Util.readFileByBytes(image);
+            return bodySeg(data, options);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return AipError.IMAGE_READ_ERROR.toJsonResult();
+        }
+    }
+
+    public static BufferedImage resize(BufferedImage img, int newW, int newH) {
+        Image tmp = img.getScaledInstance(newW, newH, Image.SCALE_SMOOTH);
+        BufferedImage dimg = new BufferedImage(newW, newH, BufferedImage.TYPE_INT_ARGB);
+
+        Graphics2D g2d = dimg.createGraphics();
+        g2d.drawImage(tmp, 0, 0, null);
+        g2d.dispose();
+
+        return dimg;
+    }
+
+    /**
+     * 针对人像分割接口，将返回的二值图转化为灰度图,存储为jpg格式
+     * @param labelmapBase64 人像分割接口返回的二值图base64
+     * @param realWidth 图片原始宽度
+     * @param realHeight 图片原始高度
+     * @param outPath 灰度图输出路径
+     */
+    public static void convert(String labelmapBase64, int realWidth, int realHeight, String outPath) {
+        try {
+
+            byte[] bytes = Base64Util.decode(labelmapBase64);
+            InputStream is = new ByteArrayInputStream(bytes);
+            BufferedImage image = ImageIO.read(is);
+            BufferedImage newImage = resize(image, realWidth, realHeight);
+            BufferedImage grayImage = new BufferedImage(realWidth, realHeight, BufferedImage.TYPE_BYTE_GRAY);
+            for (int i = 0 ; i < realWidth ; i++) {
+                for (int j = 0 ; j < realHeight; j++) {
+                    int rgb = newImage.getRGB(i, j);
+                    grayImage.setRGB(i, j, rgb * 255);  // 将像素存入缓冲区
+                }
+            }
+            File newFile = new File(outPath);
+            ImageIO.write(grayImage, "jpg", newFile);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
