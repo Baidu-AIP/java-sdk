@@ -749,6 +749,90 @@ public class AipOcr extends BaseClient {
     }
 
     /**
+     * 火车票识别接口   
+     * 支持对大陆火车票的车票号、始发站、目的站、车次、日期、票价、席别、姓名进行结构化识别
+     *
+     * @param image - 二进制图像数据
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     * @return JSONObject
+     */
+    public JSONObject trainTicket(byte[] image, HashMap<String, String> options) {
+        AipRequest request = new AipRequest();
+        preOperation(request);
+        
+        String base64Content = Base64Util.encode(image);
+        request.addBody("image", base64Content);
+        if (options != null) {
+            request.addBody(options);
+        }
+        request.setUri(OcrConsts.TRAIN_TICKET);
+        postOperation(request);
+        return requestServer(request);
+    }
+
+    /**
+     * 火车票识别接口
+     * 支持对大陆火车票的车票号、始发站、目的站、车次、日期、票价、席别、姓名进行结构化识别
+     *
+     * @param image - 本地图片路径
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     * @return JSONObject
+     */
+    public JSONObject trainTicket(String image, HashMap<String, String> options) {
+        try {
+            byte[] data = Util.readFileByBytes(image);
+            return trainTicket(data, options);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return AipError.IMAGE_READ_ERROR.toJsonResult();
+        }
+    }
+
+    /**
+     * 出租车票识别接口   
+     * 针对出租车票（现支持北京）的发票号码、发票代码、车号、日期、时间、金额进行结构化识别
+     *
+     * @param image - 二进制图像数据
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     * @return JSONObject
+     */
+    public JSONObject taxiReceipt(byte[] image, HashMap<String, String> options) {
+        AipRequest request = new AipRequest();
+        preOperation(request);
+        
+        String base64Content = Base64Util.encode(image);
+        request.addBody("image", base64Content);
+        if (options != null) {
+            request.addBody(options);
+        }
+        request.setUri(OcrConsts.TAXI_RECEIPT);
+        postOperation(request);
+        return requestServer(request);
+    }
+
+    /**
+     * 出租车票识别接口
+     * 针对出租车票（现支持北京）的发票号码、发票代码、车号、日期、时间、金额进行结构化识别
+     *
+     * @param image - 本地图片路径
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     * @return JSONObject
+     */
+    public JSONObject taxiReceipt(String image, HashMap<String, String> options) {
+        try {
+            byte[] data = Util.readFileByBytes(image);
+            return taxiReceipt(data, options);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return AipError.IMAGE_READ_ERROR.toJsonResult();
+        }
+    }
+
+    /**
      * 表格文字识别同步接口接口   
      * 自动识别表格线及表格内容，结构化输出表头、表尾及每个单元格的文字内容。
      *

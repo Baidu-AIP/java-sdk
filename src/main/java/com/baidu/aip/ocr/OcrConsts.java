@@ -41,6 +41,10 @@ public class OcrConsts {
 
     static final String RECEIPT = "https://aip.baidubce.com/rest/2.0/ocr/v1/receipt";
 
+    static final String TRAIN_TICKET = "https://aip.baidubce.com/rest/2.0/ocr/v1/train_ticket";
+
+    static final String TAXI_RECEIPT = "https://aip.baidubce.com/rest/2.0/ocr/v1/taxi_receipt";
+
     static final String FORM = "https://aip.baidubce.com/rest/2.0/ocr/v1/form";
 
     static final String TABLE_RECOGNIZE = "https://aip.baidubce.com/rest/2.0/solution/v1/form_ocr/request";
