@@ -41,4 +41,6 @@ public class NlpConsts {
 
     static final String EMOTION = "https://aip.baidubce.com/rpc/2.0/nlp/v1/emotion";
 
+    static final String NEWS_SUMMARY = "https://aip.baidubce.com/rpc/2.0/nlp/v1/news_summary";
+
 }

@@ -455,4 +455,46 @@ public class AipImageClassify extends BaseClient {
         }
     }
 
+    /**
+     * 地标识别接口   
+     * 该请求用于识别地标，即对于输入的一张图片（可正常解码，且长宽比适宜），输出图片中的地标识别结果。
+     *
+     * @param image - 二进制图像数据
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     * @return JSONObject
+     */
+    public JSONObject landmark(byte[] image, HashMap<String, String> options) {
+        AipRequest request = new AipRequest();
+        preOperation(request);
+        
+        String base64Content = Base64Util.encode(image);
+        request.addBody("image", base64Content);
+        if (options != null) {
+            request.addBody(options);
+        }
+        request.setUri(ImageClassifyConsts.LANDMARK);
+        postOperation(request);
+        return requestServer(request);
+    }
+
+    /**
+     * 地标识别接口
+     * 该请求用于识别地标，即对于输入的一张图片（可正常解码，且长宽比适宜），输出图片中的地标识别结果。
+     *
+     * @param image - 本地图片路径
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     * @return JSONObject
+     */
+    public JSONObject landmark(String image, HashMap<String, String> options) {
+        try {
+            byte[] data = Util.readFileByBytes(image);
+            return landmark(data, options);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return AipError.IMAGE_READ_ERROR.toJsonResult();
+        }
+    }
+
 }

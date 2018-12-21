@@ -385,4 +385,34 @@ public class AipNlp extends BaseClient {
         return requestServer(request);
     }
 
+    /**
+     * 新闻摘要接口接口
+     * 自动抽取新闻文本中的关键信息，进而生成指定长度的新闻摘要
+     *
+     * @param content - 字符串（限200字符数）字符串仅支持GBK编码，长度需小于200字符数（即400字节），请输入前确认字符数没有超限，若字符数超长会返回错误。标题在算法中具有重要的作用，若文章确无标题，输入参数的“标题”字段为空即可*
+     * @param maxSummaryLen - 此数值将作为摘要结果的最大长度。例如：原文长度1000字，本参数设置为150，则摘要结果的最大长度是150字；推荐最优区间：200-500字
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   title 字符串（限200字符数）字符串仅支持GBK编码，长度需小于200字符数（即400字节），请输入前确认字符数没有超限，若字符数超长会返回错误。标题在算法中具有重要的作用，若文章确无标题，输入参数的“标题”字段为空即可
+     * @return JSONObject
+     */
+    public JSONObject newsSummary(String content, int maxSummaryLen, HashMap<String, Object> options) {
+        AipRequest request = new AipRequest();
+        preOperation(request);
+        
+        request.addBody("content", content);
+        
+        request.addBody("max_summary_len", maxSummaryLen);
+        
+        if (options != null) {
+            request.addBody(options);
+        }
+        request.setUri(NlpConsts.NEWS_SUMMARY);
+        request.addHeader(Headers.CONTENT_ENCODING, HttpCharacterEncoding.ENCODE_GBK);
+        request.addHeader(Headers.CONTENT_TYPE, HttpContentType.JSON_DATA);
+        request.setBodyFormat(EBodyFormat.RAW_JSON);
+        postOperation(request);
+        return requestServer(request);
+    }
+
 }

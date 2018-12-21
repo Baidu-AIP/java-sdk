@@ -33,4 +33,6 @@ public class ImageClassifyConsts {
 
     static final String OBJECT_DETECT = "https://aip.baidubce.com/rest/2.0/image-classify/v1/object_detect";
 
+    static final String LANDMARK = "https://aip.baidubce.com/rest/2.0/image-classify/v1/landmark";
+
 }
