@@ -25,4 +25,8 @@ public class BodyAnalysisConsts {
 
     static final String BODY_SEG = "https://aip.baidubce.com/rest/2.0/image-classify/v1/body_seg";
 
+    static final String DRIVER_BEHAVIOR = "https://aip.baidubce.com/rest/2.0/image-classify/v1/driver_behavior";
+
+    static final String BODY_TRACKING = "https://aip.baidubce.com/rest/2.0/image-classify/v1/body_tracking";
+
 }

@@ -1246,19 +1246,18 @@ public class AipOcr extends BaseClient {
      * 自定义模板文字识别，是针对百度官方没有推出相应的模板，但是当用户需要对某一类卡证/票据（如房产证、军官证、火车票等）进行结构化的提取内容时，可以使用该产品快速制作模板，进行识别。
      *
      * @param image - 二进制图像数据
-     * @param templateSign - 您在自定义文字识别平台制作的模板的ID
      * @param options - 可选参数对象，key: value都为string类型
      * options - options列表:
+     *   templateSign 您在自定义文字识别平台制作的模板的ID
+     *   classifierId 分类器Id。这个参数和templateSign至少存在一个，优先使用templateSign。存在templateSign时，表示使用指定模板；如果没有templateSign而有classifierId，表示使用分类器去判断使用哪个模板
      * @return JSONObject
      */
-    public JSONObject custom(byte[] image, String templateSign, HashMap<String, String> options) {
+    public JSONObject custom(byte[] image, HashMap<String, String> options) {
         AipRequest request = new AipRequest();
         preOperation(request);
         
         String base64Content = Base64Util.encode(image);
         request.addBody("image", base64Content);
-        
-        request.addBody("templateSign", templateSign);
         if (options != null) {
             request.addBody(options);
         }
@@ -1272,15 +1271,16 @@ public class AipOcr extends BaseClient {
      * 自定义模板文字识别，是针对百度官方没有推出相应的模板，但是当用户需要对某一类卡证/票据（如房产证、军官证、火车票等）进行结构化的提取内容时，可以使用该产品快速制作模板，进行识别。
      *
      * @param image - 本地图片路径
-     * @param templateSign - 您在自定义文字识别平台制作的模板的ID
      * @param options - 可选参数对象，key: value都为string类型
      * options - options列表:
+     *   templateSign 您在自定义文字识别平台制作的模板的ID
+     *   classifierId 分类器Id。这个参数和templateSign至少存在一个，优先使用templateSign。存在templateSign时，表示使用指定模板；如果没有templateSign而有classifierId，表示使用分类器去判断使用哪个模板
      * @return JSONObject
      */
-    public JSONObject custom(String image, String templateSign, HashMap<String, String> options) {
+    public JSONObject custom(String image, HashMap<String, String> options) {
         try {
             byte[] data = Util.readFileByBytes(image);
-            return custom(data, templateSign, options);
+            return custom(data, options);
         } catch (IOException e) {
             e.printStackTrace();
             return AipError.IMAGE_READ_ERROR.toJsonResult();

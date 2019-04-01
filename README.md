@@ -15,6 +15,8 @@
            │       └── AipImageCensor              //图像审核服务入口
            ├── imageclassify
            │       └── AipImageClassify            //图像识别服务入口
+           ├── imageprocess
+           │       └── AipImageProcess             //图像处理服务入口
            ├── nlp
            │       └── AipNlp                      //Nlp服务入口
            ├── kg

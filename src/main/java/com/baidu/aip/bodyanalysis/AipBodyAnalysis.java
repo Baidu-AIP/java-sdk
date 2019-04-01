@@ -79,7 +79,7 @@ public class AipBodyAnalysis extends BaseClient {
     }
 
     /**
-     * 人体属性识别接口   
+     * 人体检测与属性识别接口   
      * 对于输入的一张图片（可正常解码，且长宽比适宜），**检测图像中的所有人体并返回每个人体的矩形框位置，识别人体的静态属性和行为，共支持20余种属性，包括：性别、年龄阶段、衣着（含类别/颜色）、是否戴帽子、是否戴眼镜、是否背包、是否使用手机、身体朝向等**。
      *
      * @param image - 二进制图像数据
@@ -103,7 +103,7 @@ public class AipBodyAnalysis extends BaseClient {
     }
 
     /**
-     * 人体属性识别接口
+     * 人体检测与属性识别接口
      * 对于输入的一张图片（可正常解码，且长宽比适宜），**检测图像中的所有人体并返回每个人体的矩形框位置，识别人体的静态属性和行为，共支持20余种属性，包括：性别、年龄阶段、衣着（含类别/颜色）、是否戴帽子、是否戴眼镜、是否背包、是否使用手机、身体朝向等**。
      *
      * @param image - 本地图片路径
@@ -170,7 +170,7 @@ public class AipBodyAnalysis extends BaseClient {
 
     /**
      * 手势识别接口   
-     * 识别图片中的手势类型，返回手势名称、手势矩形框、概率分数，可识别22种手势，支持动态手势识别，适用于手势特效、智能家居手势交互等场景；支持的22类手势列表：手指、掌心向前、拳头、OK、祈祷、作揖、作别、单手比心、点赞、diss、rock、掌心向上、双手比心（3种）、数字（7种）。
+     * 识别图片中的手势类型，返回手势名称、手势矩形框、概率分数，可识别24种手势，支持动态手势识别，适用于手势特效、智能家居手势交互等场景；支持的24类手势列表：拳头、OK、祈祷、作揖、作别、单手比心、点赞、Diss、我爱你、掌心向上、双手比心（3种）、数字（9种）、Rock、竖中指。
      *
      * @param image - 二进制图像数据
      * @param options - 可选参数对象，key: value都为string类型
@@ -193,7 +193,7 @@ public class AipBodyAnalysis extends BaseClient {
 
     /**
      * 手势识别接口
-     * 识别图片中的手势类型，返回手势名称、手势矩形框、概率分数，可识别22种手势，支持动态手势识别，适用于手势特效、智能家居手势交互等场景；支持的22类手势列表：手指、掌心向前、拳头、OK、祈祷、作揖、作别、单手比心、点赞、diss、rock、掌心向上、双手比心（3种）、数字（7种）。
+     * 识别图片中的手势类型，返回手势名称、手势矩形框、概率分数，可识别24种手势，支持动态手势识别，适用于手势特效、智能家居手势交互等场景；支持的24类手势列表：拳头、OK、祈祷、作揖、作别、单手比心、点赞、Diss、我爱你、掌心向上、双手比心（3种）、数字（9种）、Rock、竖中指。
      *
      * @param image - 本地图片路径
      * @param options - 可选参数对象，key: value都为string类型
@@ -217,6 +217,7 @@ public class AipBodyAnalysis extends BaseClient {
      * @param image - 二进制图像数据
      * @param options - 可选参数对象，key: value都为string类型
      * options - options列表:
+     *   type 可以通过设置type参数，自主设置返回哪些结果图，避免造成带宽的浪费<br>1）可选值说明：<br>labelmap - 二值图像，需二次处理方能查看分割效果<br>scoremap - 人像前景灰度图<br>foreground - 人像前景抠图，透明背景<br>2）type 参数值可以是可选值的组合，用逗号分隔；如果无此参数默认输出全部3类结果图
      * @return JSONObject
      */
     public JSONObject bodySeg(byte[] image, HashMap<String, String> options) {
@@ -240,12 +241,111 @@ public class AipBodyAnalysis extends BaseClient {
      * @param image - 本地图片路径
      * @param options - 可选参数对象，key: value都为string类型
      * options - options列表:
+     *   type 可以通过设置type参数，自主设置返回哪些结果图，避免造成带宽的浪费<br>1）可选值说明：<br>labelmap - 二值图像，需二次处理方能查看分割效果<br>scoremap - 人像前景灰度图<br>foreground - 人像前景抠图，透明背景<br>2）type 参数值可以是可选值的组合，用逗号分隔；如果无此参数默认输出全部3类结果图
      * @return JSONObject
      */
     public JSONObject bodySeg(String image, HashMap<String, String> options) {
         try {
             byte[] data = Util.readFileByBytes(image);
             return bodySeg(data, options);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return AipError.IMAGE_READ_ERROR.toJsonResult();
+        }
+    }
+
+    /**
+     * 驾驶行为分析接口   
+     * 对于输入的一张车载监控图片（可正常解码，且长宽比适宜），**识别图像中是否有人体（驾驶员），若检测到至少1个人体，则进一步识别属性行为，可识别使用手机、抽烟、未系安全带、双手离开方向盘、视线未朝前方5种典型行为姿态**。
+     *
+     * @param image - 二进制图像数据
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   type smoke,cellphone,<br>not_buckling_up,<br>both_hands_leaving_wheel,<br>not_facing_front |识别的属性行为类别，英文逗号分隔，默认所有属性都识别；<br>smoke //吸烟，<br>cellphone //打手机 ，<br>not_buckling_up // 未系安全带，<br>both_hands_leaving_wheel // 双手离开方向盘，<br>not_facing_front // 视角未看前方
+     * @return JSONObject
+     */
+    public JSONObject driverBehavior(byte[] image, HashMap<String, String> options) {
+        AipRequest request = new AipRequest();
+        preOperation(request);
+        
+        String base64Content = Base64Util.encode(image);
+        request.addBody("image", base64Content);
+        if (options != null) {
+            request.addBody(options);
+        }
+        request.setUri(BodyAnalysisConsts.DRIVER_BEHAVIOR);
+        postOperation(request);
+        return requestServer(request);
+    }
+
+    /**
+     * 驾驶行为分析接口
+     * 对于输入的一张车载监控图片（可正常解码，且长宽比适宜），**识别图像中是否有人体（驾驶员），若检测到至少1个人体，则进一步识别属性行为，可识别使用手机、抽烟、未系安全带、双手离开方向盘、视线未朝前方5种典型行为姿态**。
+     *
+     * @param image - 本地图片路径
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   type smoke,cellphone,<br>not_buckling_up,<br>both_hands_leaving_wheel,<br>not_facing_front |识别的属性行为类别，英文逗号分隔，默认所有属性都识别；<br>smoke //吸烟，<br>cellphone //打手机 ，<br>not_buckling_up // 未系安全带，<br>both_hands_leaving_wheel // 双手离开方向盘，<br>not_facing_front // 视角未看前方
+     * @return JSONObject
+     */
+    public JSONObject driverBehavior(String image, HashMap<String, String> options) {
+        try {
+            byte[] data = Util.readFileByBytes(image);
+            return driverBehavior(data, options);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return AipError.IMAGE_READ_ERROR.toJsonResult();
+        }
+    }
+
+    /**
+     * 人流量统计-动态版接口   
+     * 统计图像中的人体个数和流动趋势，主要适用于**低空俯拍、出入口场景，以人体头肩为主要识别目标**
+     *
+     * @param image - 二进制图像数据
+     * @param dynamic - true：动态人流量统计，返回总人数、跟踪ID、区域进出人数；<br>false：静态人数统计，返回总人数
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   case_id 任务ID（通过case_id区分不同视频流，自拟，不同序列间不可重复即可）
+     *   case_init 每个case的初始化信号，为true时对该case下的跟踪算法进行初始化，为false时重载该case的跟踪状态。当为false且读取不到相应case的信息时，直接重新初始化
+     *   show 否返回结果图（含统计值和跟踪框渲染），默认不返回，选true时返回渲染后的图片(base64)，其它无效值或为空则默认false
+     *   area 静态人数统计时，只统计区域内的人，缺省时为全图统计。<br>动态人流量统计时，进出区域的人流会被统计。<br>逗号分隔，如‘x1,y1,x2,y2,x3,y3...xn,yn'，按顺序依次给出每个顶点的xy坐标（默认尾点和首点相连），形成闭合多边形区域。<br>服务会做范围（顶点左边需在图像范围内）及个数校验（数组长度必须为偶数，且大于3个顶点）。只支持单个多边形区域，建议设置矩形框，即4个顶点。**坐标取值不能超过图像宽度和高度，比如1280的宽度，坐标值最小建议从1开始，最大到1279**。
+     * @return JSONObject
+     */
+    public JSONObject bodyTracking(byte[] image, String dynamic, HashMap<String, String> options) {
+        AipRequest request = new AipRequest();
+        preOperation(request);
+        
+        String base64Content = Base64Util.encode(image);
+        request.addBody("image", base64Content);
+        
+        request.addBody("dynamic", dynamic);
+        if (options != null) {
+            request.addBody(options);
+        }
+        request.setUri(BodyAnalysisConsts.BODY_TRACKING);
+        postOperation(request);
+        return requestServer(request);
+    }
+
+    /**
+     * 人流量统计-动态版接口
+     * 统计图像中的人体个数和流动趋势，主要适用于**低空俯拍、出入口场景，以人体头肩为主要识别目标**
+     *
+     * @param image - 本地图片路径
+     * @param dynamic - true：动态人流量统计，返回总人数、跟踪ID、区域进出人数；<br>false：静态人数统计，返回总人数
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   case_id 任务ID（通过case_id区分不同视频流，自拟，不同序列间不可重复即可）
+     *   case_init 每个case的初始化信号，为true时对该case下的跟踪算法进行初始化，为false时重载该case的跟踪状态。当为false且读取不到相应case的信息时，直接重新初始化
+     *   show 否返回结果图（含统计值和跟踪框渲染），默认不返回，选true时返回渲染后的图片(base64)，其它无效值或为空则默认false
+     *   area 静态人数统计时，只统计区域内的人，缺省时为全图统计。<br>动态人流量统计时，进出区域的人流会被统计。<br>逗号分隔，如‘x1,y1,x2,y2,x3,y3...xn,yn'，按顺序依次给出每个顶点的xy坐标（默认尾点和首点相连），形成闭合多边形区域。<br>服务会做范围（顶点左边需在图像范围内）及个数校验（数组长度必须为偶数，且大于3个顶点）。只支持单个多边形区域，建议设置矩形框，即4个顶点。**坐标取值不能超过图像宽度和高度，比如1280的宽度，坐标值最小建议从1开始，最大到1279**。
+     * @return JSONObject
+     */
+    public JSONObject bodyTracking(String image, String dynamic, HashMap<String, String> options) {
+        try {
+            byte[] data = Util.readFileByBytes(image);
+            return bodyTracking(data, dynamic, options);
         } catch (IOException e) {
             e.printStackTrace();
             return AipError.IMAGE_READ_ERROR.toJsonResult();

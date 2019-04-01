@@ -25,11 +25,10 @@ import com.baidu.aip.util.AipClientConfiguration;
 import com.baidu.aip.util.AipClientConst;
 import com.baidu.aip.util.SignUtil;
 import com.baidu.aip.util.Util;
-import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.PropertyConfigurator;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.UnsupportedEncodingException;
 import java.net.Proxy;
@@ -47,7 +46,7 @@ public abstract class BaseClient {
     protected Calendar expireDate;
     protected AuthState state;
     protected AipClientConfiguration config;
-    protected static final Logger LOGGER = Logger.getLogger(BaseClient.class);
+    protected static final Logger LOGGER = LoggerFactory.getLogger(BaseClient.class);
 
     class AuthState {
 
@@ -128,15 +127,6 @@ public abstract class BaseClient {
         accessToken = null;
         expireDate = null;
         state = new AuthState();
-
-        // init logging
-        String log4jConf = System.getProperty(AipClientConst.LOG4J_CONF_PROPERTY);
-        if (log4jConf != null && !log4jConf.equals("")) {
-            PropertyConfigurator.configure(log4jConf);
-        }
-        else {
-            BasicConfigurator.configure();
-        }
     }
 
     /**
