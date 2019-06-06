@@ -35,4 +35,12 @@ public class ImageClassifyConsts {
 
     static final String LANDMARK = "https://aip.baidubce.com/rest/2.0/image-classify/v1/landmark";
 
+    static final String FLOWER = "https://aip.baidubce.com/rest/2.0/image-classify/v1/flower";
+
+    static final String INGREDIENT = "https://aip.baidubce.com/rest/2.0/image-classify/v1/classify/ingredient";
+
+    static final String REDWINE = "https://aip.baidubce.com/rest/2.0/image-classify/v1/redwine";
+
+    static final String CURRENCY = "https://aip.baidubce.com/rest/2.0/image-classify/v1/currency";
+
 }

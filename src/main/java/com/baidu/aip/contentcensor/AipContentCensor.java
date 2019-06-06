@@ -338,7 +338,34 @@ public class AipContentCensor extends BaseClient {
                 request.addBody(entry.getKey(), entry.getValue());
             }
         }
-        request.setUri(ContentCensorConsts.USER_DEFINED_URL);
+        request.setUri(ContentCensorConsts.USER_DEFINED_IMAGE_URL);
+        postOperation(request);
+        return requestServer(request);
+    }
+
+    /**
+     * 文本审核接口
+     * 本接口除了支持自定义配置外，还对返回结果进行了总体的包装，按照用户在控制台中配置的规则直接返回是否合规，如果不合规则指出具体不合规的内容。
+     * @param text 文本
+     * @return JSONObject
+     */
+    public JSONObject textCensorUserDefined(String text) {
+        AipRequest request = new AipRequest();
+
+        request.addBody("text", text);
+
+        return textCensorUserDefinedHelper(request, null);
+    }
+
+    private JSONObject textCensorUserDefinedHelper(AipRequest request, HashMap<String, String> options) {
+        preOperation(request);
+
+        if (options != null) {
+            for (Map.Entry<String, String> entry : options.entrySet()) {
+                request.addBody(entry.getKey(), entry.getValue());
+            }
+        }
+        request.setUri(ContentCensorConsts.USER_DEFINED_TEXT_URL);
         postOperation(request);
         return requestServer(request);
     }

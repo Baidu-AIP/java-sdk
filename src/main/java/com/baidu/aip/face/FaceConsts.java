@@ -21,6 +21,9 @@ public class FaceConsts {
     static final String SEARCH =
             "https://aip.baidubce.com/rest/2.0/face/v3/search";
 
+    static final String MULTI_SEARCH =
+            "https://aip.baidubce.com/rest/2.0/face/v3/multi-search";
+
     static final String USER_ADD =
             "https://aip.baidubce.com/rest/2.0/face/v3/faceset/user/add";
 

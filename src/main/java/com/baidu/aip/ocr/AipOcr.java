@@ -940,6 +940,474 @@ public class AipOcr extends BaseClient {
     }
 
     /**
+     * VIN码识别接口   
+     * 对车辆车架上、挡风玻璃上的VIN码进行识别
+     *
+     * @param image - 二进制图像数据
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     * @return JSONObject
+     */
+    public JSONObject vinCode(byte[] image, HashMap<String, String> options) {
+        AipRequest request = new AipRequest();
+        preOperation(request);
+        
+        String base64Content = Base64Util.encode(image);
+        request.addBody("image", base64Content);
+        if (options != null) {
+            request.addBody(options);
+        }
+        request.setUri(OcrConsts.VIN_CODE);
+        postOperation(request);
+        return requestServer(request);
+    }
+
+    /**
+     * VIN码识别接口
+     * 对车辆车架上、挡风玻璃上的VIN码进行识别
+     *
+     * @param image - 本地图片路径
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     * @return JSONObject
+     */
+    public JSONObject vinCode(String image, HashMap<String, String> options) {
+        try {
+            byte[] data = Util.readFileByBytes(image);
+            return vinCode(data, options);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return AipError.IMAGE_READ_ERROR.toJsonResult();
+        }
+    }
+
+    /**
+     * 定额发票识别接口   
+     * 对各类定额发票的代码、号码、金额进行识别
+     *
+     * @param image - 二进制图像数据
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     * @return JSONObject
+     */
+    public JSONObject quotaInvoice(byte[] image, HashMap<String, String> options) {
+        AipRequest request = new AipRequest();
+        preOperation(request);
+        
+        String base64Content = Base64Util.encode(image);
+        request.addBody("image", base64Content);
+        if (options != null) {
+            request.addBody(options);
+        }
+        request.setUri(OcrConsts.QUOTA_INVOICE);
+        postOperation(request);
+        return requestServer(request);
+    }
+
+    /**
+     * 定额发票识别接口
+     * 对各类定额发票的代码、号码、金额进行识别
+     *
+     * @param image - 本地图片路径
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     * @return JSONObject
+     */
+    public JSONObject quotaInvoice(String image, HashMap<String, String> options) {
+        try {
+            byte[] data = Util.readFileByBytes(image);
+            return quotaInvoice(data, options);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return AipError.IMAGE_READ_ERROR.toJsonResult();
+        }
+    }
+
+    /**
+     * 户口本识别接口   
+     * 【此接口需要您在[申请页面](https://cloud.baidu.com/survey/AICooperativeConsultingApply.html)中提交合作咨询开通权限】对出生地、出生日期、姓名、民族、与户主关系、性别、身份证号码字段进行识别
+     *
+     * @param image - 二进制图像数据
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     * @return JSONObject
+     */
+    public JSONObject householdRegister(byte[] image, HashMap<String, String> options) {
+        AipRequest request = new AipRequest();
+        preOperation(request);
+        
+        String base64Content = Base64Util.encode(image);
+        request.addBody("image", base64Content);
+        if (options != null) {
+            request.addBody(options);
+        }
+        request.setUri(OcrConsts.HOUSEHOLD_REGISTER);
+        postOperation(request);
+        return requestServer(request);
+    }
+
+    /**
+     * 户口本识别接口
+     * 【此接口需要您在[申请页面](https://cloud.baidu.com/survey/AICooperativeConsultingApply.html)中提交合作咨询开通权限】对出生地、出生日期、姓名、民族、与户主关系、性别、身份证号码字段进行识别
+     *
+     * @param image - 本地图片路径
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     * @return JSONObject
+     */
+    public JSONObject householdRegister(String image, HashMap<String, String> options) {
+        try {
+            byte[] data = Util.readFileByBytes(image);
+            return householdRegister(data, options);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return AipError.IMAGE_READ_ERROR.toJsonResult();
+        }
+    }
+
+    /**
+     * 港澳通行证识别接口   
+     * 【此接口需要您在[申请页面](https://cloud.baidu.com/survey/AICooperativeConsultingApply.html)中提交合作咨询开通权限】对港澳通行证证号、姓名、姓名拼音、性别、有效期限、签发地点、出生日期字段进行识别
+     *
+     * @param image - 二进制图像数据
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     * @return JSONObject
+     */
+    public JSONObject HKMacauExitentrypermit(byte[] image, HashMap<String, String> options) {
+        AipRequest request = new AipRequest();
+        preOperation(request);
+        
+        String base64Content = Base64Util.encode(image);
+        request.addBody("image", base64Content);
+        if (options != null) {
+            request.addBody(options);
+        }
+        request.setUri(OcrConsts.HK_MACAU_EXITENTRYPERMIT);
+        postOperation(request);
+        return requestServer(request);
+    }
+
+    /**
+     * 港澳通行证识别接口
+     * 【此接口需要您在[申请页面](https://cloud.baidu.com/survey/AICooperativeConsultingApply.html)中提交合作咨询开通权限】对港澳通行证证号、姓名、姓名拼音、性别、有效期限、签发地点、出生日期字段进行识别
+     *
+     * @param image - 本地图片路径
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     * @return JSONObject
+     */
+    public JSONObject HKMacauExitentrypermit(String image, HashMap<String, String> options) {
+        try {
+            byte[] data = Util.readFileByBytes(image);
+            return HKMacauExitentrypermit(data, options);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return AipError.IMAGE_READ_ERROR.toJsonResult();
+        }
+    }
+
+    /**
+     * 台湾通行证识别接口   
+     * 【此接口需要您在[申请页面](https://cloud.baidu.com/survey/AICooperativeConsultingApply.html)中提交合作咨询开通权限】对台湾通行证证号、签发地、出生日期、姓名、姓名拼音、性别、有效期字段进行识别
+     *
+     * @param image - 二进制图像数据
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     * @return JSONObject
+     */
+    public JSONObject taiwanExitentrypermit(byte[] image, HashMap<String, String> options) {
+        AipRequest request = new AipRequest();
+        preOperation(request);
+        
+        String base64Content = Base64Util.encode(image);
+        request.addBody("image", base64Content);
+        if (options != null) {
+            request.addBody(options);
+        }
+        request.setUri(OcrConsts.TAIWAN_EXITENTRYPERMIT);
+        postOperation(request);
+        return requestServer(request);
+    }
+
+    /**
+     * 台湾通行证识别接口
+     * 【此接口需要您在[申请页面](https://cloud.baidu.com/survey/AICooperativeConsultingApply.html)中提交合作咨询开通权限】对台湾通行证证号、签发地、出生日期、姓名、姓名拼音、性别、有效期字段进行识别
+     *
+     * @param image - 本地图片路径
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     * @return JSONObject
+     */
+    public JSONObject taiwanExitentrypermit(String image, HashMap<String, String> options) {
+        try {
+            byte[] data = Util.readFileByBytes(image);
+            return taiwanExitentrypermit(data, options);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return AipError.IMAGE_READ_ERROR.toJsonResult();
+        }
+    }
+
+    /**
+     * 出生医学证明识别接口   
+     * 【此接口需要您在[申请页面](https://cloud.baidu.com/survey/AICooperativeConsultingApply.html)中提交合作咨询开通权限】对台湾通行证证号、签发地、出生日期、姓名、姓名拼音、性别、有效期字段进行识别
+     *
+     * @param image - 二进制图像数据
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     * @return JSONObject
+     */
+    public JSONObject birthCertificate(byte[] image, HashMap<String, String> options) {
+        AipRequest request = new AipRequest();
+        preOperation(request);
+        
+        String base64Content = Base64Util.encode(image);
+        request.addBody("image", base64Content);
+        if (options != null) {
+            request.addBody(options);
+        }
+        request.setUri(OcrConsts.BIRTH_CERTIFICATE);
+        postOperation(request);
+        return requestServer(request);
+    }
+
+    /**
+     * 出生医学证明识别接口
+     * 【此接口需要您在[申请页面](https://cloud.baidu.com/survey/AICooperativeConsultingApply.html)中提交合作咨询开通权限】对台湾通行证证号、签发地、出生日期、姓名、姓名拼音、性别、有效期字段进行识别
+     *
+     * @param image - 本地图片路径
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     * @return JSONObject
+     */
+    public JSONObject birthCertificate(String image, HashMap<String, String> options) {
+        try {
+            byte[] data = Util.readFileByBytes(image);
+            return birthCertificate(data, options);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return AipError.IMAGE_READ_ERROR.toJsonResult();
+        }
+    }
+
+    /**
+     * 机动车销售发票识别接口   
+     * 【此接口需要您在[申请页面](https://cloud.baidu.com/survey/AICooperativeConsultingApply.html)中提交合作咨询开通权限】识别机动车销售发票号码、代码、日期、价税合计等14个字段
+     *
+     * @param image - 二进制图像数据
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     * @return JSONObject
+     */
+    public JSONObject vehicleInvoice(byte[] image, HashMap<String, String> options) {
+        AipRequest request = new AipRequest();
+        preOperation(request);
+        
+        String base64Content = Base64Util.encode(image);
+        request.addBody("image", base64Content);
+        if (options != null) {
+            request.addBody(options);
+        }
+        request.setUri(OcrConsts.VEHICLE_INVOICE);
+        postOperation(request);
+        return requestServer(request);
+    }
+
+    /**
+     * 机动车销售发票识别接口
+     * 【此接口需要您在[申请页面](https://cloud.baidu.com/survey/AICooperativeConsultingApply.html)中提交合作咨询开通权限】识别机动车销售发票号码、代码、日期、价税合计等14个字段
+     *
+     * @param image - 本地图片路径
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     * @return JSONObject
+     */
+    public JSONObject vehicleInvoice(String image, HashMap<String, String> options) {
+        try {
+            byte[] data = Util.readFileByBytes(image);
+            return vehicleInvoice(data, options);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return AipError.IMAGE_READ_ERROR.toJsonResult();
+        }
+    }
+
+    /**
+     * 车辆合格证识别接口   
+     * 【此接口需要您在[申请页面](https://cloud.baidu.com/survey/AICooperativeConsultingApply.html)中提交合作咨询开通权限】识别车辆合格证编号、车架号、排放标准、发动机编号等12个字段
+     *
+     * @param image - 二进制图像数据
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     * @return JSONObject
+     */
+    public JSONObject vehicleCertificate(byte[] image, HashMap<String, String> options) {
+        AipRequest request = new AipRequest();
+        preOperation(request);
+        
+        String base64Content = Base64Util.encode(image);
+        request.addBody("image", base64Content);
+        if (options != null) {
+            request.addBody(options);
+        }
+        request.setUri(OcrConsts.VEHICLE_CERTIFICATE);
+        postOperation(request);
+        return requestServer(request);
+    }
+
+    /**
+     * 车辆合格证识别接口
+     * 【此接口需要您在[申请页面](https://cloud.baidu.com/survey/AICooperativeConsultingApply.html)中提交合作咨询开通权限】识别车辆合格证编号、车架号、排放标准、发动机编号等12个字段
+     *
+     * @param image - 本地图片路径
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     * @return JSONObject
+     */
+    public JSONObject vehicleCertificate(String image, HashMap<String, String> options) {
+        try {
+            byte[] data = Util.readFileByBytes(image);
+            return vehicleCertificate(data, options);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return AipError.IMAGE_READ_ERROR.toJsonResult();
+        }
+    }
+
+    /**
+     * 税务局通用机打发票识别接口   
+     * 【此接口需要您在[申请页面](https://cloud.baidu.com/survey/AICooperativeConsultingApply.html)中提交合作咨询开通权限】对国家/地方税务局发行的横/竖版通用机打发票的号码、代码、日期、合计金额、类型、商品名称字段进行结构化识别
+     *
+     * @param image - 二进制图像数据
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   location 是否输出位置信息，true：输出位置信息，false：不输出位置信息，默认false
+     * @return JSONObject
+     */
+    public JSONObject invoice(byte[] image, HashMap<String, String> options) {
+        AipRequest request = new AipRequest();
+        preOperation(request);
+        
+        String base64Content = Base64Util.encode(image);
+        request.addBody("image", base64Content);
+        if (options != null) {
+            request.addBody(options);
+        }
+        request.setUri(OcrConsts.INVOICE);
+        postOperation(request);
+        return requestServer(request);
+    }
+
+    /**
+     * 税务局通用机打发票识别接口
+     * 【此接口需要您在[申请页面](https://cloud.baidu.com/survey/AICooperativeConsultingApply.html)中提交合作咨询开通权限】对国家/地方税务局发行的横/竖版通用机打发票的号码、代码、日期、合计金额、类型、商品名称字段进行结构化识别
+     *
+     * @param image - 本地图片路径
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   location 是否输出位置信息，true：输出位置信息，false：不输出位置信息，默认false
+     * @return JSONObject
+     */
+    public JSONObject invoice(String image, HashMap<String, String> options) {
+        try {
+            byte[] data = Util.readFileByBytes(image);
+            return invoice(data, options);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return AipError.IMAGE_READ_ERROR.toJsonResult();
+        }
+    }
+
+    /**
+     * 行程单识别接口   
+     * 【此接口需要您在[申请页面](https://cloud.baidu.com/survey/AICooperativeConsultingApply.html)中提交合作咨询开通权限】对飞机行程单中的姓名、始发站、目的站、航班号、日期、票价字段进行结构化识别
+     *
+     * @param image - 二进制图像数据
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   location 是否输出位置信息，true：输出位置信息，false：不输出位置信息，默认false
+     * @return JSONObject
+     */
+    public JSONObject airTicket(byte[] image, HashMap<String, String> options) {
+        AipRequest request = new AipRequest();
+        preOperation(request);
+        
+        String base64Content = Base64Util.encode(image);
+        request.addBody("image", base64Content);
+        if (options != null) {
+            request.addBody(options);
+        }
+        request.setUri(OcrConsts.AIR_TICKET);
+        postOperation(request);
+        return requestServer(request);
+    }
+
+    /**
+     * 行程单识别接口
+     * 【此接口需要您在[申请页面](https://cloud.baidu.com/survey/AICooperativeConsultingApply.html)中提交合作咨询开通权限】对飞机行程单中的姓名、始发站、目的站、航班号、日期、票价字段进行结构化识别
+     *
+     * @param image - 本地图片路径
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   location 是否输出位置信息，true：输出位置信息，false：不输出位置信息，默认false
+     * @return JSONObject
+     */
+    public JSONObject airTicket(String image, HashMap<String, String> options) {
+        try {
+            byte[] data = Util.readFileByBytes(image);
+            return airTicket(data, options);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return AipError.IMAGE_READ_ERROR.toJsonResult();
+        }
+    }
+
+    /**
+     * 保单识别接口   
+     * 【此接口需要您在[申请页面](https://cloud.baidu.com/survey/AICooperativeConsultingApply.html)中提交合作咨询开通权限】对各类保单中投保人、受益人的各项信息、保费、保险名称等字段进行结构化识别
+     *
+     * @param image - 二进制图像数据
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   rkv_business 是否进行商业逻辑处理，rue：进行商业逻辑处理，false：不进行商业逻辑处理，默认true
+     * @return JSONObject
+     */
+    public JSONObject insuranceDocuments(byte[] image, HashMap<String, String> options) {
+        AipRequest request = new AipRequest();
+        preOperation(request);
+        
+        String base64Content = Base64Util.encode(image);
+        request.addBody("image", base64Content);
+        if (options != null) {
+            request.addBody(options);
+        }
+        request.setUri(OcrConsts.INSURANCE_DOCUMENTS);
+        postOperation(request);
+        return requestServer(request);
+    }
+
+    /**
+     * 保单识别接口
+     * 【此接口需要您在[申请页面](https://cloud.baidu.com/survey/AICooperativeConsultingApply.html)中提交合作咨询开通权限】对各类保单中投保人、受益人的各项信息、保费、保险名称等字段进行结构化识别
+     *
+     * @param image - 本地图片路径
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   rkv_business 是否进行商业逻辑处理，rue：进行商业逻辑处理，false：不进行商业逻辑处理，默认true
+     * @return JSONObject
+     */
+    public JSONObject insuranceDocuments(String image, HashMap<String, String> options) {
+        try {
+            byte[] data = Util.readFileByBytes(image);
+            return insuranceDocuments(data, options);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return AipError.IMAGE_READ_ERROR.toJsonResult();
+        }
+    }
+
+    /**
      * 增值税发票识别接口   
      * 此接口需要您在页面中提交合作咨询开通权限】 识别并结构化返回增值税发票的各个字段及其对应值，包含了发票基础信息9项，货物相关信息12项，购买方/销售方的名称、识别号、地址电话、开户行及账号，共29项结构化字段。
      *

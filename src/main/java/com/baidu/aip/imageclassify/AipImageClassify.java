@@ -497,4 +497,178 @@ public class AipImageClassify extends BaseClient {
         }
     }
 
+    /**
+     * 花卉识别接口   
+     * 检测用户上传的花卉图片，输出图片的花卉识别结果名称及对应的概率打分。
+     *
+     * @param image - 二进制图像数据
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   top_num 返回预测得分top结果数，默认为5
+     *   baike_num 返回百科信息的结果数，默认不返回
+     * @return JSONObject
+     */
+    public JSONObject flower(byte[] image, HashMap<String, String> options) {
+        AipRequest request = new AipRequest();
+        preOperation(request);
+        
+        String base64Content = Base64Util.encode(image);
+        request.addBody("image", base64Content);
+        if (options != null) {
+            request.addBody(options);
+        }
+        request.setUri(ImageClassifyConsts.FLOWER);
+        postOperation(request);
+        return requestServer(request);
+    }
+
+    /**
+     * 花卉识别接口
+     * 检测用户上传的花卉图片，输出图片的花卉识别结果名称及对应的概率打分。
+     *
+     * @param image - 本地图片路径
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   top_num 返回预测得分top结果数，默认为5
+     *   baike_num 返回百科信息的结果数，默认不返回
+     * @return JSONObject
+     */
+    public JSONObject flower(String image, HashMap<String, String> options) {
+        try {
+            byte[] data = Util.readFileByBytes(image);
+            return flower(data, options);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return AipError.IMAGE_READ_ERROR.toJsonResult();
+        }
+    }
+
+    /**
+     * 食材识别接口   
+     * 该请求用于识别果蔬类食材，即对于输入的一张图片（可正常解码，且长宽比适宜），输出图片中的果蔬食材结果。
+     *
+     * @param image - 二进制图像数据
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   top_num 返回预测得分top结果数，如果为空或小于等于0默认为5；如果大于20默认20
+     * @return JSONObject
+     */
+    public JSONObject ingredient(byte[] image, HashMap<String, String> options) {
+        AipRequest request = new AipRequest();
+        preOperation(request);
+        
+        String base64Content = Base64Util.encode(image);
+        request.addBody("image", base64Content);
+        if (options != null) {
+            request.addBody(options);
+        }
+        request.setUri(ImageClassifyConsts.INGREDIENT);
+        postOperation(request);
+        return requestServer(request);
+    }
+
+    /**
+     * 食材识别接口
+     * 该请求用于识别果蔬类食材，即对于输入的一张图片（可正常解码，且长宽比适宜），输出图片中的果蔬食材结果。
+     *
+     * @param image - 本地图片路径
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   top_num 返回预测得分top结果数，如果为空或小于等于0默认为5；如果大于20默认20
+     * @return JSONObject
+     */
+    public JSONObject ingredient(String image, HashMap<String, String> options) {
+        try {
+            byte[] data = Util.readFileByBytes(image);
+            return ingredient(data, options);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return AipError.IMAGE_READ_ERROR.toJsonResult();
+        }
+    }
+
+    /**
+     * 红酒识别接口   
+     * 该服务用于识别红酒标签，即对于输入的一张图片（可正常解码，长宽比适宜，且酒标清晰可见），输出图片中的红酒名称、国家、产区、酒庄、类型、糖分、葡萄品种、酒品描述等信息。可识别数十万中外常见红酒。
+     *
+     * @param image - 二进制图像数据
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     * @return JSONObject
+     */
+    public JSONObject redwine(byte[] image, HashMap<String, String> options) {
+        AipRequest request = new AipRequest();
+        preOperation(request);
+        
+        String base64Content = Base64Util.encode(image);
+        request.addBody("image", base64Content);
+        if (options != null) {
+            request.addBody(options);
+        }
+        request.setUri(ImageClassifyConsts.REDWINE);
+        postOperation(request);
+        return requestServer(request);
+    }
+
+    /**
+     * 红酒识别接口
+     * 该服务用于识别红酒标签，即对于输入的一张图片（可正常解码，长宽比适宜，且酒标清晰可见），输出图片中的红酒名称、国家、产区、酒庄、类型、糖分、葡萄品种、酒品描述等信息。可识别数十万中外常见红酒。
+     *
+     * @param image - 本地图片路径
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     * @return JSONObject
+     */
+    public JSONObject redwine(String image, HashMap<String, String> options) {
+        try {
+            byte[] data = Util.readFileByBytes(image);
+            return redwine(data, options);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return AipError.IMAGE_READ_ERROR.toJsonResult();
+        }
+    }
+
+    /**
+     * 货币识别接口   
+     * 识别图像中的货币类型，以纸币为主，正反面均可准确识别，接口返回货币的名称、代码、面值、年份信息；可识别各类近代常见货币，如美元、欧元、英镑、法郎、澳大利亚元、俄罗斯卢布、日元、韩元、泰铢、印尼卢比等。
+     *
+     * @param image - 二进制图像数据
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     * @return JSONObject
+     */
+    public JSONObject currency(byte[] image, HashMap<String, String> options) {
+        AipRequest request = new AipRequest();
+        preOperation(request);
+        
+        String base64Content = Base64Util.encode(image);
+        request.addBody("image", base64Content);
+        if (options != null) {
+            request.addBody(options);
+        }
+        request.setUri(ImageClassifyConsts.CURRENCY);
+        postOperation(request);
+        return requestServer(request);
+    }
+
+    /**
+     * 货币识别接口
+     * 识别图像中的货币类型，以纸币为主，正反面均可准确识别，接口返回货币的名称、代码、面值、年份信息；可识别各类近代常见货币，如美元、欧元、英镑、法郎、澳大利亚元、俄罗斯卢布、日元、韩元、泰铢、印尼卢比等。
+     *
+     * @param image - 本地图片路径
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     * @return JSONObject
+     */
+    public JSONObject currency(String image, HashMap<String, String> options) {
+        try {
+            byte[] data = Util.readFileByBytes(image);
+            return currency(data, options);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return AipError.IMAGE_READ_ERROR.toJsonResult();
+        }
+    }
+
 }

@@ -17,19 +17,32 @@ import java.util.HashSet;
 
 public class ContentCensorConsts {
 
-    static final String ANTI_PORN_URL = "https://aip.baidubce.com/rest/2.0/antiporn/v1/detect";
+    static final String ANTI_PORN_URL =
+            "https://aip.baidubce.com/rest/2.0/antiporn/v1/detect";
+
     static final String ANTI_PORN_GIF_URL =
             "https://aip.baidubce.com/rest/2.0/antiporn/v1/detect_gif";
-    static final String ANTI_TERROR_URL = "https://aip.baidubce.com/rest/2.0/antiterror/v1/detect";
 
-    static final String IMAGE_CENSOR_COMB_URL = "https://aip.baidubce.com/api/v1/solution/direct/img_censor";
-    static final String FACE_AUDIT_URL = "https://aip.baidubce.com/rest/2.0/solution/v1/face_audit";
+    static final String ANTI_TERROR_URL =
+            "https://aip.baidubce.com/rest/2.0/antiterror/v1/detect";
 
-    static final String REPORT_URL = "https://aip.baidubce.com/rpc/2.0/feedback/v1/report";
+    static final String IMAGE_CENSOR_COMB_URL =
+            "https://aip.baidubce.com/api/v1/solution/direct/img_censor";
 
-    static final String USER_DEFINED_URL = "https://aip.baidubce.com/rest/2.0/solution/v1/img_censor/user_defined";
+    static final String FACE_AUDIT_URL =
+            "https://aip.baidubce.com/rest/2.0/solution/v1/face_audit";
 
-    static final String TXT_CENSOR_URL = "https://aip.baidubce.com/rest/2.0/antispam/v2/spam";
+    static final String REPORT_URL =
+            "https://aip.baidubce.com/rpc/2.0/feedback/v1/report";
+
+    static final String USER_DEFINED_IMAGE_URL =
+            "https://aip.baidubce.com/rest/2.0/solution/v1/img_censor/v2/user_defined";
+
+    static final String USER_DEFINED_TEXT_URL =
+            "https://aip.baidubce.com/rest/2.0/solution/v1/text_censor/v2/user_defined";
+
+    static final String TXT_CENSOR_URL =
+            "https://aip.baidubce.com/rest/2.0/antispam/v2/spam";
 
     public static final Long ANTIPORN_MAX_IMAGE_SIZE = 4194304L; // 4 * 1024 * 1024
 

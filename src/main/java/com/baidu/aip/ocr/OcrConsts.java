@@ -51,6 +51,28 @@ public class OcrConsts {
 
     static final String TABLE_RESULT_GET = "https://aip.baidubce.com/rest/2.0/solution/v1/form_ocr/get_request_result";
 
+    static final String VIN_CODE = "https://aip.baidubce.com/rest/2.0/ocr/v1/vin_code";
+
+    static final String QUOTA_INVOICE = "https://aip.baidubce.com/rest/2.0/ocr/v1/quota_invoice";
+
+    static final String HOUSEHOLD_REGISTER = "https://aip.baidubce.com/rest/2.0/ocr/v1/household_register";
+
+    static final String HK_MACAU_EXITENTRYPERMIT = "https://aip.baidubce.com/rest/2.0/ocr/v1/HK_Macau_exitentrypermit";
+
+    static final String TAIWAN_EXITENTRYPERMIT = "https://aip.baidubce.com/rest/2.0/ocr/v1/taiwan_exitentrypermit";
+
+    static final String BIRTH_CERTIFICATE = "https://aip.baidubce.com/rest/2.0/ocr/v1/birth_certificate";
+
+    static final String VEHICLE_INVOICE = "https://aip.baidubce.com/rest/2.0/ocr/v1/vehicle_invoice";
+
+    static final String VEHICLE_CERTIFICATE = "https://aip.baidubce.com/rest/2.0/ocr/v1/vehicle_certificate";
+
+    static final String INVOICE = "https://aip.baidubce.com/rest/2.0/ocr/v1/invoice";
+
+    static final String AIR_TICKET = "https://aip.baidubce.com/rest/2.0/ocr/v1/air_ticket";
+
+    static final String INSURANCE_DOCUMENTS = "https://aip.baidubce.com/rest/2.0/ocr/v1/insurance_documents";
+
     static final String VAT_INVOICE = "https://aip.baidubce.com/rest/2.0/ocr/v1/vat_invoice";
 
     static final String QRCODE = "https://aip.baidubce.com/rest/2.0/ocr/v1/qrcode";
