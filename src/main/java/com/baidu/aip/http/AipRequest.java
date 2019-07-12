@@ -31,7 +31,15 @@ public class AipRequest {
     private EBodyFormat bodyFormat;
     private String contentEncoding;
     private AipClientConfiguration config;
+    private String requestId;           // optional, only need for http 2.0
 
+    public String getRequestId() {
+        return requestId;
+    }
+
+    public void setRequestId(String requestId) {
+        this.requestId = requestId;
+    }
 
     public AipRequest() {
         headers = new HashMap<String, String>();
@@ -128,6 +136,15 @@ public class AipRequest {
             buffer.deleteCharAt(buffer.length() - 1);
         }
         return buffer.toString();
+    }
+
+    public String getMediaTypeStr() {
+        if (bodyFormat.equals(EBodyFormat.FORM_KV)) {
+            return "application/x-www-form-urlencoded";
+        }
+        else {
+            return "application/json";
+        }
     }
 
     public HashMap<String, Object> getBody() {

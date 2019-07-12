@@ -12,6 +12,13 @@
  */
 package com.baidu.aip.http;
 
+import com.baidu.aip.http2.CBFutureTask;
+import okhttp3.Call;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -111,6 +118,43 @@ public class AipHttpClient {
             }
         }
         return response;
+    }
+
+    /**
+     * 使用http2.0协议，post方式访问服务器，返回一个CBFutureTask
+     * @param request
+     * @return
+     */
+    public static CBFutureTask post2(OkHttpClient client, AipRequest request) {
+        String url;
+        String charset = request.getContentEncoding();
+        String content = request.getBodyStr();
+        HashMap<String, String> header = request.getHeaders();
+        String contentType = request.getMediaTypeStr();
+
+        if (request.getParams().isEmpty()) {
+            url = request.getUri().toString();
+        }
+        else {
+            url = String.format("%s?%s", request.getUri().toString(), request.getParamStr());
+        }
+
+        Request.Builder builder = new Request.Builder().url(url);
+        for (Map.Entry<String, String> entry : header.entrySet()) {
+            builder.addHeader(entry.getKey(), entry.getValue());
+        }
+
+        CBFutureTask futureCB = new CBFutureTask(request.getRequestId());
+        try {
+            RequestBody body = RequestBody.create(content.getBytes(charset), MediaType.get(contentType));
+            Request req = builder.post(body).build();
+            Call call = client.newCall(req);
+            call.enqueue(futureCB);
+            return futureCB;
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return futureCB;
     }
 
 }
