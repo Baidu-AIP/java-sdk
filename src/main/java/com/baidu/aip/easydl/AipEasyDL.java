@@ -72,7 +72,7 @@ public class AipEasyDL extends BaseClient {
     public JSONObject sendSoundRequest(String url, String file, HashMap<String, Object> options) {
         try {
             byte[] data = Util.readFileByBytes(file);
-            return sendImageRequest(url, data, options);
+            return sendSoundRequest(url, data, options);
         } catch (IOException e) {
             e.printStackTrace();
             return AipError.IMAGE_READ_ERROR.toJsonResult();
