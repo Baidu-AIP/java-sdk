@@ -21,4 +21,8 @@ public class ImageProcessConsts {
 
     static final String CONTRAST_ENHANCE = "https://aip.baidubce.com/rest/2.0/image-process/v1/contrast_enhance";
 
+    static final String COLOURIZE = "https://aip.baidubce.com/rest/2.0/image-process/v1/colourize";
+
+    static final String STRETCH_RESTORE = "https://aip.baidubce.com/rest/2.0/image-process/v1/stretch_restore";
+
 }

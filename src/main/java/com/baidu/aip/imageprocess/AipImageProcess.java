@@ -155,4 +155,88 @@ public class AipImageProcess extends BaseClient {
         }
     }
 
+    /**
+     * 黑白图像上色接口   
+     * 智能识别黑白图像内容并填充色彩，使黑白图像变得鲜活。
+     *
+     * @param image - 二进制图像数据
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     * @return JSONObject
+     */
+    public JSONObject colourize(byte[] image, HashMap<String, String> options) {
+        AipRequest request = new AipRequest();
+        preOperation(request);
+        
+        String base64Content = Base64Util.encode(image);
+        request.addBody("image", base64Content);
+        if (options != null) {
+            request.addBody(options);
+        }
+        request.setUri(ImageProcessConsts.COLOURIZE);
+        postOperation(request);
+        return requestServer(request);
+    }
+
+    /**
+     * 黑白图像上色接口
+     * 智能识别黑白图像内容并填充色彩，使黑白图像变得鲜活。
+     *
+     * @param image - 本地图片路径
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     * @return JSONObject
+     */
+    public JSONObject colourize(String image, HashMap<String, String> options) {
+        try {
+            byte[] data = Util.readFileByBytes(image);
+            return colourize(data, options);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return AipError.IMAGE_READ_ERROR.toJsonResult();
+        }
+    }
+
+    /**
+     * 拉伸图像恢复接口   
+     * 自动识别过度拉伸的图像，将图像内容恢复成正常比例。
+     *
+     * @param image - 二进制图像数据
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     * @return JSONObject
+     */
+    public JSONObject stretchRestore(byte[] image, HashMap<String, String> options) {
+        AipRequest request = new AipRequest();
+        preOperation(request);
+        
+        String base64Content = Base64Util.encode(image);
+        request.addBody("image", base64Content);
+        if (options != null) {
+            request.addBody(options);
+        }
+        request.setUri(ImageProcessConsts.STRETCH_RESTORE);
+        postOperation(request);
+        return requestServer(request);
+    }
+
+    /**
+     * 拉伸图像恢复接口
+     * 自动识别过度拉伸的图像，将图像内容恢复成正常比例。
+     *
+     * @param image - 本地图片路径
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     * @return JSONObject
+     */
+    public JSONObject stretchRestore(String image, HashMap<String, String> options) {
+        try {
+            byte[] data = Util.readFileByBytes(image);
+            return stretchRestore(data, options);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return AipError.IMAGE_READ_ERROR.toJsonResult();
+        }
+    }
+
 }
