@@ -87,6 +87,8 @@ public class OcrConsts {
 
     static final String HANDWRITING = "https://aip.baidubce.com/rest/2.0/ocr/v1/handwriting";
 
+    static final String FORMULA = "https://aip.baidubce.com/rest/2.0/ocr/v1/formula";
+
     static final String CUSTOM = "https://aip.baidubce.com/rest/2.0/solution/v1/iocr/recognise";
 
     static final int ASYNC_TASK_STATUS_FINISHED = 3;

@@ -1709,6 +1709,55 @@ public class AipOcr extends BaseClient {
         }
     }
 
+
+    /**
+     * 支持对试卷中的数学公式及题目内容进行识别，可提取公式部分进行单独识别，也可对题目和公式进行混合识别，并返回Latex格式公式内容及位置信息，便于进行后续处理
+     * 【此接口需要您在[页面](http://ai.baidu.com/tech/ocr)中提交合作咨询开通权限】提供对各类名片的结构化识别功能，提取姓名、邮编、邮箱、电话、网址、地址、手机号字段
+     *
+     * @param image - 二进制图像数据
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   recognize_granularity 是否定位单字符位置，big：不定位单字符位置，默认值；small：定位单字符位置
+     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br>- true：检测朝向；<br>- false：不检测朝向。
+     *   disp_formula 是否分离输出公式识别结果，在words_result外单独输出公式结果，展示在“formula_result”中
+     * @return JSONObject
+     */
+    public JSONObject formula(byte[] image, HashMap<String, String> options) {
+        AipRequest request = new AipRequest();
+        preOperation(request);
+
+        String base64Content = Base64Util.encode(image);
+        request.addBody("image", base64Content);
+        if (options != null) {
+            request.addBody(options);
+        }
+        request.setUri(OcrConsts.FORMULA);
+        postOperation(request);
+        return requestServer(request);
+    }
+
+    /**
+     * 支持对试卷中的数学公式及题目内容进行识别，可提取公式部分进行单独识别，也可对题目和公式进行混合识别，并返回Latex格式公式内容及位置信息，便于进行后续处理
+     * 【此接口需要您在[页面](http://ai.baidu.com/tech/ocr)中提交合作咨询开通权限】提供对各类名片的结构化识别功能，提取姓名、邮编、邮箱、电话、网址、地址、手机号字段
+     *
+     * @param image - 本地图片路径
+     * @param options - 可选参数对象，key: value都为string类型
+     * options - options列表:
+     *   recognize_granularity 是否定位单字符位置，big：不定位单字符位置，默认值；small：定位单字符位置
+     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br>- true：检测朝向；<br>- false：不检测朝向。
+     *   disp_formula 是否分离输出公式识别结果，在words_result外单独输出公式结果，展示在“formula_result”中
+     * @return JSONObject
+     */
+    public JSONObject formula(String image, HashMap<String, String> options) {
+        try {
+            byte[] data = Util.readFileByBytes(image);
+            return formula(data, options);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return AipError.IMAGE_READ_ERROR.toJsonResult();
+        }
+    }
+
     /**
      * 自定义模板文字识别接口   
      * 自定义模板文字识别，是针对百度官方没有推出相应的模板，但是当用户需要对某一类卡证/票据（如房产证、军官证、火车票等）进行结构化的提取内容时，可以使用该产品快速制作模板，进行识别。
