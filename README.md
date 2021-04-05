@@ -1,4 +1,4 @@
-## 安装Java SDK
+## 安装Java SDK6666
 
 **Java SDK主要目录结构**
 
